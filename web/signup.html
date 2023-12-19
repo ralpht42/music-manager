@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="de" id="htmlTag">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Music Manager - Login</title>
+		<link
+			href="{{url_for('static',filename='css/main.css')}}"
+			rel="stylesheet"
+		/>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"
+			integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+	</head>
+	<body>
+		<div
+			class="flex min-h-screen items-center justify-center bg-white p-12 dark:bg-gray-950"
+		>
+			<form id="signupForm" method="POST">
+				<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
+				{% if error %}
+				<div
+					role="alert"
+					class="font-regular relative flex w-full rounded-lg bg-red-600 px-4 py-4 text-base text-white"
+					data-dismissible="alert"
+				>
+					<div class="mr-12">{{ error }}</div>
+					<button
+						data-dismissible-target="alert"
+						class="!absolute right-3 top-3 h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-white transition-all hover:bg-white/10 active:bg-white/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+						type="button"
+					>
+						<span
+							class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								class="h-6 w-6"
+								stroke-width="2"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M6 18L18 6M6 6l12 12"
+								></path>
+							</svg>
+						</span>
+					</button>
+				</div>
+				{% endif %}
+
+				<div
+					class="max-w-sm rounded-3xl bg-gradient-to-bl from-sky-300 to-purple-500 p-px dark:from-gray-800 dark:to-transparent"
+				>
+					<div
+						class="rounded-[calc(1.5rem-1px)] bg-white p-12 px-10 dark:bg-gray-900"
+					>
+						<div>
+							<h1 class="text-xl font-semibold text-gray-800 dark:text-white">
+								Registrieren
+							</h1>
+							<p class="text-sm tracking-wide text-gray-600 dark:text-gray-300">
+								Du hast bereits ein Konto? Klicke
+								<a
+									href="{{url_for('signin')}}"
+									class="text-blue-600 transition duration-200 hover:underline dark:text-blue-400"
+									>hier</a
+								>
+								um dich einzuloggen.
+							</p>
+						</div>
+
+						<div class="mt-8 space-y-8">
+							<div class="space-y-6">
+								<input
+									class="w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm text-gray-600 placeholder-gray-600 invalid:border-red-500 dark:border-gray-700 dark:text-white dark:placeholder-gray-300"
+									placeholder="heinrich@gueterstein.de"
+									type="email"
+									name="email"
+									id="email"
+								/>
+
+								<input
+									class="w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm text-gray-600 placeholder-gray-600 invalid:border-red-500 dark:border-gray-700 dark:text-white dark:placeholder-gray-300"
+									placeholder="********"
+									type="password"
+									name="password"
+									id="password"
+								/>
+							</div>
+
+							<button
+								class="h-9 w-full rounded-md bg-blue-600 px-3 text-white transition duration-500 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-800"
+							>
+								Registrieren
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!--- Skript um das Passwort zu hashen --->
+		<script>
+			document
+				.getElementById('signupForm')
+				.addEventListener('submit', function (event) {
+					var passwordField = document.getElementById('password')
+					var password = passwordField.value
+
+					var hash = CryptoJS.SHA384(password)
+
+					passwordField.value = hash
+				})
+		</script>
+
+    <!--- Skript um die Fehlermeldung zu schließen --->
+    <script>
+    document.querySelector('[data-dismissible-target="alert"]').addEventListener('click', function() {
+      this.parentElement.style.display = 'none';
+    });
+    </script>
+	</body>
+</html>
