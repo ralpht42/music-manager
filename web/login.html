@@ -7,12 +7,6 @@
 			href="{{url_for('static',filename='css/main.css')}}"
 			rel="stylesheet"
 		/>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"
-			integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ=="
-			crossorigin="anonymous"
-			referrerpolicy="no-referrer"
-		></script>
 	</head>
 	<body>
 		<div
@@ -55,10 +49,10 @@
 				{% endif %}
 
 				<div
-					class="max-w-sm rounded-3xl bg-gradient-to-bl from-sky-300 to-purple-500 p-px dark:from-gray-800 dark:to-transparent"
+					class="rounded-lg bg-gradient-to-bl from-sky-300 to-purple-500 p-px dark:from-gray-800 dark:to-transparent"
 				>
 					<div
-						class="rounded-[calc(1.5rem-1px)] bg-white p-12 px-10 dark:bg-gray-900"
+						class="rounded-lg bg-white p-12 px-10 dark:bg-gray-900"
 					>
 						<div>
 							<h1 class="text-xl font-semibold text-gray-800 dark:text-white">
@@ -105,25 +99,13 @@
 			</form>
 		</div>
 
-		<!--- Skript um das Passwort zu hashen --->
+		<!--- Skript um die Fehlermeldung zu schließen --->
 		<script>
 			document
-				.getElementById('signupForm')
-				.addEventListener('submit', function (event) {
-					var passwordField = document.getElementById('password')
-					var password = passwordField.value
-
-					var hash = CryptoJS.SHA384(password)
-
-					passwordField.value = hash
+				.querySelector('[data-dismissible-target="alert"]')
+				.addEventListener('click', function () {
+					this.parentElement.style.display = 'none'
 				})
 		</script>
-
-    <!--- Skript um die Fehlermeldung zu schließen --->
-    <script>
-    document.querySelector('[data-dismissible-target="alert"]').addEventListener('click', function() {
-      this.parentElement.style.display = 'none';
-    });
-    </script>
 	</body>
 </html>

@@ -9,6 +9,19 @@
 		/>
 	</head>
 	<body>
-    
-  </body>
+		<div
+			class="flex min-h-screen items-center justify-center bg-white p-12 dark:bg-gray-950"
+		>
+			<h1 class="text-xl font-semibold text-gray-800 dark:text-white">
+				Music Manager
+			</h1>
+
+			<h1>Willkommen, {{ user.email }}!</h1>
+			{% if user.is_admin %}
+				<p>Sie sind ein Administrator.</p>
+			{% else %}
+				<p>Sie sind kein Administrator.</p>
+			{% endif %}
+		</div>
+	</body>
 </html>
