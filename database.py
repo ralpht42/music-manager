@@ -1,14 +1,17 @@
+# database.py
 import sqlite3
 import re
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
+from argon2.low_level import Type
 from faker import Faker
 
-from user import User
+from models import User
 
-# TODO: Empfehlungen von OWASP umsetzen
-ph = PasswordHasher()
-
+# Empfehlung: https://www.owasp.org/index.php/Password_Storage_Cheat_Sheet#argon2id
+# Stand 2023-12-21
+# Ausgeglichen zwischen CPU- und Speicherkosten
+ph = PasswordHasher(time_cost=3, memory_cost=12288, parallelism=1, type=Type.ID)
 
 debug_mode = False  # True, wenn die Demo-Datenbank verwendet werden soll
 
@@ -42,6 +45,7 @@ def init_database():
     c.execute(
         """CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
         is_active BOOLEAN NOT NULL DEFAULT 1,
@@ -54,22 +58,25 @@ def init_database():
     conn.close()
 
 
-def signup_user(email, password_input):
+def signup_user(username, email, password_input):
     """
     Speichert einen neuen Benutzer in der Datenbank
 
+    :param username: Benutzername des Benutzers
     :param email: E-Mail-Adresse des Benutzers
     :param password_input: Passwort des Benutzers
     :return: None
     """
+    if len(username) > 255:
+        raise Exception("Benutzername darf maximal 255 Zeichen lang sein!")
     if len(email) > 255:
-        raise Exception("E-Mail-Adresse darf maximal 255 Zeichen lang sein")
+        raise Exception("E-Mail-Adresse darf maximal 255 Zeichen lang sein!")
     if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-        raise Exception("E-Mail-Adresse ist ungültig")
+        raise Exception("E-Mail-Adresse ist ungültig!")
     if email == "" or email == None:
-        raise Exception("E-Mail-Adresse darf nicht leer sein")
+        raise Exception("E-Mail-Adresse darf nicht leer sein!")
     if password_input == "" or password_input == None:
-        raise Exception("Passwort darf nicht leer sein")
+        raise Exception("Passwort darf nicht leer sein!")
 
     conn, c = open_database()
 
@@ -78,19 +85,21 @@ def signup_user(email, password_input):
     result = c.fetchone()
     if result is not None:
         conn.close()
-        raise Exception("E-Mail-Adresse wird bereits verwendet")
+        raise Exception("E-Mail-Adresse wird bereits verwendet!")
     else:
         password_argon2 = ph.hash(password_input)
 
         # Speichere den Benutzer in der Datenbank
         c.execute(
-            "INSERT INTO users (email, password) VALUES (?, ?)",
-            (email, password_argon2),
+            "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+            (username, email, password_argon2),
         )
         conn.commit()
-        c.execute("SELECT id, email, is_admin FROM users WHERE email = ?", (email,))
+        c.execute(
+            "SELECT id, username, email, is_admin FROM users WHERE email = ?", (email,)
+        )
         result = c.fetchone()
-        user = User(result[0], result[1], bool(result[2]))
+        user = User(result[0], result[1], result[2], bool(result[3]))
         conn.close()
         return user
 
@@ -109,7 +118,9 @@ def login_user(email, password_input):
     # TODO: Fehlgeschlagene Anmeldeversuche in Log-Datei schreiben, um Brute-Force-Angriffe zu erkennen
     # Überprüfe, ob die E-Mail-Adresse und das Passwort den Anforderungen entsprechen
     if (
-        email == None
+        email == ""
+        or password_input == ""
+        or email == None
         or password_input == None
         or len(email) > 255
         or len(email) == 0
@@ -117,7 +128,7 @@ def login_user(email, password_input):
         or not re.match(r"[^@]+@[^@]+\.[^@]+", email)
     ):
         conn.close()
-        raise Exception("E-Mail-Adresse oder Passwort ist falsch")
+        raise Exception("E-Mail-Adresse oder Passwort ist falsch!")
 
     # Überprüfe, ob die E-Mail-Adresse nicht registriert ist
     c.execute("SELECT email FROM users WHERE email = ?", (email,))
@@ -125,28 +136,36 @@ def login_user(email, password_input):
     if result is None:
         conn.close()
         # TODO: Fehlgeschlagene Anmeldeversuche in Log-Datei schreiben, um Brute-Force-Angriffe zu erkennen
-        raise Exception("E-Mail-Adresse oder Passwort ist falsch")
+        raise Exception("E-Mail-Adresse oder Passwort ist falsch!")
 
     c.execute("SELECT password FROM users WHERE email = ?", (email,))
     password_db = c.fetchone()[0]
     try:
         if ph.verify(password_db, password_input):
             c.execute(
-                "SELECT id, email, is_admin FROM users WHERE email = ?",
+                "SELECT id, username, email, is_admin FROM users WHERE email = ?",
                 (email,),
             )
             result = c.fetchone()
-            user = User(result[0], result[1], bool(result[2]))
-            # TODO: Passwort neu hashen, falls die Parameter geändert wurden
-            # ph.check_needs_rehash(hash)
+            user = User(result[0], result[1], result[2], bool(result[3]))
+
+            if ph.check_needs_rehash(password_db):
+                print("Passwort für " + email + " wird neu gehasht")
+                new_hash = ph.hash(password_input)
+                c.execute(
+                    "UPDATE users SET password = ? WHERE email = ?",
+                    (new_hash, email),
+                )
+                conn.commit()
+
             conn.close()
             return user
     except VerifyMismatchError:
         conn.close()
-        raise Exception("E-Mail-Adresse oder Passwort ist falsch")
+        raise Exception("E-Mail-Adresse oder Passwort ist falsch!")
     except Exception as e:
         conn.close()
-        raise Exception(e) # Gebe den Fehler weiter an die aufrufende Funktion
+        raise Exception(e)  # Gebe den Fehler weiter an die aufrufende Funktion
 
 
 def get_user_by_id(user_id):
@@ -158,11 +177,19 @@ def get_user_by_id(user_id):
     :rtype: User
     """
     conn, c = open_database()
-    c.execute("SELECT id, email, is_admin FROM users WHERE id = ?", (user_id,))
+    c.execute(
+        "SELECT id, username, email, is_admin FROM users WHERE id = ?", (user_id,)
+    )
     result = c.fetchone()
-    user = User(result[0], result[1], bool(result[2]))
+    if result is None:
+        conn.close()
+        # TODO: Überprüfen
+        # raise Exception("Benutzer mit ID " + str(user_id) + " nicht gefunden")
+        return None
+    user = User(result[0], result[1], result[2], bool(result[3]))
     conn.close()
     return user
+
 
 if __name__ == "__main__":
     debug_mode = True  # Demo-Datenbank verwenden
@@ -173,6 +200,8 @@ if __name__ == "__main__":
 
     # Erstelle Demo-Daten
     fake = Faker()
+    fake_username = fake.user_name()
+    print("Erstelle Demo-Daten für Benutzername " + fake_username)
     fake_email = fake.email()
     print("Erstelle Demo-Daten für E-Mail-Adresse " + fake_email)
     fake_password_input = fake.password(
@@ -182,7 +211,7 @@ if __name__ == "__main__":
 
     # Teste den Registrierungsprozess
     try:
-        user = signup_user(fake_email, fake_password_input)
+        user = signup_user(fake_username, fake_email, fake_password_input)
         print("Registrierung erfolgreich")
     except Exception as e:
         print("Fehler: " + str(e))

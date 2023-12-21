@@ -1,0 +1,20 @@
+<!-- templates/profile.html -->
+
+{% extends "base.html" %} {% block content %}
+<h1 class="title">Willkommen, {{ current_user.username }}!</h1>
+<section class="section">
+	<p class="subtitle">Deine E-Mail-Adresse: {{ current_user.email }}</p>
+	<p class="subtitle">
+		{% if current_user.is_admin %} Du bist ein Admin! {% else %} Du bist kein
+		Admin! {% endif %}
+	</p>
+</section>
+<section class="section">
+	<p class="subtitle">Deine Playlists:</p>
+	<ul>
+		{% for playlist in current_user.playlists %}
+		<li>{{ playlist.name }}</li>
+		{% endfor %}
+	</ul>
+</section>
+{% endblock %}

@@ -18,7 +18,7 @@ from database import (
 
 from user import User
 
-app = Flask(__name__, template_folder="web", static_folder="web/static")
+app = Flask(__name__, template_folder="web")
 app.secret_key = "CvyZWUaNANYc8SbwsMTxAwoNMyRVM2"
 
 login_manager = LoginManager()
@@ -27,8 +27,6 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    if user_id is None:
-        return None
     return get_user_by_id_db(user_id)
 
 @login_manager.unauthorized_handler
@@ -41,8 +39,7 @@ def unauthorized():
 @app.route("/")
 @login_required_flask
 def index():
-    user = current_user # Lade Benutzerinformationen und gebe sie an die HTML-Datei weiter
-    return render_template("index.html", user=user, error=None)
+    return render_template("index.html", user=current_user, error=None)
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -84,7 +81,6 @@ def signup():
 def login():
     # Wenn error nicht auf None gesetzt wird, wird die Fehlermeldung angezeigt,
     # auch beim nächsten Aufruf der Seite
-    error = None
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")

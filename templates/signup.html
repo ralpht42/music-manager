@@ -1,0 +1,82 @@
+<!-- templates/signup.html -->
+
+{% extends "base.html" %} {% block content %}
+<div class="column is-4 is-offset-4">
+	<h3 class="title">Registrieren</h3>
+	<div class="box">
+		{% with messages = get_flashed_messages() %} {% if messages %}
+		<div class="notification is-danger">
+			<button class="delete"></button>
+			<p>{{ messages[0] }}</p>
+			{% if messages[0] == "E-Mail-Adresse wird bereits verwendet!" %}
+			<p>
+				Klicke <a href="{{ url_for('auth.login') }}">hier</a> um dich
+				einzuloggen.
+			</p>
+			{% endif %}
+		</div>
+		{% endif %} {% endwith %}
+
+		<form method="POST" action="/signup">
+			<p class="has-text-centered">
+				Du hast bereits ein Konto?<br />Klicke
+				<a class="has-text-link" href="{{url_for('auth.login')}}">hier</a>
+				um dich einzuloggen.
+			</p>
+			<div>
+				<label class="label has-text-left" for="username">Benutzername</label>
+				<div class="control">
+					<input
+						class="input"
+						placeholder="Heinrich"
+						autofocus=""
+						type="text"
+						name="username"
+						id="username"
+					/>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label has-text-left" for="email">E-Mail</label>
+				<div class="control">
+					<input
+						class="input"
+						placeholder="heinrich@gueterstein.de"
+						type="email"
+						name="email"
+						id="email"
+					/>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label has-text-left" for="password">Passwort</label>
+				<div class="control">
+					<input
+						class="input"
+						placeholder="********"
+						type="password"
+						name="password"
+						id="password"
+					/>
+				</div>
+			</div>
+			<button class="button is-info is-fullwidth">Registrieren</button>
+		</form>
+	</div>
+</div>
+
+<!--- Skript um die Fehlermeldung zu schließen --->
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		;(document.querySelectorAll('.notification .delete') || []).forEach(
+			($delete) => {
+				const $notification = $delete.parentNode
+
+				$delete.addEventListener('click', () => {
+					$notification.parentNode.removeChild($notification)
+				})
+			},
+		)
+	})
+</script>
+{% endblock %}
