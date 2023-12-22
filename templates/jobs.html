@@ -1,0 +1,99 @@
+<!-- templates/jobs.html -->
+{% extends "base.html" %} {% block content %}
+<h1 class="title">Jobs</h1>
+<div class="box">
+	<form
+		action="{{ url_for('music.job_upload_file') }}"
+		method="POST"
+		enctype="multipart/form-data"
+	>
+		<div id="excel_file_upload" class="file has-name is-primary">
+			<label class="file-label">
+				<input class="file-input" type="file" name="song_excel_file" />
+				<span class="file-cta">
+					<span class="file-icon">
+						<i class="fas fa-upload"></i>
+					</span>
+					<span class="file-label">Song Excel hochladen</span>
+				</span>
+				<span class="file-name">Keine Datei ausgewählt</span>
+			</label>
+		</div>
+		<button class="button is-info" type="submit">
+			<span class="icon is-small">
+				<i class="fas fa-upload"></i>
+			</span>
+			<span>Hochladen</span>
+		</button>
+	</form>
+	<table class="table is-fullwidth">
+		<thead>
+			<tr>
+				<th>Job</th>
+				<th>Erstellt am</th>
+				<th>Erstellt von</th>
+				<th>Letzte Änderung am</th>
+				<th>Letzte Änderung von</th>
+				<th>Typ</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for job in jobs %}
+			<tr>
+				<td>{{ job.name }}</td>
+				<td>{{ job.created_at }}</td>
+				<td>{{ job.created_by }}</td>
+				<td>{{ job.updated_at }}</td>
+				<td>{{ job.updated_by }}</td>
+				{% if job.manual == true %}
+				<td>
+					<span class="tag is-warning">Manuell</span>
+				</td>
+				{% else %}
+				<td>
+					<span class="tag is-success">Automatisch</span>
+				</td>
+				{% endif %}
+
+				<td>
+					<a
+						class="button is-small is-info"
+						href="{{ url_for('music.job_edit', job_id=job.id) }}"
+					>
+						<span class="icon is-small">
+							<i class="fas fa-edit"></i>
+						</span>
+					</a>
+					<a
+						class="button is-small is-danger"
+						href="{{ url_for('music.job_delete', job_id=job.id) }}"
+					>
+						<span class="icon is-small">
+							<i class="fas fa-trash"></i>
+						</span>
+					</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<a class="button is-info" href="{{ url_for('music.job_create') }}">
+		<span class="icon is-small">
+			<i class="fas fa-plus"></i>
+		</span>
+		<span>Job erstellen</span>
+	</a>
+</div>
+
+<!-- Datei Hochladen -->
+<script>
+  const fileInput = document.querySelector('#excel_file_upload input[type=file]');
+  fileInput.onchange = () => {
+    if (fileInput.files.length > 0) {
+      const fileName = document.querySelector('#excel_file_upload .file-name');
+      fileName.textContent = fileInput.files[0].name;
+    }
+  }
+</script>
+{% endblock %}

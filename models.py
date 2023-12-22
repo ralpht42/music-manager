@@ -7,5 +7,7 @@ class User(UserMixin):
         self.email = email
         self.is_admin = is_admin
 
+        self.tidal_account = 
+
  #   def __repr__(self):
  #       return f'<User {self.email}>'

@@ -1,7 +1,7 @@
 <!-- templates/index.html -->
 
 {% extends "base.html" %} {% block content %}
-<h1 class="title">
+<h1 class="title has-text-centered">
 	{% if current_user.is_authenticated %} Willkommen, {{ current_user.username }}! {% else
 	%} Willkommen Fremder! {% endif %}
 </h1>

@@ -36,6 +36,10 @@ def create_app():
     from main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    # blueprint for music management parts of app
+    from music import music as music_blueprint
+    app.register_blueprint(music_blueprint)
+
     return app
 
 if __name__ == '__main__':
