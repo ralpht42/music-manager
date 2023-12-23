@@ -1,19 +1,21 @@
 # init.py
+import os
 
 from flask import Flask, redirect, url_for
 from flask_login import LoginManager
 
 from database import init_database, get_user_by_id
 
+
 def create_app():
     app = Flask(__name__)
 
-    app.config['SECRET_KEY'] = 'CvyZWUaNANYc8SbwsMTxAwoNMyRVM2'
+    app.config["SECRET_KEY"] = "CvyZWUaNANYc8SbwsMTxAwoNMyRVM2"
 
     init_database()
 
     login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'
+    login_manager.login_view = "auth.login"
     login_manager.init_app(app)
 
     from models import User
@@ -30,18 +32,24 @@ def create_app():
 
     # blueprint for auth routes in our app
     from auth import auth as auth_blueprint
+
     app.register_blueprint(auth_blueprint)
 
     # blueprint for non-auth parts of app
     from main import main as main_blueprint
+
     app.register_blueprint(main_blueprint)
 
     # blueprint for music management parts of app
     from music import music as music_blueprint
+
     app.register_blueprint(music_blueprint)
 
     return app
 
-if __name__ == '__main__':
-    app = create_app()
-    app.run(host="0.0.0.0", port=3000, debug=True)
+
+app = create_app()
+
+if __name__ == "__main__":
+    if "GUNICORN_CMD_ARGS" not in os.environ:
+        app.run(host="0.0.0.0", port=3000, debug=True)
