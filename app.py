@@ -48,8 +48,7 @@ def create_app():
     return app
 
 
-app = create_app()
+app = create_app() # Wird auch von Gunicorn verwendet, um die App zu starten
 
 if __name__ == "__main__":
-    if "GUNICORN_CMD_ARGS" not in os.environ:
-        app.run(host="0.0.0.0", port=3000, debug=True)
+    app.run(host="0.0.0.0", port=3000, debug=True)

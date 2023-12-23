@@ -168,5 +168,4 @@ cython_debug/
 # Node
 node_modules/
 
-database.db
-demo-database.db
+data/

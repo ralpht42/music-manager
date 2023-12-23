@@ -29,10 +29,10 @@ def open_database():
     """
     if debug_mode:
         # print("Demo Datenbank wird geöffnet.")
-        conn = sqlite3.connect("demo-database.db")
+        conn = sqlite3.connect("./data/demo-database.db")
     else:
         # print("Datenbank wird geöffnet.")
-        conn = sqlite3.connect("database.db")
+        conn = sqlite3.connect("./data/database.db")
     c = conn.cursor()
     c.execute("PRAGMA foreign_keys = ON")  # Aktiviere die Fremdschlüsselunterstützung
 
