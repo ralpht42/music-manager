@@ -1,5 +1,12 @@
-name: All-In-One Action Workflow
-on: push
+name: SecureStack Analysis
+on:
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    branches:
+#      - main
+  workflow_dispatch: # Allow manual execution
 jobs:
   security:
     runs-on: ubuntu-latest
