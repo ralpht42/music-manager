@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:slim
+FROM python:3.11.1-slim-bookworm
 
 EXPOSE 8080
 
