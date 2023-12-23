@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  musicmanager:
+    image: musicmanager:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: musicmanager
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    environment:
+      # Zufällige Zeichenkette, die als Schlüssel für die Verschlüsselung verwendet wird
+      - SECRET_KEY=FgbPnKD7xi@Gq&MpVbf43y6Zb7Mibo 
+    ports:
+      - 8080:8080

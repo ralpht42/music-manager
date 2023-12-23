@@ -6,3 +6,4 @@ faker
 argon2-cffi
 pandas
 openpyxl
+gunicorn

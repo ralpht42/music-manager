@@ -10,7 +10,7 @@ from database import init_database, get_user_by_id
 def create_app():
     app = Flask(__name__)
 
-    app.config["SECRET_KEY"] = "CvyZWUaNANYc8SbwsMTxAwoNMyRVM2"
+    app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
 
     init_database()
 
@@ -50,5 +50,8 @@ def create_app():
 
 app = create_app() # Wird auch von Gunicorn verwendet, um die App zu starten
 
+# Für das lokale Testen der App (ohne Gunicorn, z.B. mit "python app.py")
+# Es wird empfohlen, eine virtuelle Umgebung zu verwenden (z.B. mit "python -m venv venv")
+# und die Abhängigkeiten mit "pip install -r requirements.txt" zu installieren
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3000, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)
