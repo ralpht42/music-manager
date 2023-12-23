@@ -1,9 +1,0 @@
-flask
-flask_login
-tidalapi
-musicbrainzngs
-faker
-argon2-cffi
-pandas
-openpyxl
-gunicorn
