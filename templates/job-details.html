@@ -72,7 +72,7 @@
 						{% set voice_percent = song.voice_percent|float if
 						song.voice_percent not in [None, ''] else 0 %}
 						<progress
-							class="progress {% if voice_percent < 0.2 %}is-danger {% elif voice_percent < 0.5 %}is-warning {% else %}is-success{% endif %}"
+							class="progress {% if voice_percent < 0.35 %}is-danger {% elif voice_percent < 0.65 %}is-warning {% else %}is-success{% endif %}"
 							value="{{ voice_percent * 100 }}"
 							max="100"
 						>
@@ -83,7 +83,7 @@
 						{% set rap_percent = song.rap_percent|float if song.rap_percent not
 						in [None, ''] else 0 %}
 						<progress
-							class="progress {% if rap_percent < 0.2 %}is-danger {% elif rap_percent < 0.5 %}is-warning {% else %}is-success{% endif %}"
+							class="progress {% if rap_percent < 0.35 %}is-danger {% elif rap_percent < 0.65 %}is-warning {% else %}is-success{% endif %}"
 							value="{{ rap_percent * 100 }}"
 							max="100"
 						>
@@ -94,7 +94,7 @@
 						{% set popularity = song.popularity_percent|float if
 						song.popularity_percent not in [None, ''] else 0 %}
 						<progress
-							class="progress {% if popularity < 0.2 %}is-danger {% elif popularity < 0.5 %}is-warning {% else %}is-success{% endif %}"
+							class="progress {% if popularity < 0.35 %}is-danger {% elif popularity < 0.65 %}is-warning {% else %}is-success{% endif %}"
 							value="{{ popularity * 100 }}"
 							max="100"
 						>
@@ -105,7 +105,7 @@
 						{% set weird_percent = song.weird_percent|float if
 						song.weird_percent not in [None, ''] else 0 %}
 						<progress
-							class="progress {% if weird_percent < 0.2 %}is-danger {% elif weird_percent < 0.5 %}is-warning {% else %}is-success{% endif %}"
+							class="progress {% if weird_percent < 0.35 %}is-danger {% elif weird_percent < 0.65 %}is-warning {% else %}is-success{% endif %}"
 							value="{{ weird_percent * 100 }}"
 							max="100"
 						>

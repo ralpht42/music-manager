@@ -17,50 +17,50 @@
 		<section class="hero is-dark is-fullheight">
 			<div class="hero-head">
 				<nav class="navbar" role="navigation" aria-label="main navigation">
-					<div class="navbar-brand">
-						<figure class="image level-item">
+					<div class="container">
+						<div class="navbar-brand">
+							<figure class="image level-item">
+								<a class="navbar-item" href="{{ url_for('main.index') }}">
+									<img
+										src="{{ url_for('static', filename='images/logo-transparent.svg') }}"
+									/>
+								</a>
+							</figure>
 							<a class="navbar-item" href="{{ url_for('main.index') }}">
-								<img
-									src="{{ url_for('static', filename='images/logo-transparent.svg') }}"
-								/>
+								Music Manager
 							</a>
-						</figure>
-						<a class="navbar-item" href="{{ url_for('main.index') }}">
-							Music Manager
-						</a>
-					</div>
+						</div>
 
-					<div id="navbarMenuHeroA" class="navbar-menu">
-						<div class="navbar-end">
-							{% if current_user.is_authenticated %}
-							<a href="{{ url_for('music.jobs') }}" class="navbar-item">
-								Jobs
-							</a>
-							{% endif %} {% if current_user.is_authenticated %}
-							<a href="{{ url_for('main.profile') }}" class="navbar-item">
-								Profil
-							</a>
-							{% endif %} {% if not current_user.is_authenticated %}
-							<a href="{{ url_for('auth.login') }}" class="navbar-item">
-								Anmelden
-							</a>
-							<a href="{{ url_for('auth.signup') }}" class="navbar-item">
-								Registrieren
-							</a>
-							{% endif %} {% if current_user.is_authenticated %}
-							<a href="{{ url_for('auth.logout') }}" class="navbar-item">
-								Abmelden
-							</a>
-							{% endif %}
+						<div class="navbar-menu">
+							<div class="navbar-end">
+								{% if current_user.is_authenticated %}
+								<a href="{{ url_for('music.jobs') }}" class="navbar-item">
+									Jobs
+								</a>
+								{% endif %} {% if current_user.is_authenticated %}
+								<a href="{{ url_for('main.profile') }}" class="navbar-item">
+									Profil
+								</a>
+								{% endif %} {% if not current_user.is_authenticated %}
+								<a href="{{ url_for('auth.login') }}" class="navbar-item">
+									Anmelden
+								</a>
+								<a href="{{ url_for('auth.signup') }}" class="navbar-item">
+									Registrieren
+								</a>
+								{% endif %} {% if current_user.is_authenticated %}
+								<a href="{{ url_for('auth.logout') }}" class="navbar-item">
+									Abmelden
+								</a>
+								{% endif %}
+							</div>
 						</div>
 					</div>
 				</nav>
 			</div>
 
 			<div class="hero-body">
-				<div class="container">
-					{% block content %} {% endblock %}
-				</div>
+				<div class="container">{% block content %} {% endblock %}</div>
 			</div>
 		</section>
 	</body>

@@ -8,6 +8,7 @@ from faker import Faker
 from datetime import datetime
 import pandas as pd
 import math
+import tidalapi
 
 from models import User
 
@@ -44,6 +45,7 @@ def init_database():
 
     :return: None
     """
+    # Benutzer Tabelle
     conn, c = open_database()
     c.execute(
         """CREATE TABLE IF NOT EXISTS users (
@@ -53,8 +55,23 @@ def init_database():
         password TEXT NOT NULL,
         is_active BOOLEAN NOT NULL DEFAULT 1,
         is_admin BOOLEAN NOT NULL DEFAULT 0,
+        tidal_account_id INTEGER,
+
+        FOREIGN KEY(tidal_account_id) REFERENCES tidal_credentials(id)
     )"""
     )
+
+    # TIDAL Account Tabelle
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS tidal_credentials (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        token_type TEXT NOT NULL,
+        access_token TEXT NOT NULL,
+        refresh_token TEXT NOT NULL,
+        expiry_time INTEGER NOT NULL
+    )"""
+    )
+
     # Über Excel Tabelle importierte Songs
     # Besonderheiten: Es gibt nicht für jeden Song alle Informationen, daher sind einige Felder NULL
     c.execute(
@@ -141,14 +158,12 @@ def signup_user(username, email, password_input):
             "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
             (username, email, password_argon2),
         )
+        user_id = c.lastrowid
         conn.commit()
-        c.execute(
-            "SELECT id, username, email, is_admin FROM users WHERE email = ?", (email,)
-        )
-        result = c.fetchone()
-        user = User(result[0], result[1], result[2], bool(result[3]))
         conn.close()
-        return user
+
+        # Lade den Benutzer aus der Datenbank und gebe ihn zurück
+        return get_user_by_id(user_id)
 
 
 def login_user(email, password_input):
@@ -190,12 +205,12 @@ def login_user(email, password_input):
     try:
         if ph.verify(password_db, password_input):
             c.execute(
-                "SELECT id, username, email, is_admin FROM users WHERE email = ?",
+                "SELECT id FROM users WHERE email = ?",
                 (email,),
             )
-            result = c.fetchone()
-            user = User(result[0], result[1], result[2], bool(result[3]))
-
+            user_id = c.fetchone()[0]
+            
+            # Überprüfe, ob das Passwort neu gehasht werden muss
             if ph.check_needs_rehash(password_db):
                 print("Passwort für " + email + " wird neu gehasht")
                 new_hash = ph.hash(password_input)
@@ -206,7 +221,7 @@ def login_user(email, password_input):
                 conn.commit()
 
             conn.close()
-            return user
+            return get_user_by_id(user_id)
     except VerifyMismatchError:
         conn.close()
         raise Exception("E-Mail-Adresse oder Passwort ist falsch!")
@@ -225,15 +240,47 @@ def get_user_by_id(user_id):
     """
     conn, c = open_database()
     c.execute(
-        "SELECT id, username, email, is_admin FROM users WHERE id = ?", (user_id,)
+        "SELECT id, username, email, is_active, is_admin, tidal_account_id FROM users WHERE id = ?",
+        (user_id,),
     )
-    result = c.fetchone()
-    if result is None:
+    user_result = c.fetchone()
+    if user_result is None:
         conn.close()
         # TODO: Überprüfen
         # raise Exception("Benutzer mit ID " + str(user_id) + " nicht gefunden")
         return None
-    user = User(result[0], result[1], result[2], bool(result[3]))
+
+    # Tidal Account laden, falls vorhanden
+    c.execute(
+        "SELECT id, token_type, access_token, refresh_token, expiry_time FROM tidal_credentials WHERE id = ?",
+        (user_result[5],),
+    )
+    tidal_account_result = c.fetchone()
+
+    # Tidal Session Objekt erstellen
+    tidal_session = None
+    if tidal_account_result is not None:
+        if tidal_account_result[4] < datetime.now().timestamp():
+            # Token ist abgelaufen, hole neuen Token
+            raise Exception("TIDAL-Token ist abgelaufen, erneuter Login erforderlich!")
+        else:
+            # Token ist noch gültig
+            tidal_session = tidalapi.Session()
+            tidal_session.load_oauth_session(
+                tidal_account_result[1],
+                tidal_account_result[2],
+                tidal_account_result[3],
+                tidal_account_result[4],
+            )
+
+    user = User(
+        user_result[0],
+        user_result[1],
+        user_result[2],
+        bool(user_result[3]),
+        bool(user_result[4]),
+        tidal_session,
+    )
     conn.close()
     return user
 
@@ -510,16 +557,35 @@ def edit_job_by_id(job_id, settings):
     pass
 
 
-def add_tidal_account(user_id, token):
+def add_tidal_token(user_id, tidal_token):
     """
-    Fügt einen TIDAL-Account zu einem Benutzer hinzu
+    Fügt einen TIDAL-Token zu einem Benutzer hinzu
 
     :param user_id: ID des Benutzers
-    :param token: TIDAL-Token Objekt
+    :param tidal_token: TIDAL-Token (access_token, refresh_token, expiry_time, token_type)
     :return: None
     """
     conn, c = open_database()
 
+    # Speichere den TIDAL-Account in der Datenbank
+    c.execute(
+        "INSERT INTO tidal_credentials (token_type, access_token, refresh_token, expiry_time) VALUES (?, ?, ?, ?)",
+        (
+            tidal_token["token_type"],
+            tidal_token["access_token"],
+            tidal_token["refresh_token"],
+            tidal_token["expiry_time"].timestamp(),
+        ),
+    )
+    tidal_account_id = c.lastrowid
+
+    # Verknüpfe den TIDAL-Account mit dem Benutzer
+    c.execute(
+        "UPDATE users SET tidal_account_id = ? WHERE id = ?",
+        (tidal_account_id, user_id),
+    )
+    conn.commit()
+    conn.close()
 
 
 if __name__ == "__main__":
