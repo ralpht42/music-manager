@@ -9,12 +9,15 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
 
-# Install pip requirements
-COPY requirements.txt .
-RUN python -m pip install -r requirements.txt
-
-# Upgrade pip to avoid error message in logs
+# Install poetry
 RUN pip install --upgrade pip
+RUN pip install poetry
+
+# Copy only requirements to cache them in docker layer
+WORKDIR /poetry
+COPY pyproject.toml poetry.lock* /poetry/
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-interaction --no-ansi
 
 WORKDIR /app
 COPY . /app

@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "music-manager"
+version = "0.1.0"
+description = ""
+authors = ["Ralph T. <24992261+ralpht42@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+Flask = "^3.0.0"
+Flask-Login = "^0.6.3"
+tidalapi = "^0.7.3"
+musicbrainzngs = "^0.7.1"
+argon2-cffi = "^23.1.0"
+pandas = "^2.1.4"
+openpyxl = "^3.1.2"
+gunicorn = "^21.2.0"
+Faker = "^21.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
