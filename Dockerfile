@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM ubuntu:jammy-20231211.1
+FROM python:3.12.1-alpine3.18
 
 EXPOSE 8080
 
