@@ -4,7 +4,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from flask import request, redirect, url_for, flash
 
-from database import get_jobs_by_user_id, delete_job_by_id, get_job_by_id, import_excel_songs_manually
+from database import get_jobs_by_user_id, delete_job_by_id, get_job_by_id, import_excel_songs_manually, get_playlist_by_id
 
 music = Blueprint("music", __name__)
 
@@ -52,6 +52,36 @@ def job_edit(job_id):
 def job_delete(job_id):
     delete_job_by_id(job_id)
     return redirect(url_for("music.jobs"))
+
+
+
+
+@music.route("/playlists")
+@login_required
+def playlists():
+    return render_template("playlists.html")
+
+
+@music.route("/playlist/create", methods=["POST"])
+@login_required
+def playlist_create(playlist_id):
+    # TODO: Job erstellen implementieren
+    return render_template("playlist.html", playlist_id=playlist_id)
+
+@music.route("/playlist/<int:playlist_id>", methods=["GET"])
+@login_required
+def playlist_details(playlist_id):
+    return render_template("playlist.html", playlist=get_playlist_by_id(playlist_id))
+
+@music.route("/playlist/<int:playlist_id>", methods=["PATCH"])
+@login_required
+def playlist_edit(playlist_id):
+    return render_template("playlist.html", playlist_id=playlist_id)
+
+@music.route("/playlist/<int:playlist_id>", methods=["DELETE"])
+@login_required
+def playlist_delete(playlist_id):
+    return redirect(url_for("music.playlists"))
 
 
 

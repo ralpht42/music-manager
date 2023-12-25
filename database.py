@@ -557,6 +557,16 @@ def edit_job_by_id(job_id, settings):
     pass
 
 
+def get_playlist_by_id(playlist_id):
+    """
+    Gibt eine Playlist anhand ihrer ID zurück
+
+    :param playlist_id: ID der Playlist
+    :return: Playlist
+    :rtype: dict
+    """
+    pass
+
 def add_tidal_token(user_id, tidal_token):
     """
     Fügt einen TIDAL-Token zu einem Benutzer hinzu
