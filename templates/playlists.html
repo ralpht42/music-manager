@@ -1,0 +1,63 @@
+<!-- templates/jobs.html -->
+{% extends "base.html" %} {% block content %}
+<h1 class="title">Playlists</h1>
+<div class="box">
+	<table class="table is-fullwidth">
+		<thead>
+			<tr>
+				<th>Playlist</th>
+				<th>Erstellt am</th>
+				<th>Erstellt von</th>
+				<th>Letzte Änderung am</th>
+				<th>Letzte Änderung von</th>
+				<th>Typ</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for playlist in playlists %}
+			<tr>
+				<td>{{ playlist.name }}</td>
+				<td>{{ playlist.created_at }}</td>
+				<td>{{ playlist.created_by }}</td>
+				<td>{{ playlist.updated_at }}</td>
+				<td>{{ playlist.updated_by }}</td>
+				{% if playlist.manual == true %}
+				<td>
+					<span class="tag is-warning">Manuell</span>
+				</td>
+				{% else %}
+				<td>
+					<span class="tag is-success">Automatisch</span>
+				</td>
+				{% endif %}
+				<td>
+					<a
+						class="button is-small is-info"
+						href="{{ url_for('music.playlist_edit', playlist_id=playlist.id) }}"
+					>
+						<span class="icon is-small">
+							<i class="fas fa-edit"></i>
+						</span>
+					</a>
+					<a
+						class="button is-small is-danger"
+						href="{{ url_for('music.playlist_delete', playlist_id=playlist.id) }}"
+					>
+						<span class="icon is-small">
+							<i class="fas fa-trash"></i>
+						</span>
+					</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<a class="button is-info" href="{{ url_for('music.playlist_create') }}">
+		<span class="icon is-small">
+			<i class="fas fa-plus"></i>
+		</span>
+		<span>Neue Playlist</span>
+	</a>
+</div>
+{% endblock %}
