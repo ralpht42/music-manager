@@ -1,10 +1,25 @@
 {
     "configurations": [
         {
-            "name": "Docker: Python - Flask",
+            "name": "Docker: Python - Debug",
             "type": "docker",
             "request": "launch",
             "preLaunchTask": "docker-run: debug",
+            "python": {
+                "pathMappings": [
+                    {
+                        "localRoot": "${workspaceFolder}",
+                        "remoteRoot": "/app"
+                    }
+                ],
+                "projectType": "flask"
+            }
+        },
+        {
+            "name": "Docker: Python - Production",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run: production",
             "python": {
                 "pathMappings": [
                     {

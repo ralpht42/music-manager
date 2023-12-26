@@ -2,11 +2,11 @@ version: '3.4'
 
 services:
   musicmanager:
-    image: musicmanager:latest
+    image: music-manager:latest
     build:
       context: .
       dockerfile: ./Dockerfile
-    container_name: musicmanager
+    container_name: music-manager
     restart: unless-stopped
     volumes:
       - ./data:/app/data

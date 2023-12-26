@@ -10,12 +10,19 @@
         "dockerfile": "${workspaceFolder}/Dockerfile",
         "context": "${workspaceFolder}",
         "pull": true
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
       }
     },
     {
       "type": "docker-run",
       "label": "docker-run: debug",
-      "dependsOn": ["docker-build"],
+      "dependsOn": [
+        "docker-build"
+      ],
       "dockerRun": {
         "env": {
           "FLASK_APP": "app.py",
@@ -29,6 +36,30 @@
           "--no-reload",
           "--host",
           "0.0.0.0",
+          "--port",
+          "8080"
+        ],
+        "module": "flask"
+      }
+    },
+    {
+      "type": "docker-run",
+      "label": "docker-run: production",
+      "dependsOn": [
+        "docker-build"
+      ],
+      "dockerRun": {
+        "env": {
+          "FLASK_APP": "app.py",
+          "SECRET_KEY": "98pv!Y!ipE@zHa*cim7CW43yguedVe"
+        }
+      },
+      "python": {
+        "args": [
+          "run",
+          "--no-debugger",
+          "--no-reload",
+          "--host",
           "--port",
           "8080"
         ],

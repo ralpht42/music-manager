@@ -2,11 +2,11 @@ version: '3.4'
 
 services:
   musicmanager:
-    image: musicmanager:latest
+    image: music-manager:latest
     build:
       context: .
       dockerfile: ./Dockerfile
-    container_name: musicmanager-debug
+    container_name: music-manager-debug
     command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 -m flask run --no-debugger --no-reload --host 0.0.0.0 --port 8080"]
     ports:
       - 8080:8080
