@@ -38,7 +38,7 @@ def job_create(job_id):
 @music.route("/job/<int:job_id>", methods=["GET"])
 @login_required
 def job_details(job_id):
-    return render_template("job-details.html", job=get_job_by_id(job_id))
+    return render_template("job.html", job=get_job_by_id(job_id))
 
 @music.route("/job/<int:job_id>", methods=["PATCH"])
 @login_required

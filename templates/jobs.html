@@ -10,14 +10,13 @@
 		<div id="excel_file_upload" class="file has-name is-primary">
 			<label class="file-label">
 				<input class="file-input" type="file" name="song_excel_file" />
-				<span class="file-cta">
+				<span class="file-cta pl-3">
 					<span class="file-icon">
 						<i class="material-symbols-outlined">attach_file</i>
 					</span>
 					<span class="file-label">Song Datei auswählen</span>
 				</span>
 				<span class="file-name">Keine Datei ausgewählt</span>
-			</label>
 		</div>
 		<button class="button is-info" type="submit">
 			<span class="icon is-small">
@@ -66,7 +65,7 @@
 						</span>
 					</a>
 					<a
-						class="button is-small is-warning"
+						class="button is-small is-warning load-on-click"
 						href="{{ url_for('music.job_edit', job_id=job.id) }}"
 					>
 						<span class="icon is-small">
@@ -94,14 +93,24 @@
 	</a>
 </div>
 
-<!-- Datei Hochladen -->
 <script>
-  const fileInput = document.querySelector('#excel_file_upload input[type=file]');
-  fileInput.onchange = () => {
-    if (fileInput.files.length > 0) {
-      const fileName = document.querySelector('#excel_file_upload .file-name');
-      fileName.textContent = fileInput.files[0].name;
-    }
-  }
+	// Dateiname anzeigen, wenn Datei ausgewählt wurde
+	const fileInput = document.querySelector(
+		'#excel_file_upload input[type=file]',
+	)
+	fileInput.onchange = () => {
+		if (fileInput.files.length > 0) {
+			const fileName = document.querySelector('#excel_file_upload .file-name')
+			fileName.textContent = fileInput.files[0].name
+		}
+	}
+
+	// Lade Animation bei Klick auf Button
+	const loadOnClick = document.querySelectorAll('.load-on-click')
+	loadOnClick.forEach((element) => {
+		element.addEventListener('click', () => {
+			element.classList.add('is-loading')
+		})
+	})
 </script>
 {% endblock %}
