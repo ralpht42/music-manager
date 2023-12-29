@@ -47,7 +47,7 @@ def job_edit(job_id):
     return render_template("job.html", job_id=job_id)
 
 
-@music.route("/job/<int:job_id>", methods=["DELETE"])
+@music.route("/job/<int:job_id>", methods=["DELETE"]) # BUG: Wird gleich weitergeleitet wie job_details()
 @login_required
 def job_delete(job_id):
     delete_job_by_id(job_id)
