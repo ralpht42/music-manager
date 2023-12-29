@@ -92,7 +92,6 @@ def init_database():
         rap_percent INTEGER,
         popularity_percent INTEGER,
         weird_percent INTEGER,
-        related_song TEXT,
         is_legend BOOLEAN,
         folder TEXT,
         series TEXT,
@@ -113,6 +112,205 @@ def init_database():
 
         FOREIGN KEY(created_by) REFERENCES users(id),
         FOREIGN KEY(updated_by) REFERENCES users(id)
+    )"""
+    )
+
+    # Playlist Tabelle
+    # TODO: Playlist Cover erstellen, bearbeiten und löschen
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS playlists (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        created_by INTEGER NOT NULL,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        updated_by INTEGER NOT NULL,
+
+        FOREIGN KEY(created_by) REFERENCES users(id),
+        FOREIGN KEY(updated_by) REFERENCES users(id)
+    )"""
+    )
+
+    # Playlist-Song Zuordnung
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS playlist_song (
+        playlist_id INTEGER NOT NULL,
+        song_id INTEGER NOT NULL
+
+        FOREIGN KEY(playlist_id) REFERENCES playlists(id),
+        FOREIGN KEY(song_id) REFERENCES songs(id)
+    )"""
+    )
+
+    # Song Tabelle
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS songs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        release_date TEXT,
+        duration INTEGER,
+        explicit BOOLEAN,
+        
+        isrc TEXT,
+        popularity INTEGER,
+        tidal_id INTEGER,
+        tidal_cover INTEGER,
+    )"""
+    )
+
+    # Artist Tabelle
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS artists (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        real_name TEXT,
+        tidal_id INTEGER,
+        tidal_cover INTEGER,
+    )"""
+    )
+
+    # Rolle Tabelle
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS artist_roles (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+    )"""
+    )
+
+    # Song-Artist-Rolle Zuordnung
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS song_artist (
+        song_id INTEGER NOT NULL,
+        artist_id INTEGER NOT NULL,
+        role_id INTEGER NOT NULL,
+
+        FOREIGN KEY(song_id) REFERENCES songs(id),
+        FOREIGN KEY(artist_id) REFERENCES artists(id)
+        FOREIGN KEY(role_id) REFERENCES artist_roles(id)
+    )"""
+    )
+
+    # Gesungene Sprache Tabelle
+    # Die Sprache wird als ISO 639-1 Code gespeichert, z. B. "de" für Deutsch oder "en" für Englisch
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS languages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+    )"""
+    )
+
+    # Gesungene Sprache zu Song Zuordnung
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS language_song (
+        language_id INTEGER NOT NULL,
+        song_id INTEGER NOT NULL,
+
+        FOREIGN KEY(language_id) REFERENCES languages(id),
+        FOREIGN KEY(song_id) REFERENCES songs(id)
+    )"""
+    )
+
+    # Genre Tabelle
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS genres (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+    )"""
+    )
+
+    # Genre-Song Zuordnung
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS genre_song (
+        genre_id INTEGER NOT NULL,
+        song_id INTEGER NOT NULL,
+
+        FOREIGN KEY(genre_id) REFERENCES genres(id),
+        FOREIGN KEY(song_id) REFERENCES songs(id)
+    )"""
+    )
+
+    # Stimmung Tabelle
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS feels (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+    )"""
+    )
+
+    # Stimmung-Song Zuordnung
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS feel_song (
+        feel_id INTEGER NOT NULL,
+        song_id INTEGER NOT NULL,
+
+        FOREIGN KEY(feel_id) REFERENCES feels(id),
+        FOREIGN KEY(song_id) REFERENCES songs(id)
+    )"""
+    )
+
+    # Typ Tabelle
+    # Ein Song kann nur einen Typ haben, z. B. "Original", "Cover", "Remix" usw.
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS types (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+    )"""
+    )
+
+    # Geschwindigkeit Tabelle
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS speeds (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+    )"""
+    )
+
+    # Geschwindigkeit-Song Zuordnung
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS speed_song (
+        speed_id INTEGER NOT NULL,
+        song_id INTEGER NOT NULL,
+
+        FOREIGN KEY(speed_id) REFERENCES speeds(id),
+        FOREIGN KEY(song_id) REFERENCES songs(id)
+    )"""
+    )
+
+    # Ordner Tabelle
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS folders (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+    )"""
+    )
+
+    # Ordner-Song Zuordnung
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS folder_song (
+        folder_id INTEGER NOT NULL,
+        song_id INTEGER NOT NULL,
+
+        FOREIGN KEY(folder_id) REFERENCES folders(id),
+        FOREIGN KEY(song_id) REFERENCES songs(id)
+    )"""
+    )
+
+    # Serie Tabelle
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS series (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+    )"""
+    )
+
+    # Serie-Song Zuordnung
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS series_song (
+        series_id INTEGER NOT NULL,
+        song_id INTEGER NOT NULL,
+
+        FOREIGN KEY(series_id) REFERENCES series(id),
+        FOREIGN KEY(song_id) REFERENCES songs(id)
     )"""
     )
 
@@ -325,7 +523,11 @@ def import_excel_songs_manually(excel_file, user_id):
             year = int(row["Year"])
         language = row["Language"]
         if type(row["Length"]) == time:
-            length_in_seconds = row["Length"].hour * 3600 + row["Length"].minute * 60 + row["Length"].second
+            length_in_seconds = (
+                row["Length"].hour * 3600
+                + row["Length"].minute * 60
+                + row["Length"].second
+            )
         else:
             length_in_seconds = None
         genre = row["Genre"]
@@ -351,7 +553,6 @@ def import_excel_songs_manually(excel_file, user_id):
             weird_percent = None
         else:
             weird_percent = int(row["Weird %"]) / 100
-        related_song = row["related Songs"]
         is_legend = True if row["Legend"] == 1 else False
         folder = row["Folder"]
         series = row["Series"]
@@ -361,8 +562,8 @@ def import_excel_songs_manually(excel_file, user_id):
             """INSERT INTO excel_songs (
             job_id, title, artists, year, language, length, genre, feels, 
             type, speed, voice_percent, rap_percent, popularity_percent, 
-            weird_percent, related_song, is_legend, folder, series
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            weird_percent, is_legend, folder, series
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (
                 job_id,
                 title,
@@ -378,7 +579,6 @@ def import_excel_songs_manually(excel_file, user_id):
                 rap_percent,
                 popularity_percent,
                 weird_percent,
-                related_song,
                 is_legend,
                 folder,
                 series,
@@ -449,7 +649,7 @@ def get_job_by_id(job_id):
         c.execute(
             """SELECT id, title, artists, year, language, length, genre,
             feels, type, speed, voice_percent, rap_percent, popularity_percent,
-            weird_percent, related_song, is_legend, folder, series FROM excel_songs 
+            weird_percent, is_legend, folder, series FROM excel_songs 
             WHERE job_id = ?""",
             (job_id,),
         )
@@ -475,10 +675,9 @@ def get_job_by_id(job_id):
                     "rap_percent": row[11],
                     "popularity_percent": row[12],
                     "weird_percent": row[13],
-                    "related_song": row[14],
-                    "is_legend": row[15],
-                    "folder": row[16],
-                    "series": row[17],
+                    "is_legend": row[14],
+                    "folder": row[15],
+                    "series": row[16],
                 }
             )
 
@@ -554,6 +753,19 @@ def edit_job_by_id(job_id, settings):
     """
     # TODO: Implementieren
     pass
+
+
+def create_playlist_from_job(job_id):
+    """
+    Überträgt die Songs eines Jobs in eine neue Playlist.
+    Dabei werden die Songs in TIDAL gesucht und die entsprechenden IDs gespeichert.
+    Zugehörige Songs werden ebenfalls gesucht und die IDs gespeichert.
+    Anschließend wird die Playlist erstellt und die Songs hinzugefügt.
+
+    :param job_id: ID des Jobs
+    :return: playlist_id
+    :rtype: int
+    """
 
 
 def get_playlist_by_id(playlist_id):
