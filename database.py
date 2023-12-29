@@ -135,7 +135,7 @@ def init_database():
     c.execute(
         """CREATE TABLE IF NOT EXISTS playlist_song (
         playlist_id INTEGER NOT NULL,
-        song_id INTEGER NOT NULL
+        song_id INTEGER NOT NULL,
 
         FOREIGN KEY(playlist_id) REFERENCES playlists(id),
         FOREIGN KEY(song_id) REFERENCES songs(id)
@@ -154,7 +154,7 @@ def init_database():
         isrc TEXT,
         popularity INTEGER,
         tidal_id INTEGER,
-        tidal_cover INTEGER,
+        tidal_cover INTEGER
     )"""
     )
 
@@ -166,6 +166,8 @@ def init_database():
         real_name TEXT,
         tidal_id INTEGER,
         tidal_cover INTEGER,
+
+        FOREIGN KEY(tidal_id) REFERENCES tidal_artists(id)
     )"""
     )
 
@@ -173,7 +175,7 @@ def init_database():
     c.execute(
         """CREATE TABLE IF NOT EXISTS artist_roles (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        name TEXT NOT NULL
     )"""
     )
 
@@ -185,7 +187,7 @@ def init_database():
         role_id INTEGER NOT NULL,
 
         FOREIGN KEY(song_id) REFERENCES songs(id),
-        FOREIGN KEY(artist_id) REFERENCES artists(id)
+        FOREIGN KEY(artist_id) REFERENCES artists(id),
         FOREIGN KEY(role_id) REFERENCES artist_roles(id)
     )"""
     )
@@ -195,7 +197,7 @@ def init_database():
     c.execute(
         """CREATE TABLE IF NOT EXISTS languages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        name TEXT NOT NULL
     )"""
     )
 
@@ -233,7 +235,7 @@ def init_database():
     c.execute(
         """CREATE TABLE IF NOT EXISTS feels (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        name TEXT NOT NULL
     )"""
     )
 
@@ -253,7 +255,7 @@ def init_database():
     c.execute(
         """CREATE TABLE IF NOT EXISTS types (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        name TEXT NOT NULL
     )"""
     )
 
@@ -261,7 +263,7 @@ def init_database():
     c.execute(
         """CREATE TABLE IF NOT EXISTS speeds (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        name TEXT NOT NULL
     )"""
     )
 
@@ -280,7 +282,7 @@ def init_database():
     c.execute(
         """CREATE TABLE IF NOT EXISTS folders (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        name TEXT NOT NULL
     )"""
     )
 
@@ -299,7 +301,7 @@ def init_database():
     c.execute(
         """CREATE TABLE IF NOT EXISTS series (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        name TEXT NOT NULL
     )"""
     )
 
