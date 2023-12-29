@@ -8,10 +8,10 @@
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css"
 		/>
-		<script
-			src="https://kit.fontawesome.com/37dab0fa17.js"
-			crossorigin="anonymous"
-		></script>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
+		/>
 	</head>
 	<body>
 		<section class="hero is-dark is-fullheight">
@@ -37,13 +37,11 @@
 								<a href="{{ url_for('music.jobs') }}" class="navbar-item">
 									Jobs
 								</a>
-								{% endif %} 
-								{% if current_user.is_authenticated %}
+								{% endif %} {% if current_user.is_authenticated %}
 								<a href="{{ url_for('music.playlists') }}" class="navbar-item">
 									Playlists
 								</a>
-								{% endif %} 
-								{% if current_user.is_authenticated %}
+								{% endif %} {% if current_user.is_authenticated %}
 								<a href="{{ url_for('main.profile') }}" class="navbar-item">
 									Profil
 								</a>

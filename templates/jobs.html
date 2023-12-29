@@ -12,16 +12,16 @@
 				<input class="file-input" type="file" name="song_excel_file" />
 				<span class="file-cta">
 					<span class="file-icon">
-						<i class="fas fa-upload"></i>
+						<i class="material-symbols-outlined">attach_file</i>
 					</span>
-					<span class="file-label">Song Excel hochladen</span>
+					<span class="file-label">Song Datei auswählen</span>
 				</span>
 				<span class="file-name">Keine Datei ausgewählt</span>
 			</label>
 		</div>
 		<button class="button is-info" type="submit">
 			<span class="icon is-small">
-				<i class="fas fa-upload"></i>
+				<i class="material-symbols-outlined">upload_file</i>
 			</span>
 			<span>Hochladen</span>
 		</button>
@@ -59,10 +59,18 @@
 				<td>
 					<a
 						class="button is-small is-info"
+						href="{{ url_for('music.playlist_create', job_id=job.id) }}"
+					>
+						<span class="icon is-small">
+							<i class="material-symbols-outlined">playlist_add</i>
+						</span>
+					</a>
+					<a
+						class="button is-small is-warning"
 						href="{{ url_for('music.job_edit', job_id=job.id) }}"
 					>
 						<span class="icon is-small">
-							<i class="fas fa-edit"></i>
+							<i class="material-symbols-outlined">edit</i>
 						</span>
 					</a>
 					<a
@@ -70,7 +78,7 @@
 						href="{{ url_for('music.job_delete', job_id=job.id) }}"
 					>
 						<span class="icon is-small">
-							<i class="fas fa-trash"></i>
+							<i class="material-symbols-outlined">delete</i>
 						</span>
 					</a>
 				</td>
@@ -80,7 +88,7 @@
 	</table>
 	<a class="button is-info" href="{{ url_for('music.job_create') }}">
 		<span class="icon is-small">
-			<i class="fas fa-plus"></i>
+			<i class="material-symbols-outlined">add</i>
 		</span>
 		<span>Job erstellen</span>
 	</a>

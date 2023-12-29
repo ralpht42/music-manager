@@ -37,7 +37,7 @@
 						href="{{ url_for('music.playlist_edit', playlist_id=playlist.id) }}"
 					>
 						<span class="icon is-small">
-							<i class="fas fa-edit"></i>
+							<i class="material-symbols-outlined">edit</i>
 						</span>
 					</a>
 					<a
@@ -45,7 +45,7 @@
 						href="{{ url_for('music.playlist_delete', playlist_id=playlist.id) }}"
 					>
 						<span class="icon is-small">
-							<i class="fas fa-trash"></i>
+							<i class="material-symbols-outlined">delete</i>
 						</span>
 					</a>
 				</td>
@@ -55,7 +55,7 @@
 	</table>
 	<a class="button is-info" href="{{ url_for('music.playlist_create') }}">
 		<span class="icon is-small">
-			<i class="fas fa-plus"></i>
+			<i class="material-symbols-outlined">add</i>
 		</span>
 		<span>Neue Playlist</span>
 	</a>
