@@ -5,7 +5,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from argon2.low_level import Type
 from faker import Faker
-from datetime import datetime
+from datetime import time, datetime
 import pandas as pd
 import math
 import tidalapi
@@ -92,10 +92,9 @@ def init_database():
         rap_percent INTEGER,
         popularity_percent INTEGER,
         weird_percent INTEGER,
-        edit BOOLEAN,
         related_song TEXT,
-        legends BOOLEAN,
-        ordner TEXT,
+        is_legend BOOLEAN,
+        folder TEXT,
         series TEXT,
         FOREIGN KEY(job_id) REFERENCES jobs(id)
     )"""
@@ -209,7 +208,7 @@ def login_user(email, password_input):
                 (email,),
             )
             user_id = c.fetchone()[0]
-            
+
             # Überprüfe, ob das Passwort neu gehasht werden muss
             if ph.check_needs_rehash(password_db):
                 print("Passwort für " + email + " wird neu gehasht")
@@ -325,50 +324,45 @@ def import_excel_songs_manually(excel_file, user_id):
         else:
             year = int(row["Year"])
         language = row["Language"]
-        length = row["Length"]
-        if isinstance(length, datetime):
-            # Konvertiere die Länge in Sekunden
-            length_in_seconds = length.hour * 60 + length.minute
-        elif isinstance(length, (int, float)) and math.isnan(length):
-            length_in_seconds = None
+        if type(row["Length"]) == time:
+            length_in_seconds = row["Length"].hour * 3600 + row["Length"].minute * 60 + row["Length"].second
         else:
             length_in_seconds = None
         genre = row["Genre"]
         feels = row["Feels"]
         type_ = row["Type"]
-        speed = row["Tempo"]
+        speed = row["Speed"]
         if math.isnan(row["Voice %"]):
             voice_percent = None
         else:
             voice_percent = int(row["Voice %"]) / 100
 
-        if math.isnan(row["Rap % von Voice"]):
+        if math.isnan(row["Rap % from Voice"]):
             rap_percent = None
         else:
-            rap_percent = int(row["Rap % von Voice"]) / 100
+            rap_percent = int(row["Rap % from Voice"]) / 100
 
-        if math.isnan(row["Popularity"]):
+        if math.isnan(row["Popularity %"]):
             popularity_percent = None
         else:
-            popularity_percent = int(row["Popularity"]) / 100
+            popularity_percent = int(row["Popularity %"]) / 100
 
         if math.isnan(row["Weird %"]):
             weird_percent = None
         else:
             weird_percent = int(row["Weird %"]) / 100
-        edit = True if row["Bearbeiten"] == "yes" else False
-        related_song = row["related Song"]
-        legends = True if row["Legends"] == "1" else False
-        ordner = row["Ordner"]
+        related_song = row["related Songs"]
+        is_legend = True if row["Legend"] == 1 else False
+        folder = row["Folder"]
         series = row["Series"]
 
         # Speichere jeden Song in der Datenbank
         c.execute(
             """INSERT INTO excel_songs (
-            job_id, title, artists, year, language, length, genre, feels, type, speed,
-            voice_percent, rap_percent, popularity_percent, weird_percent, 
-            edit, related_song, legends, ordner, series
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            job_id, title, artists, year, language, length, genre, feels, 
+            type, speed, voice_percent, rap_percent, popularity_percent, 
+            weird_percent, related_song, is_legend, folder, series
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (
                 job_id,
                 title,
@@ -384,10 +378,9 @@ def import_excel_songs_manually(excel_file, user_id):
                 rap_percent,
                 popularity_percent,
                 weird_percent,
-                edit,
                 related_song,
-                legends,
-                ordner,
+                is_legend,
+                folder,
                 series,
             ),
         )
@@ -454,7 +447,10 @@ def get_job_by_id(job_id):
     if manual:
         # Lade die Songs aus der Tabelle excel_songs
         c.execute(
-            "SELECT id, title, artists, year, language, length, genre, feels, type, speed, voice_percent, rap_percent, popularity_percent, weird_percent, edit, related_song, legends, ordner, series FROM excel_songs WHERE job_id = ?",
+            """SELECT id, title, artists, year, language, length, genre,
+            feels, type, speed, voice_percent, rap_percent, popularity_percent,
+            weird_percent, related_song, is_legend, folder, series FROM excel_songs 
+            WHERE job_id = ?""",
             (job_id,),
         )
         result = c.fetchall()
@@ -479,17 +475,20 @@ def get_job_by_id(job_id):
                     "rap_percent": row[11],
                     "popularity_percent": row[12],
                     "weird_percent": row[13],
-                    "edit": row[14],
-                    "related_song": row[15],
-                    "legends": row[16],
-                    "ordner": row[17],
-                    "series": row[18],
+                    "related_song": row[14],
+                    "is_legend": row[15],
+                    "folder": row[16],
+                    "series": row[17],
                 }
             )
 
         # Lade die Informationen zum Job
         c.execute(
-            "SELECT jobs.id, jobs.name, jobs.created_at, created_by.username, jobs.updated_at, updated_by.username, manual FROM jobs JOIN users AS created_by ON jobs.created_by = created_by.id JOIN users AS updated_by ON jobs.updated_by = updated_by.id WHERE jobs.id = ?",
+            """SELECT jobs.id, jobs.name, jobs.created_at, created_by.username, 
+            jobs.updated_at, updated_by.username, manual FROM jobs 
+            JOIN users AS created_by ON jobs.created_by = created_by.id 
+            JOIN users AS updated_by ON jobs.updated_by = updated_by.id 
+            WHERE jobs.id = ?""",
             (job_id,),
         )
         result = c.fetchone()
@@ -566,6 +565,7 @@ def get_playlist_by_id(playlist_id):
     :rtype: dict
     """
     pass
+
 
 def add_tidal_token(user_id, tidal_token):
     """

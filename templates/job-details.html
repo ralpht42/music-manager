@@ -56,7 +56,8 @@
 					</td>
 
 					<td>
-						{% if song.mood is none %} - {% else %} {{ song.mood }} {% endif %}
+						{% if song.feels is none %} - {% else %} {{ song.feels }} {% endif
+						%}
 					</td>
 
 					<td>
@@ -113,11 +114,11 @@
 						</progress>
 					</td>
 					<td>
-						{% if song.legend is none %} - {% else %} {{ song.legend }} {% endif
+						{% if song.is_legend is none %} - {% else %} {{ song.is_legend }} {% endif
 						%}
 					</td>
 					<td>
-						{% if song.folder == '0' %} - {% else %} {{ song.folder }} {% endif
+						{% if song.folder is none %} - {% else %} {{ song.folder }} {% endif
 						%}
 					</td>
 
