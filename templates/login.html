@@ -4,17 +4,14 @@
 <div class="column is-4 is-offset-4">
 	<h3 class="title has-text-centered">Anmelden</h3>
 	<div class="box">
-		{% with messages = get_flashed_messages() %} {% if messages %}
-		<div class="notification is-danger">{{ messages[0] }}</div>
-		{% endif %} {% endwith %}
 
 		<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
-		{% if error %}
+		{% with messages = get_flashed_messages() %} {% if messages %}
 		<div class="notification is-danger">
 			<button class="delete"></button>
-			<p>{{ error }}</p>
+			<p>{{ messages[0] }}</p>
 		</div>
-		{% endif %}
+		{% endif %} {% endwith %}
 
 		<form method="POST" action="/login">
 			<p class="has-text-centered">
