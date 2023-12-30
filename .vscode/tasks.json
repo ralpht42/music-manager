@@ -20,7 +20,13 @@
         "env": {
           "FLASK_APP": "app.py",
           "SECRET_KEY": "98pv!Y!ipE@zHa*cim7CW43yguedVe"
-        }
+        },
+        "volumes": [
+          {
+            "localPath": "${workspaceFolder}/data",
+            "containerPath": "/app/data",
+          }
+        ],
       },
       "python": {
         "args": [

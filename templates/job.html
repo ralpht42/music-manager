@@ -1,6 +1,5 @@
 <!-- templates/job-details.html -->
 {% extends "base.html" %} {% block content %}
-
 <h1 class="title">Job: {{ job.name }}</h1>
 <div class="box">
 	<div class="table-container">
@@ -17,12 +16,13 @@
 					<th>Typ</th>
 					<th>Geschwindigkeit</th>
 					<th>Anteil Gesang</th>
-					<th>Anteil Rap (von Gesang)</th>
+					<th>Anteil Rap</th>
 					<th>Bekanntheit</th>
 					<th>Anteil Weird</th>
 					<th>Legende</th>
 					<th>Ordner</th>
 					<th>Serie</th>
+					<th></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -114,8 +114,14 @@
 						</progress>
 					</td>
 					<td>
-						{% if song.is_legend is none %} - {% else %} {{ song.is_legend }} {% endif
-						%}
+						{% if song.is_legend is none %} - {% elif song.is_legend == true %}
+						<span class="tag is-warning">
+							<i class="material-symbols-outlined">hotel_class</i>
+							<p>Legende</p>
+						</span>
+						{% else %}
+						<!-- Wenn Song keine Legende ist, wird hier nichts angezeigt -->
+						{% endif %}
 					</td>
 					<td>
 						{% if song.folder is none %} - {% else %} {{ song.folder }} {% endif
@@ -130,22 +136,23 @@
 					<td>
 						<a
 							class="button is-small is-info"
-							href="{{ url_for('music.job_edit', job_id=job.id) }}"
+							href="{{ url_for('music.job_song_details', job_id=job.id, song_id=song.id) }}"
 						>
 							<span class="icon is-small">
-								<i class="fas fa-edit"></i>
+								<i class="material-symbols-outlined">edit</i>
 							</span>
 						</a>
 					</td>
 					<td>
-						<a
-							class="button is-small is-danger"
-							href="{{ url_for('music.job_delete', job_id=job.id) }}"
+						<button
+							class="button is-small is-danger load-on-click"
+							type="button"
+							onclick="deleteSong('{{ job.id }}', '{{ song.id }}')"
 						>
 							<span class="icon is-small">
-								<i class="fas fa-trash"></i>
+								<i class="material-symbols-outlined">delete</i>
 							</span>
-						</a>
+						</button>
 					</td>
 				</tr>
 				{% endfor %}
@@ -153,5 +160,29 @@
 		</table>
 	</div>
 </div>
+
+<script>
+	// Lösche Song (AJAX Workaround für DELETE Request)
+	function deleteSong(job_id, song_id) {
+		fetch('/job/' + job_id + '/song/' + song_id, {
+			method: 'DELETE',
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data)
+				if (data.success) {
+					window.location.reload()
+				}
+			})
+	}
+
+	// Lade Animation bei Klick auf Button
+	const loadOnClick = document.querySelectorAll('.load-on-click')
+	loadOnClick.forEach((element) => {
+		element.addEventListener('click', () => {
+			element.classList.add('is-loading')
+		})
+	})
+</script>
 
 {% endblock %}
