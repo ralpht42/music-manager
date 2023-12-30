@@ -6,6 +6,14 @@
 	<section class="section">
 		{% if current_user.tidal_session %}
 		<div class="box">
+			<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
+			{% with messages = get_flashed_messages() %} {% if messages %}
+			<div class="notification is-danger">
+				<button class="delete"></button>
+				<p>{{ messages[0] }}</p>
+			</div>
+			{% endif %} {% endwith %}
+
 			<h3 class="title has-text-dark">Tidal-Konto</h3>
 			<p>Benutzername: {{ current_user.tidal_session.user.username }}</p>
 			<p>
@@ -112,8 +120,8 @@
 					<td>{{ current_user.username }}</td>
 					<td>{{ current_user.email }}</td>
 					<td>
-						{% if current_user.is_admin %} <i class="material-symbols-outlined">done</i> {% else
-						%} 
+						{% if current_user.is_admin %}
+						<i class="material-symbols-outlined">done</i> {% else %}
 						<i class="material-symbols-outlined">close</i>
 						{% endif %}
 					</td>

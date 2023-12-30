@@ -1,8 +1,59 @@
 <!-- templates/index.html -->
 
 {% extends "base.html" %} {% block content %}
-<h1 class="title has-text-centered">
-	{% if current_user.is_authenticated %} Willkommen, {{ current_user.username }}! {% else
-	%} Willkommen Fremder! {% endif %}
-</h1>
+
+<h3 class="title">
+	{% if current_user.is_authenticated %} Willkommen, {{ current_user.username
+	}}! {% else %} Willkommen Fremder! {% endif %}
+</h3>
+<div class="box">
+	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
+	{% with messages = get_flashed_messages() %} {% if messages %}
+	<div class="notification is-danger">
+		<button class="delete"></button>
+		<p>{{ messages[0] }}</p>
+	</div>
+	{% endif %} {% endwith %} {% if current_user.is_authenticated %}
+
+	<main>
+		<div class="content is-medium">
+			<h2 class="subtitle is-4 has-text-dark">Was ist das hier?</h2>
+			<p>
+				Dies ist eine Webanwendung, die es ermöglicht, Musik zu verwalten und zu
+				organisieren. Sie ist für den privaten Gebrauch gedacht.
+			</p>
+			<p>
+				Die Anwendung ist in Python geschrieben und nutzt das
+				<a href="https://flask.palletsprojects.com/" class="has-text-link"
+					>Flask</a
+				>-Framework. Die Daten werden in einer SQLite-Datenbank gespeichert.
+			</p>
+			<p>
+				Die Anwendung ist Open Source und kann auf
+				<a
+					href="https://github.com/ralpht42/music-manager"
+					class="has-text-link"
+					>GitHub</a
+				>
+				gefunden werden.
+			</p>
+
+			<h2 class="subtitle is-4 has-text-dark">Was kann die Anwendung?</h2>
+			<p>
+				Die Anwendung kann Musik verwalten. Es können Songs, Alben und
+				Interpreten angelegt werden. Außerdem können Playlists erstellt werden,
+				die entweder manuell oder automatisch mit Songs gefüllt werden können.
+			</p>
+
+			<h2 class="subtitle is-4 has-text-dark">Was kann die Anwendung nicht?</h2>
+			<p>
+				Die Anwendung kann keine Musik abspielen. Sie kann auch keine Musik
+				herunterladen. Sie kann auch keine Musik erkennen. Sie kann keine Musik
+				empfehlen. Sie kann auch keine Musik verkaufen.
+			</p>
+		</div>
+	</main>
+
+	{% else %} {% endif %}
+</div>
 {% endblock %}

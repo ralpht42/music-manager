@@ -2,6 +2,14 @@
 {% extends "base.html" %} {% block content %}
 <h1 class="title">Jobs</h1>
 <div class="box">
+	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
+	{% with messages = get_flashed_messages() %} {% if messages %}
+	<div class="notification is-danger">
+		<button class="delete"></button>
+		<p>{{ messages[0] }}</p>
+	</div>
+	{% endif %} {% endwith %}
+	
 	<form
 		action="{{ url_for('music.job_upload_file') }}"
 		method="POST"
