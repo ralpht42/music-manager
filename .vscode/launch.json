@@ -3,10 +3,10 @@
   "configurations": [
     {
       // Hierbei wird die Anwendung automatisch im Container gestartet
-      "name": "Docker Run - Debug (no hot-reloading)",
+      "name": "Docker Debug with hot-reloading",
       "type": "docker",
       "request": "launch",
-      "preLaunchTask": "Docker Run - Debug (no hot-reloading)",
+      "preLaunchTask": "Docker Debug with hot-reloading",
       "python": {
         "pathMappings": [
           {
@@ -18,27 +18,6 @@
         "jinja": true,
         "justMyCode": true
       }
-    },
-    // Bekannter Fehler: Beim Starten wird nicht erkannt, ob der Task durchgeführt wurde.
-    // Workaround: "Trotzdem Debuggen" auswählen
-    {
-      "name": "Docker Compose - Debug (no hot-reloading)",
-      "type": "python",
-      "request": "attach",
-      "preLaunchTask": "Docker Compose - Debug Up (no hot-reloading)",
-      "postDebugTask": "Docker Compose - Debug Down (no hot-reloading)",
-      "connect": {
-        "host": "localhost",
-        "port": 5678
-      },
-      "pathMappings": [
-        {
-          "localRoot": "${workspaceFolder}",
-          "remoteRoot": "/app"
-        }
-      ],
-      "jinja": true,
-      "justMyCode": true
     }
   ]
 }

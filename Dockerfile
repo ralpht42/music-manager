@@ -24,9 +24,6 @@ COPY --from=npm-container /usr/src/app/node_modules ./node_modules
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Set environment variables
-ENV FLASK_ENV="docker"
-ENV FLASK_APP=app.py
 
 FROM base AS debug
 
@@ -41,6 +38,11 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
+
+# Set environment variable to enable debug mode
+ENV FLASK_ENV="development"
+ENV FLASK_APP=app.py
+ENV FLASK_DEBUG=1
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers

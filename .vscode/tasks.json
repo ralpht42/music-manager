@@ -20,7 +20,7 @@
     },
     {
       "type": "docker-run",
-      "label": "Docker Run - Debug (no hot-reloading)",
+      "label": "Docker Debug with hot-reloading",
       "dependsOn": ["docker-build-debug"],
       "dockerRun": {
         "image": "ghcr.io/ralpht42/music-manager:latest-dev",
@@ -28,42 +28,14 @@
         "envFiles": ["${workspaceFolder}/.env"],
         "volumes": [
           {
-            "localPath": "${workspaceFolder}/data",
-            "containerPath": "/app/data"
+            "localPath": "${workspaceFolder}",
+            "containerPath": "/app"
           }
         ]
       },
       "python": {
         "args": ["run", "--host", "0.0.0.0", "--port", "8080"],
         "module": "flask"
-      }
-    },
-    {
-      "label": "Docker Compose - Debug Up (no hot-reloading)",
-      "type": "docker-compose",
-      "dockerCompose": {
-        "up": {
-          "detached": false,
-          "build": true
-        },
-        "files": [
-          //"${workspaceFolder}/docker-compose.yml",
-          "${workspaceFolder}/docker-compose.debug.yml"
-        ]
-      },
-      "isBackground": true
-    },
-    {
-      "label": "Docker Compose - Debug Down (no hot-reloading)",
-      "type": "docker-compose",
-      "dockerCompose": {
-        "down": {
-          "removeOrphans": true
-        },
-        "files": [
-          //"${workspaceFolder}/docker-compose.yml",
-          "${workspaceFolder}/docker-compose.debug.yml"
-        ]
       }
     }
   ]

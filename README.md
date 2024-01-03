@@ -24,20 +24,5 @@ docker-compose down
 ```
 
 #### 2. Debugging-Modus - Lokaler Build (VS-Code)
-Um das Programm im Debugging-Modus mit VS-Code zu starten, gibt es zwei Möglichkeiten:
-
-##### 2.1. VS-Code Debug Task mit Docker Run
-Führen Sie die in VS-Code als Debug Task verwendete "Docker Run - Debug (no hot-reloading)" Funktion aus.
-Hierbei wird ein zufälliger Port von VS-Code vergeben. Es ist kein Hot-Reload-Modus verfügbar, d. h. Änderungen am Code werden nicht automatisch geladen. Es können Breakpoints gesetzt und Variablenwerte am Breakpoint bearbeitet werden.
-
-##### 2.2. VS-Code Debug Task mit Docker Compose
-Führen Sie die in VS-Code als Debug Task verwendete "Docker Compose - Debug (no hot-reloading)" Funktion aus.
-Bei diesem Befehl wird der Port 8080 verwendet. Es ist kein Hot-Reload-Modus verfügbar, d. h. Änderungen am Code werden nicht automatisch geladen. Es können Breakpoints gesetzt und Variablenwerte am Breakpoint bearbeitet werden.
-
-#### 3. Hot-Reload-Modus (Kein Debugging über VS-Code)
-Für den Hot-Reload-Modus, der Änderungen am Code direkt durch erneutes Laden umsetzt, verwenden Sie:
-
-```bash
-docker-compose -f docker-compose.hot-reload.yml up --build
-```
-Diese Option eignet sich gut für schnelle Tests kleiner Codeänderungen. Zum Beispiel für das Anpassen einer Webseite. Hierbei ist zu beachten, dass der Hot-Reload-Modus nicht für das Debugging über VS-Code geeignet ist. Es kann kein Breakpoint gesetzt werden und es können keine Variablenwerte am Breakpoint bearbeitet werden.
+Führen Sie die in VS-Code als Debug Task verwendete "Docker - Debug with hot-reloading" Funktion aus.
+Hierbei wird ein zufälliger Port von VS-Code vergeben. Es ist die Hot-Reload-Modus verfügbar, d. h. Änderungen am Code werden sofort automatisch geladen und die Anwendung neu gestartet. Es können Breakpoints gesetzt und Variablenwerte am Breakpoint bearbeitet werden.
