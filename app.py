@@ -10,7 +10,36 @@ from database import init_database, get_user_by_id
 def create_app():
     app = Flask(__name__)
 
-    app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
+    if os.environ.get("SECRET_KEY") is None:
+        print(
+            "Es wurde keine Umgebungsvariable SECRET_KEY gefunden. Es wird eine zufällige Zeichenkette verwendet."
+        )
+        print(
+            "Bitte setzen Sie die Umgebungsvariable SECRET_KEY, um die Sicherheit der Anwendung zu erhöhen."
+        )
+        print(
+            "Wenn ein zufälliger Schlüssel verwendet wird, müssen alle Benutzer sich nach jedem Neustart der Anwendung erneut anmelden."
+        )
+        import random, string
+
+        app.config["SECRET_KEY"] = "".join(
+            random.choice(string.ascii_letters) for i in range(32)
+        )
+    else:
+        app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+
+    if (
+        os.environ.get("TIDAL_APP_CLIENT_ID") is None
+        or os.environ.get("TIDAL_APP_CLIENT_SECRET") is None
+    ):
+        raise Exception(
+            "TIDAL_APP_CLIENT_ID oder TIDAL_APP_CLIENT_SECRET nicht gesetzt."
+        )
+    else:
+        app.config["TIDAL_APP_CLIENT_ID"] = os.environ.get("TIDAL_APP_CLIENT_ID")
+        app.config["TIDAL_APP_CLIENT_SECRET"] = os.environ.get(
+            "TIDAL_APP_CLIENT_SECRET"
+        )
 
     init_database()
 
@@ -54,4 +83,4 @@ app = create_app() # Wird auch von Gunicorn verwendet, um die App zu starten
 # Es wird empfohlen, eine virtuelle Umgebung zu verwenden (z.B. mit "python -m venv venv")
 # und die Abhängigkeiten mit "pip install -r requirements.txt" zu installieren
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run()

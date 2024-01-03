@@ -3,41 +3,38 @@
   "tasks": [
     {
       "type": "docker-build",
-      "label": "docker-build",
+      "label": "docker-build-debug",
       "platform": "python",
       "dockerBuild": {
-        "tag": "musicmanager:latest",
+        "tag": "ghcr.io/ralpht42/music-manager:latest-dev",
         "dockerfile": "${workspaceFolder}/Dockerfile",
         "context": "${workspaceFolder}",
-        "pull": true
+        "pull": true,
+        "target": "debug"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
       }
     },
     {
       "type": "docker-run",
-      "label": "docker-run: debug",
-      "dependsOn": ["docker-build"],
+      "label": "Docker Debug with hot-reloading",
+      "dependsOn": ["docker-build-debug"],
       "dockerRun": {
-        "env": {
-          "FLASK_APP": "app.py",
-          "SECRET_KEY": "98pv!Y!ipE@zHa*cim7CW43yguedVe"
-        },
+        "image": "ghcr.io/ralpht42/music-manager:latest-dev",
+        "containerName": "music-manager-dev",
+        "envFiles": ["${workspaceFolder}/.env"],
         "volumes": [
           {
-            "localPath": "${workspaceFolder}/data",
-            "containerPath": "/app/data",
+            "localPath": "${workspaceFolder}",
+            "containerPath": "/app"
           }
-        ],
+        ]
       },
       "python": {
-        "args": [
-          "run",
-          "--no-debugger",
-          "--no-reload",
-          "--host",
-          "0.0.0.0",
-          "--port",
-          "8080"
-        ],
+        "args": ["run", "--host", "0.0.0.0", "--port", "8080"],
         "module": "flask"
       }
     }

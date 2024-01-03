@@ -1,17 +1,21 @@
 version: '3.4'
 
 services:
-  musicmanager:
-    image: musicmanager:latest
+  music-manager:
+#    image: ghcr.io/ralpht42/music-manager:latest # Entkommentieren und die build-Zeilen entfernen, wenn das Image nicht selbst gebaut werden soll 
     build:
+      tags: [ghcr.io/ralpht42/music-manager:latest-dev] 
       context: .
+      target: production
       dockerfile: ./Dockerfile
-    container_name: musicmanager
+      pull: true
+    container_name: music-manager
     restart: unless-stopped
     volumes:
       - ./data:/app/data
-    environment:
-      # Zufällige Zeichenkette, die als Schlüssel für die Verschlüsselung verwendet wird
-      - SECRET_KEY=FgbPnKD7xi@Gq&MpVbf43y6Zb7Mibo 
+#    environment: # Entkommentieren, wenn keine .env-Datei vorhanden ist und die Werte hier eingetragen werden sollen
+#      - SECRET_KEY=1234567890
+    env_file:
+      - ./.env 
     ports:
       - 8080:8080
