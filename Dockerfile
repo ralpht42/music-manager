@@ -1,22 +1,63 @@
+# Verwende das Node-Image für den npm-Befehl
+FROM node:21.5.0-bookworm-slim as npm-container
+
+# Setze das Arbeitsverzeichnis
+WORKDIR /usr/src/app
+
+COPY package.json .
+COPY package-lock.json .
+
+# Führe den npm-Befehl im Node-Container aus
+RUN npm install 
+
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.12.1-slim-bookworm
+FROM python:3.12.1-slim-bookworm AS base
+
+WORKDIR /app
+RUN mkdir /app/data
+COPY . .
+
+# Kopiere die installierten Pakete vom npm-Container in dein Hauptimage
+COPY --from=npm-container /usr/src/app/node_modules ./node_modules
+
+# Install pip requirements
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Set environment variables
+ENV FLASK_ENV="docker"
+ENV FLASK_APP=app.py
+
+FROM base AS debug
 
 EXPOSE 8080
+EXPOSE 5678
 
+# Install debug tools
+# TODO: Dependabot soll die Version aktualisieren
+RUN pip install debugpy==1.8.0
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE=1
 
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
 
+# Creates a non-root user with an explicit UID and adds permission to access the /app folder
+# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
 
-WORKDIR /app
-COPY . /app
-RUN mkdir /app/data
+# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
+# Aufgrund eines Konfliktes zwischen Flask und debugpy kann nur entweder Flask im Debug-Modus oder debugpy gestartet werden.
+# Daher wird hier kein Startbefehl angegeben, sondern in docker-compose.yml
 
-# Install pip requirements
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+
+FROM base AS production
+
+EXPOSE 8080
+
+# TODO: Dependabot soll die Version aktualisieren
+RUN pip install gunicorn==20.1.0
 
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder

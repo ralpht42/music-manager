@@ -10,11 +10,13 @@ services:
       pull: true
     container_name: music-manager-debug
     restart: unless-stopped
-    entrypoint: [ "python", "-m", "debugpy", "--listen", "0.0.0.0:5678", "-m", "flask", "run", "--no-debug", "--no-reload", "--host", "0.0.0.0", "--port", "8080" ]
+    entrypoint: ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=8080"] # Live Reload, kein debugpy gleichzeitig möglich
     ports:
       - 8080:8080
       - 5678:5678
+    environment:
+      - FLASK_DEBUG=1 # Aktiviert den Debug-Modus von Flask
     env_file:
       - ./.env
     volumes:
-      - ./data:/app/data
+      - .:/app # Wenn das Arbeitsverzeichnis in /app gesetzt wird, kann hot-reload verwendet werden
