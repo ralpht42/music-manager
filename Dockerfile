@@ -14,13 +14,12 @@ RUN npm install
 FROM python:3.12.1-slim-bookworm AS base
 
 WORKDIR /app
-RUN mkdir /app/data
-COPY . .
 
 # Kopiere die installierten Pakete vom npm-Container in dein Hauptimage
 COPY --from=npm-container /usr/src/app/node_modules ./node_modules
 
 # Install pip requirements
+COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -44,6 +43,8 @@ ENV FLASK_ENV="development"
 ENV FLASK_APP=app.py
 ENV FLASK_DEBUG=1
 
+COPY . .
+
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
@@ -61,6 +62,7 @@ EXPOSE 8080
 # TODO: Dependabot soll die Version aktualisieren
 RUN pip install gunicorn==20.1.0
 
+COPY . .
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
