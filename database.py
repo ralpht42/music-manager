@@ -1,6 +1,7 @@
 # database.py
 import sqlite3
 import re
+import os
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from argon2.low_level import Type
@@ -11,6 +12,12 @@ import math
 import tidalapi
 
 from models import User
+
+from flask import current_app
+from flask_login import current_user
+
+from tidaldev import search as tidal_search
+from tidaldev import refresh_tidal_app_token
 
 # Empfehlung: https://www.owasp.org/index.php/Password_Storage_Cheat_Sheet#argon2id
 # Stand 2023-12-21
@@ -27,6 +34,10 @@ def open_database():
     :return: Verbindung und Cursor
     :rtype: tuple
     """
+    # Erstelle den Ordner für die Datenbank, falls er noch nicht existiert
+    if not os.path.exists("./data"):
+        os.makedirs("./data")
+
     if debug_mode:
         # print("Demo Datenbank wird geöffnet.")
         conn = sqlite3.connect("./data/demo-database.db")
@@ -125,6 +136,7 @@ def init_database():
         created_by INTEGER NOT NULL,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
         updated_by INTEGER NOT NULL,
+        manual BOOLEAN NOT NULL,
 
         FOREIGN KEY(created_by) REFERENCES users(id),
         FOREIGN KEY(updated_by) REFERENCES users(id)
@@ -147,14 +159,33 @@ def init_database():
         """CREATE TABLE IF NOT EXISTS songs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
-        release_date TEXT,
         duration INTEGER,
         explicit BOOLEAN,
+        type_id INTEGER,
+
+        voice_percent INTEGER,
+        rap_percent INTEGER,
+        popularity_percent INTEGER,
+        weird_percent INTEGER,
         
         isrc TEXT,
-        popularity INTEGER,
+        popularity_tidal INTEGER,
         tidal_id INTEGER,
-        tidal_cover INTEGER
+        album_id INTEGER,
+
+        FOREIGN KEY(type_id) REFERENCES types(id),
+        FOREIGN KEY(album_id) REFERENCES albums(id)
+    )"""
+    )
+
+    # Album Tabelle
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS albums (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        release_date TEXT,
+        tidal_id INTEGER,
+        tidal_cover TEXT
     )"""
     )
 
@@ -165,9 +196,8 @@ def init_database():
         name TEXT NOT NULL,
         real_name TEXT,
         tidal_id INTEGER,
-        tidal_cover INTEGER,
-
-        FOREIGN KEY(tidal_id) REFERENCES tidal_artists(id)
+        tidal_cover TEXT,
+        tidal_bio TEXT
     )"""
     )
 
@@ -231,7 +261,7 @@ def init_database():
     )"""
     )
 
-    # Stimmung Tabelle
+    # Feels Tabelle
     c.execute(
         """CREATE TABLE IF NOT EXISTS feels (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -239,7 +269,7 @@ def init_database():
     )"""
     )
 
-    # Stimmung-Song Zuordnung
+    # Feels-Song Zuordnung
     c.execute(
         """CREATE TABLE IF NOT EXISTS feel_song (
         feel_id INTEGER NOT NULL,
@@ -456,21 +486,53 @@ def get_user_by_id(user_id):
     )
     tidal_account_result = c.fetchone()
 
-    # Tidal Session Objekt erstellen
     tidal_session = None
+
+    # Wenn ein Tidal Account vorhanden ist, dann lade die Daten in die Session
     if tidal_account_result is not None:
+        # Tidal Session Objekt erstellen
+        tidal_session = tidalapi.Session()
+
+        # Überprüfe, ob der Token abgelaufen ist, wenn ja, dann hole einen neuen
         if tidal_account_result[4] < datetime.now().timestamp():
             # Token ist abgelaufen, hole neuen Token
-            raise Exception("TIDAL-Token ist abgelaufen, erneuter Login erforderlich!")
-        else:
-            # Token ist noch gültig
-            tidal_session = tidalapi.Session()
-            tidal_session.load_oauth_session(
-                tidal_account_result[1],
-                tidal_account_result[2],
-                tidal_account_result[3],
-                tidal_account_result[4],
+            tidal_session.token_refresh(tidal_account_result[3])
+
+            # Speichere den neuen Token in der Datenbank
+            add_tidal_user_token(
+                user_id,
+                {
+                    "token_type": tidal_session.token_type,
+                    "access_token": tidal_session.access_token,
+                    "refresh_token": tidal_account_result[
+                        3
+                    ],  # Der Refresh-Token ändert sich nicht, daher wird er nicht aktualisiert
+                    "expiry_time": tidal_session.expiry_time,
+                },
             )
+
+            print("TIDAL-User-Token für " + user_result[2] + " wurde aktualisiert")
+
+            # Lade den Token erneut aus der Datenbank, falls er aktualisiert wurde,
+            # da durch einen Bug das Zeitformat beim aktualisieren verändert wird.
+            # datetime.datetime, statt float, sowie viele Felder nicht initialisiert
+
+            c.execute(
+                """SELECT tidal_credentials.id, token_type, access_token, refresh_token, expiry_time FROM tidal_credentials 
+                JOIN users AS users ON tidal_credentials.id = users.tidal_account_id
+                WHERE users.id = ?
+                """,
+                (user_id,),
+            )
+            tidal_account_result = c.fetchone()
+
+        # Token ist noch gültig
+        tidal_session.load_oauth_session(
+            tidal_account_result[1],
+            tidal_account_result[2],
+            tidal_account_result[3],
+            tidal_account_result[4],
+        )
 
     user = User(
         user_result[0],
@@ -685,8 +747,9 @@ def get_job_by_id(job_id):
 
         # Lade die Informationen zum Job
         c.execute(
-            """SELECT jobs.id, jobs.name, jobs.created_at, created_by.username, 
-            jobs.updated_at, updated_by.username, manual FROM jobs 
+            """SELECT jobs.id, jobs.name, jobs.created_at, jobs.created_by, 
+            created_by.username, jobs.updated_at, jobs.updated_by, 
+            updated_by.username, manual FROM jobs 
             JOIN users AS created_by ON jobs.created_by = created_by.id 
             JOIN users AS updated_by ON jobs.updated_by = updated_by.id 
             WHERE jobs.id = ?""",
@@ -701,9 +764,11 @@ def get_job_by_id(job_id):
             "name": result[1],
             "created_at": result[2],
             "created_by": result[3],
-            "updated_at": result[4],
-            "updated_by": result[5],
-            "manual": result[6],
+            "created_by_username": result[4],
+            "updated_at": result[5],
+            "updated_by": result[6],
+            "updated_by_username": result[7],
+            "manual": result[8],
             "songs": songs,
         }
 
@@ -924,14 +989,379 @@ def delete_job_song_by_id(job_id, song_id):
 def create_playlist_from_job(job_id):
     """
     Überträgt die Songs eines Jobs in eine neue Playlist.
-    Dabei werden die Songs in TIDAL gesucht und die entsprechenden IDs gespeichert.
-    Zugehörige Songs werden ebenfalls gesucht und die IDs gespeichert.
-    Anschließend wird die Playlist erstellt und die Songs hinzugefügt.
+    Für den Zugriff auf TIDAL wird der TIDAL Account des Benutzers verwendet.
+    Es wird eine neue Playlist erstellt und die Songs hinzugefügt.
+    Dabei werden die Songs in TIDAL gesucht und die entsprechenden IDs gespeichert,
+    die zugehörigen Künstler und Alben werden ebenfalls gespeichert.
 
     :param job_id: ID des Jobs
     :return: playlist_id
     :rtype: int
     """
+    conn, c = open_database()
+
+    # Importiere die Songs aus dem Job
+    job = get_job_by_id(job_id)
+
+    # Erstelle eine neue Playlist
+    c.execute(
+        """
+        INSERT INTO playlists (name, created_at, created_by, updated_at, updated_by, manual)
+        VALUES (?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?)
+        """,
+        (job["name"], job["created_by"], job["updated_by"], job["manual"]),
+    )
+    playlist_id = c.lastrowid
+
+    # Überprüfe, ob der aufrufende Benutzer ein TIDAL Account hat
+    if current_user.tidal_session is None:
+        conn.close()
+        raise Exception("Benutzer hat keinen TIDAL Account verbunden")
+
+    # Füge die Songs der Playlist hinzu
+    for song in job["songs"]:
+        # Suche den Song in TIDAL
+        tidal_songs = current_user.tidal_session.search(
+            query=f"{song['artists']} {song['title']}",
+            limit=20,
+            models=[tidalapi.media.Track],
+        )
+
+        # Überprüfe, ob mindestens ein Song gefunden wurde
+        if tidal_songs["tracks"] is None or len(tidal_songs["tracks"]) == 0:
+            print(
+                f"Bei der ersten Sucher wurde für \"{song['artists']} {song['title']}\" keine Übereinstimmung gefunden"
+            )
+
+            # Versuche den Song mit einer anderen Suche zu finden (nur Titel)
+            tidal_songs = current_user.tidal_session.search(
+                query=f"{song['title']}",
+                limit=50,
+                models=[tidalapi.media.Track],
+            )
+
+            if tidal_songs["tracks"] is None or len(tidal_songs["tracks"]) == 0:
+                print(
+                    f"In einer zweiten Suche wurden keine Übereinstimmungen für \"{song['title']}\" gefunden"
+                )
+                continue  # Gehe zum nächsten Song aus der Job Liste
+            else:
+                print(
+                    f"In einer zweiten Suche wurden Übereinstimmungen für \"{song['title']}\" gefunden"
+                )
+                # Durchsuche die Songs und wähle den richtigen Song aus
+
+        # Wähle den richtigen Song aus den Suchergebnissen aus
+        tidal_song = None
+
+        for tidal_song_candidate in tidal_songs["tracks"]:
+            # Überprüfe, ob der Titel und die Künstler grob übereinstimmen
+            if (
+                tidal_song_candidate.name.lower() in song["title"].lower()
+                or song["title"].lower() in tidal_song_candidate.name.lower()
+            ):
+                # Titel kommen ineinander vor
+
+                # Überprüfe, ob die Künstler grob übereinstimmen
+                all_artists_match = True
+                for artist in tidal_song_candidate.artists:
+                    if artist.name.lower() in song["artists"].lower():
+                        # Titel und Künstler stimmen überein
+                        continue
+                    else:
+                        all_artists_match = False
+                        break
+
+                if all_artists_match:
+                    # Titel und Künstler stimmen überein
+                    tidal_song = tidal_song_candidate
+                    print(
+                        f"Song \"{tidal_song.name}\" wurde als Übereinstimmung gefunden"
+                    )
+                    break
+        
+        if tidal_song is None:
+            # Kein Song wurde gefunden, obwohl die Suche mindestens einen Song zurückgegeben hat
+            print(f"Es wurde trotz Suchergebnissen kein Song für \"{song['title']}\" gefunden")
+            continue
+        
+
+        # tidal_song = tidal_songs["tracks"][0] # Alternativ: Nimm den ersten Song aus der Liste
+
+        # Überprüfe, ob der Song bereits in der Datenbank vorhanden ist
+        c.execute(
+            "SELECT id FROM songs WHERE tidal_id = ?",
+            (tidal_song.id,),
+        )
+        song_id = c.fetchone()
+        if song_id is not None:
+            # Song ist bereits vorhanden, füge den Song der Playlist hinzu
+            c.execute(
+                "INSERT INTO playlist_song (playlist_id, song_id) VALUES (?, ?)",
+                (playlist_id, song_id[0]),
+            )
+            continue
+
+        # Song ist noch nicht vorhanden, erstelle den Song
+
+        # Finde die IDs heraus, welche beim Song gespeichert werden müssen
+
+        # Wenn kein Typ angegeben ist, dann setze den Typ auf "Unbekannt"
+        if song["type"] is None:
+            song["type"] = "Unbekannt"
+
+        c.execute(
+            "SELECT id FROM types WHERE name = ?",
+            (song["type"],),
+        )
+        type_id = c.fetchone()
+        if type_id is None:
+            # Typ ist noch nicht vorhanden, erstelle den Typ
+            c.execute(
+                "INSERT INTO types (name) VALUES (?)",
+                (song["type"],),
+            )
+            type_id = c.lastrowid
+        else:
+            type_id = type_id[0]
+
+        c.execute(
+            "SELECT id FROM albums WHERE tidal_id = ?",
+            (tidal_song.album.id,),
+        )
+        album_id = c.fetchone()
+        if album_id is None:
+            c.execute(
+                """INSERT INTO albums (title, release_date, tidal_id, tidal_cover) 
+                VALUES (?, ?, ?, ?)""",
+                (
+                    tidal_song.album.name,
+                    tidal_song.album.release_date.isoformat(),  # nutze ISO 8601 Format für Datum
+                    tidal_song.album.id,
+                    tidal_song.album.cover,
+                ),
+            )
+            album_id = c.lastrowid
+        else:
+            album_id = album_id[0]
+
+        # Speichere den Song in der Datenbank
+        c.execute(
+            """INSERT INTO songs (title, duration, explicit, type_id, voice_percent, rap_percent, popularity_percent, weird_percent,
+             isrc, popularity_tidal, tidal_id, album_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (
+                tidal_song.name,
+                tidal_song.duration,
+                tidal_song.explicit,
+                type_id,
+                song["voice_percent"],
+                song["rap_percent"],
+                song["popularity_percent"],
+                song["weird_percent"],
+                tidal_song.isrc,
+                tidal_song.popularity,
+                tidal_song.id,
+                album_id,
+            ),
+        )
+        song_id = c.lastrowid
+
+        # Füge den Song zur Playlist hinzu
+        c.execute(
+            "INSERT INTO playlist_song (playlist_id, song_id) VALUES (?, ?)",
+            (playlist_id, song_id),
+        )
+
+        # Künstler speichern
+        for artist in tidal_song.artists:
+            c.execute(
+                "SELECT id FROM artists WHERE tidal_id = ?",
+                (artist.id,),
+            )
+            artist_id = c.fetchone()
+            if artist_id is None:
+                # Künstler ist noch nicht vorhanden, erstelle den Künstler
+                c.execute(
+                    """INSERT INTO artists (name, tidal_id, tidal_cover, tidal_bio)
+                    VALUES (?, ?, ?, ?)""",
+                    (artist.name, artist.id, artist.picture, artist.bio),
+                )
+                artist_id = c.lastrowid
+            else:
+                artist_id = artist_id[0]
+
+            # Überprüfe, ob die Rolle des Künstlers bereits vorhanden ist
+            for role in artist.roles:
+                c.execute(
+                    "SELECT id FROM artist_roles WHERE name = ?",
+                    (role.name,),
+                )
+                role_id = c.fetchone()
+                if role_id is None:
+                    # Rolle ist noch nicht vorhanden, erstelle die Rolle
+                    c.execute(
+                        "INSERT INTO artist_roles (name) VALUES (?)",
+                        (role.name,),
+                    )
+                    role_id = c.lastrowid
+                else:
+                    role_id = role_id[0]
+
+                # Verknüpfe den Künstler mit der Rolle und dem Song
+                c.execute(
+                    "INSERT INTO song_artist (song_id, artist_id, role_id) VALUES (?, ?, ?)",
+                    (song_id, artist_id, role_id),
+                )
+
+        # Sprachen speichern, falls vorhanden
+        if song["language"] is not None:
+            for language in song["language"].split(", "):
+                # Finde die Sprachen-ID heraus
+                c.execute(
+                    "SELECT id FROM languages WHERE name = ?",
+                    (language,),
+                )
+                language_id = c.fetchone()
+                if language_id is None:
+                    # Sprache ist noch nicht vorhanden, erstelle die Sprache
+                    c.execute(
+                        "INSERT INTO languages (name) VALUES (?)",
+                        (language,),
+                    )
+                    language_id = c.lastrowid
+                else:
+                    language_id = language_id[0]
+
+                # Füge die Sprache dem Song hinzu
+                c.execute(
+                    "INSERT INTO language_song (song_id, language_id) VALUES (?, ?)",
+                    (song_id, language_id),
+                )
+
+        # Genre speichern, falls vorhanden
+        if song["genre"] is not None:
+            # Finde die Genre-ID heraus
+            c.execute(
+                "SELECT id FROM genres WHERE name = ?",
+                (song["genre"],),
+            )
+            genre_id = c.fetchone()
+            if genre_id is None:
+                # Genre ist noch nicht vorhanden, erstelle das Genre
+                c.execute(
+                    "INSERT INTO genres (name) VALUES (?)",
+                    (song["genre"],),
+                )
+                genre_id = c.lastrowid
+            else:
+                genre_id = genre_id[0]
+
+            # Füge das Genre dem Song hinzu
+            c.execute(
+                "INSERT INTO genre_song (song_id, genre_id) VALUES (?, ?)",
+                (song_id, genre_id),
+            )
+
+        # Feels speichern, falls vorhanden
+        if song["feels"] is not None:
+            # Finde die Feels-ID heraus
+            c.execute(
+                "SELECT id FROM feels WHERE name = ?",
+                (song["feels"],),
+            )
+            feels_id = c.fetchone()
+            if feels_id is None:
+                # Feels ist noch nicht vorhanden, erstelle das Feels
+                c.execute(
+                    "INSERT INTO feels (name) VALUES (?)",
+                    (song["feels"],),
+                )
+                feels_id = c.lastrowid
+            else:
+                feels_id = feels_id[0]
+
+            # Füge das Feels dem Song hinzu
+            c.execute(
+                "INSERT INTO feel_song (song_id, feel_id) VALUES (?, ?)",
+                (song_id, feels_id),
+            )
+
+        # Speed speichern, falls vorhanden
+        if song["speed"] is not None:
+            # Finde die Speed-ID heraus
+            c.execute(
+                "SELECT id FROM speeds WHERE name = ?",
+                (song["speed"],),
+            )
+            speed_id = c.fetchone()
+            if speed_id is None:
+                # Speed ist noch nicht vorhanden, erstelle das Speed
+                c.execute(
+                    "INSERT INTO speeds (name) VALUES (?)",
+                    (song["speed"],),
+                )
+                speed_id = c.lastrowid
+            else:
+                speed_id = speed_id[0]
+
+            # Füge das Speed dem Song hinzu
+            c.execute(
+                "INSERT INTO speed_song (song_id, speed_id) VALUES (?, ?)",
+                (song_id, speed_id),
+            )
+
+        # Folder speichern, falls vorhanden
+        if song["folder"] is not None:
+            # Finde die Folder-ID heraus
+            c.execute(
+                "SELECT id FROM folders WHERE name = ?",
+                (song["folder"],),
+            )
+            folder_id = c.fetchone()
+            if folder_id is None:
+                # Folder ist noch nicht vorhanden, erstelle den Folder
+                c.execute(
+                    "INSERT INTO folders (name) VALUES (?)",
+                    (song["folder"],),
+                )
+                folder_id = c.lastrowid
+            else:
+                folder_id = folder_id[0]
+
+            # Füge den Folder dem Song hinzu
+            c.execute(
+                "INSERT INTO folder_song (song_id, folder_id) VALUES (?, ?)",
+                (song_id, folder_id),
+            )
+
+        # Series speichern, falls vorhanden
+        if song["series"] is not None:
+            # Finde die Series-ID heraus
+            c.execute(
+                "SELECT id FROM series WHERE name = ?",
+                (song["series"],),
+            )
+            series_id = c.fetchone()
+            if series_id is None:
+                # Series ist noch nicht vorhanden, erstelle die Series
+                c.execute(
+                    "INSERT INTO series (name) VALUES (?)",
+                    (song["series"],),
+                )
+                series_id = c.lastrowid
+            else:
+                series_id = series_id[0]
+
+            # Füge die Series dem Song hinzu
+            c.execute(
+                "INSERT INTO series_song (song_id, series_id) VALUES (?, ?)",
+                (song_id, series_id),
+            )
+
+    # Speichere alle Änderungen
+    conn.commit()
+    conn.close()
 
 
 def get_playlists_by_user_id(user_id):
@@ -945,7 +1375,13 @@ def get_playlists_by_user_id(user_id):
     conn, c = open_database()
 
     c.execute(
-        "SELECT playlists.id, playlists.name, playlists.created_at, created_by.username, playlists.updated_at, updated_by.username FROM playlists JOIN users AS created_by ON playlists.created_by = created_by.id JOIN users AS updated_by ON playlists.updated_by = updated_by.id WHERE created_by.id = ?",
+        """
+        SELECT playlists.id, playlists.name, playlists.created_at, created_by.username,
+        playlists.updated_at, updated_by.username, playlists.manual FROM playlists
+        JOIN users AS created_by ON playlists.created_by = created_by.id
+        JOIN users AS updated_by ON playlists.updated_by = updated_by.id
+        WHERE created_by.id = ?
+        """,
         (user_id,),
     )
     result = c.fetchall()
@@ -962,6 +1398,7 @@ def get_playlists_by_user_id(user_id):
                 "created_by": row[3],
                 "updated_at": row[4],
                 "updated_by": row[5],
+                "manual": row[6],
             }
         )
 
@@ -977,7 +1414,235 @@ def get_playlist_by_id(playlist_id):
     :return: Playlist
     :rtype: dict
     """
-    pass
+    conn, c = open_database()
+
+    # Überprüfe, ob es die Playlist gibt
+    c.execute(
+        """
+        SELECT playlists.id, playlists.name, playlists.created_at, created_by.username,
+        playlists.updated_at, updated_by.username, playlists.manual FROM playlists
+        JOIN users AS created_by ON playlists.created_by = created_by.id
+        JOIN users AS updated_by ON playlists.updated_by = updated_by.id
+        WHERE playlists.id = ?
+        """,
+        (playlist_id,),
+    )
+    result = c.fetchone()
+    if result is None:
+        conn.close()
+        raise Exception("Playlist mit ID " + str(playlist_id) + " nicht gefunden")
+
+    playlist = {
+        "id": result[0],
+        "name": result[1],
+        "created_at": result[2],
+        "created_by": result[3],
+        "updated_at": result[4],
+        "updated_by": result[5],
+        "manual": result[6],
+    }
+
+    # Lade die Songs der Playlist
+    c.execute(
+        """
+        SELECT songs.id, songs.title, songs.duration, songs.explicit, types.name, songs.voice_percent,
+        songs.rap_percent, songs.popularity_percent, songs.isrc, songs.weird_percent, songs.popularity_tidal, 
+        songs.tidal_id, albums.title, albums.release_date, albums.tidal_id, albums.tidal_cover FROM playlist_song
+        JOIN songs AS songs ON playlist_song.song_id = songs.id
+        JOIN types AS types ON songs.type_id = types.id
+        JOIN albums AS albums ON songs.album_id = albums.id
+        WHERE playlist_song.playlist_id = ?
+        """,
+        (playlist_id,),
+    )
+    result = c.fetchall()
+    if result is None:
+        # Es gibt keine Songs in der Playlist, gebe eine leere Liste zurück
+        conn.close()
+        return playlist
+
+    songs = []
+    for row in result:
+        # Finde die Künstler des Songs mit ihren Rollen heraus
+        c.execute(
+            """
+            SELECT artists.name, artists.tidal_id, artists.tidal_cover, artists.tidal_bio,
+            artist_roles.name FROM song_artist
+            JOIN artists AS artists ON song_artist.artist_id = artists.id
+            JOIN artist_roles AS artist_roles ON song_artist.role_id = artist_roles.id
+            WHERE song_artist.song_id = ?
+            """,
+            (row[0],),
+        )
+        artists = c.fetchall()
+        if artists is None:
+            artists = []
+        else:
+            artists = [
+                {
+                    "name": artist[0],
+                    "tidal_id": artist[1],
+                    "tidal_cover": artist[2],
+                    "tidal_bio": artist[3],
+                    "role": artist[4],
+                }
+                for artist in artists
+            ]
+
+        # Finde die Sprachen des Songs heraus
+        c.execute(
+            """
+            SELECT languages.name FROM language_song
+            JOIN languages AS languages ON language_song.language_id = languages.id
+            WHERE language_song.song_id = ?
+            """,
+            (row[0],),
+        )
+        languages = c.fetchall()
+        if languages is None:
+            languages = []
+        else:
+            languages = [
+                {
+                    "name": language[0],
+                }
+                for language in languages
+            ]
+
+        # Finde die Genres des Songs heraus
+        c.execute(
+            """
+            SELECT genres.name FROM genre_song
+            JOIN genres AS genres ON genre_song.genre_id = genres.id
+            WHERE genre_song.song_id = ?
+            """,
+            (row[0],),
+        )
+        genres = c.fetchall()
+        if genres is None:
+            genres = []
+        else:
+            genres = [
+                {
+                    "name": genre[0],
+                }
+                for genre in genres
+            ]
+
+        # Finde die Feels des Songs heraus
+        c.execute(
+            """
+            SELECT feels.name FROM feel_song
+            JOIN feels AS feels ON feel_song.feel_id = feels.id
+            WHERE feel_song.song_id = ?
+            """,
+            (row[0],),
+        )
+        feels = c.fetchall()
+        if feels is None:
+            feels = []
+        else:
+            feels = [
+                {
+                    "name": feel[0],
+                }
+                for feel in feels
+            ]
+
+        # Finde die Speeds des Songs heraus
+        c.execute(
+            """
+            SELECT speeds.name FROM speed_song
+            JOIN speeds AS speeds ON speed_song.speed_id = speeds.id
+            WHERE speed_song.song_id = ?
+            """,
+            (row[0],),
+        )
+        speeds = c.fetchall()
+        if speeds is None:
+            speeds = []
+        else:
+            speeds = [
+                {
+                    "name": speed[0],
+                }
+                for speed in speeds
+            ]
+
+        # Finde die Folder des Songs heraus
+        c.execute(
+            """
+            SELECT folders.name FROM folder_song
+            JOIN folders AS folders ON folder_song.folder_id = folders.id
+            WHERE folder_song.song_id = ?
+            """,
+            (row[0],),
+        )
+        folders = c.fetchall()
+        if folders is None:
+            folders = []
+        else:
+            folders = [
+                {
+                    "name": folder[0],
+                }
+                for folder in folders
+            ]
+
+        # Finde die Series des Songs heraus
+        c.execute(
+            """
+            SELECT series.name FROM series_song
+            JOIN series AS series ON series_song.series_id = series.id
+            WHERE series_song.song_id = ?
+            """,
+            (row[0],),
+        )
+        series = c.fetchall()
+        if series is None:
+            series = []
+        else:
+            series = [
+                {
+                    "name": serie[0],
+                }
+                for serie in series
+            ]
+
+        songs.append(
+            {
+                "id": row[0],
+                "title": row[1],
+                "duration": row[2],
+                "explicit": row[3],
+                "type": row[4],
+                "voice_percent": row[5],
+                "rap_percent": row[6],
+                "popularity_percent": row[7],
+                "isrc": row[8],
+                "weird_percent": row[9],
+                "popularity_tidal": row[10],
+                "tidal_id": row[11],
+                "album": {
+                    "title": row[12],
+                    "release_date": row[13],
+                    "tidal_id": row[14],
+                    "tidal_cover": row[15],
+                },
+                "artists": artists,
+                "languages": languages,
+                "genres": genres,
+                "feels": feels,
+                "speeds": speeds,
+                "folders": folders,
+                "series": series,
+            }
+        )
+
+    playlist["songs"] = songs
+
+    conn.close()
+    return playlist
 
 
 def delete_playlist_by_id(playlist_id):
@@ -1001,7 +1666,7 @@ def edit_playlist_by_id(playlist_id, settings):
     pass
 
 
-def add_tidal_token(user_id, tidal_token):
+def add_tidal_user_token(user_id, tidal_token):
     """
     Fügt einen TIDAL-Token zu einem Benutzer hinzu
 
@@ -1011,23 +1676,45 @@ def add_tidal_token(user_id, tidal_token):
     """
     conn, c = open_database()
 
-    # Speichere den TIDAL-Account in der Datenbank
+    # Überprüfe, ob der Benutzer bereits einen TIDAL-Account hat,
+    # falls ja, dann aktualisiere den Token und die Ablaufzeit des Tokens
     c.execute(
-        "INSERT INTO tidal_credentials (token_type, access_token, refresh_token, expiry_time) VALUES (?, ?, ?, ?)",
-        (
-            tidal_token["token_type"],
-            tidal_token["access_token"],
-            tidal_token["refresh_token"],
-            tidal_token["expiry_time"].timestamp(),
-        ),
+        "SELECT tidal_account_id FROM users WHERE id = ?",
+        (user_id,),
     )
-    tidal_account_id = c.lastrowid
+    tidal_account_id = c.fetchone()[0]
+    if tidal_account_id is not None:
+        # Aktualisiere den Token und die Ablaufzeit des Tokens
+        c.execute(
+            "UPDATE tidal_credentials SET token_type = ?, access_token = ?, refresh_token = ?, expiry_time = ? WHERE id = ?",
+            (
+                tidal_token["token_type"],
+                tidal_token["access_token"],
+                tidal_token["refresh_token"],
+                tidal_token["expiry_time"].timestamp(),
+                tidal_account_id,
+            ),
+        )
+    # Falls der Benutzer noch keinen TIDAL-Account hat, dann erstelle einen neuen
+    else:
+        # Speichere den TIDAL-Account in der Datenbank
+        c.execute(
+            "INSERT INTO tidal_credentials (token_type, access_token, refresh_token, expiry_time) VALUES (?, ?, ?, ?)",
+            (
+                tidal_token["token_type"],
+                tidal_token["access_token"],
+                tidal_token["refresh_token"],
+                tidal_token["expiry_time"].timestamp(),
+            ),
+        )
+        tidal_account_id = c.lastrowid
 
-    # Verknüpfe den TIDAL-Account mit dem Benutzer
-    c.execute(
-        "UPDATE users SET tidal_account_id = ? WHERE id = ?",
-        (tidal_account_id, user_id),
-    )
+        # Verknüpfe den TIDAL-Account mit dem Benutzer
+        c.execute(
+            "UPDATE users SET tidal_account_id = ? WHERE id = ?",
+            (tidal_account_id, user_id),
+        )
+
     conn.commit()
     conn.close()
 
