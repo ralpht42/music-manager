@@ -1,0 +1,98 @@
+<!-- templates/playlists.html -->
+{% extends "base.html" %} {% block content %}
+<h1 class="title">Playlists</h1>
+<div class="box">
+	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
+	{% with messages = get_flashed_messages() %} {% if messages %}
+	<div class="notification is-danger">
+		<button class="delete"></button>
+		<p>{{ messages[0] }}</p>
+	</div>
+	{% endif %} {% endwith %}
+	
+	<table class="table is-fullwidth">
+		<thead>
+			<tr>
+				<th>Playlist</th>
+				<th>Erstellt am</th>
+				<th>Erstellt von</th>
+				<th>Letzte Änderung am</th>
+				<th>Letzte Änderung von</th>
+				<th>Typ</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for playlist in playlists %}
+			<tr>
+				<td>{{ playlist.name }}</td>
+				<td>{{ playlist.created_at }}</td>
+				<td>{{ playlist.created_by }}</td>
+				<td>{{ playlist.updated_at }}</td>
+				<td>{{ playlist.updated_by }}</td>
+				{% if playlist.manual == true %}
+				<td>
+					<span class="tag is-warning">Manuell</span>
+				</td>
+				{% else %}
+				<td>
+					<span class="tag is-success">Automatisch</span>
+				</td>
+				{% endif %}
+				<td>
+					<a
+						class="button is-small is-warning load-on-click"
+						href="{{ url_for('music.playlist_details', playlist_id=playlist.id) }}"
+					>
+						<span class="icon is-small">
+							<i class="material-symbols-outlined">edit</i>
+						</span>
+					</a>
+				</td>
+				<td>
+					<button
+						class="button is-small is-danger load-on-click"
+						type="button"
+						onclick="deletePlaylist('{{ playlist.id }}')"
+					>
+						<span class="icon is-small">
+							<i class="material-symbols-outlined">delete</i>
+						</span>
+					</button>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<a class="button is-info" href="{{ url_for('music.playlist_create') }}">
+		<span class="icon is-small">
+			<i class="material-symbols-outlined">add</i>
+		</span>
+		<span>Neue Playlist</span>
+	</a>
+</div>
+
+<script>
+		// Lösche Playlist (AJAX Workaround für DELETE Request)
+		function deletePlaylist(playlist_id) {
+		fetch('/playlist/' + playlist_id, {
+			method: 'DELETE',
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data)
+				if (data.success) {
+					window.location.reload()
+				}
+			})
+	}
+
+	// Lade Animation bei Klick auf Button
+	const loadOnClick = document.querySelectorAll('.load-on-click')
+	loadOnClick.forEach((element) => {
+		element.addEventListener('click', () => {
+			element.classList.add('is-loading')
+		})
+	})
+</script>
+{% endblock %}
