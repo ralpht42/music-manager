@@ -15,7 +15,7 @@ from flask import (
 from flask_login import login_required, current_user
 import tidalapi
 
-from database import add_tidal_token
+from database import add_tidal_user_token
 
 
 def login_thread(user_id, future, tidal_session):
@@ -29,7 +29,7 @@ def login_thread(user_id, future, tidal_session):
         return
 
     # Speichern Sie den Token in der Datenbank
-    add_tidal_token(
+    add_tidal_user_token(
         user_id,
         {
             "token_type": tidal_session.token_type,

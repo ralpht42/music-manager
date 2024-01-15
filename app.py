@@ -6,6 +6,7 @@ from flask_login import LoginManager
 
 from database import init_database, get_user_by_id
 
+__version__ = "0.1.2"
 
 def create_app():
     app = Flask(__name__)
@@ -28,6 +29,10 @@ def create_app():
     else:
         app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
+    """
+    # Aufgrund von Limitierungen der TIDAL-API sind die folgenden Umgebungsvariablen 
+    # nicht mehr erforderlich. Sobald die Anwendung weit genug entwickelt ist, 
+    # wird möglicherweise die Entwicklung mit der TIDAL-API fortgesetzt.
     if (
         os.environ.get("TIDAL_APP_CLIENT_ID") is None
         or os.environ.get("TIDAL_APP_CLIENT_SECRET") is None
@@ -40,7 +45,8 @@ def create_app():
         app.config["TIDAL_APP_CLIENT_SECRET"] = os.environ.get(
             "TIDAL_APP_CLIENT_SECRET"
         )
-
+        app.config["TIDAL_APP_TOKEN"] = None # Wird bei den Aufrufen der TIDAL-API gesetzt, falls noch nicht gesetzt
+    """
     init_database()
 
     login_manager = LoginManager()
@@ -79,8 +85,5 @@ def create_app():
 
 app = create_app() # Wird auch von Gunicorn verwendet, um die App zu starten
 
-# Für das lokale Testen der App (ohne Gunicorn, z.B. mit "python app.py")
-# Es wird empfohlen, eine virtuelle Umgebung zu verwenden (z.B. mit "python -m venv venv")
-# und die Abhängigkeiten mit "pip install -r requirements.txt" zu installieren
 if __name__ == "__main__":
     app.run()

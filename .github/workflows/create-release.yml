@@ -1,0 +1,25 @@
+name: Create new Release
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+
+jobs:
+  Release:
+    if: ${{ !contains(github.event.head_commit.message, 'chore(release):') }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN_PAT }}
+      - name: Python Semantic Release
+        uses: python-semantic-release/python-semantic-release@1d2bbdf23aab816cd9d6e26f537b5cec9e39dede # v8.1.2
+        with:
+          github_token: ${{ secrets.GH_TOKEN_PAT }}
+          git_committer_name: "github-actions[bot]"
+          git_committer_email: "41898282+github-actions[bot]@users.noreply.github.com"
