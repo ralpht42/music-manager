@@ -6,6 +6,7 @@ from flask_login import LoginManager
 
 from database import init_database, get_user_by_id
 
+__version__ = "0.1.2"
 
 def create_app():
     app = Flask(__name__)
