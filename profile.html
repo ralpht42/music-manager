@@ -1,0 +1,149 @@
+<!-- templates/profile.html -->
+
+{% extends "base.html" %} {% block content %}
+<h1 class="title">Willkommen, {{ current_user.username }}!</h1>
+<div class="box">
+	<section class="section">
+		{% if current_user.tidal_session %}
+		<div class="box">
+			<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
+			{% with messages = get_flashed_messages() %} {% if messages %}
+			<div class="notification is-danger">
+				<button class="delete"></button>
+				<p>{{ messages[0] }}</p>
+			</div>
+			{% endif %} {% endwith %}
+
+			<h3 class="title has-text-dark">Tidal-Konto</h3>
+			<p>Benutzername: {{ current_user.tidal_session.user.username }}</p>
+			<p>
+				Profilname: {{
+				current_user.tidal_session.user.profile_metadata.profileName }}
+			</p>
+			<p>
+				E-Mail Adresse: {{
+				current_user.tidal_session.user.profile_metadata.email }} {% if
+				current_user.tidal_session.user.profile_metadata.emailVerified %}
+				<span class="tag is-success">bestätigt</span> {% else %}
+				<span class="tag is-warning">nicht bestätigt</span>
+				{% endif %}
+			</p>
+			<p>Land: {{ current_user.tidal_session.country_code }}</p>
+			<p>
+				Erstellt am: {{ current_user.tidal_session.user.profile_metadata.created
+				}}
+			</p>
+			<p>
+				Login läuft ab in {{ (tidal_expires_in / (60 * 60 * 24) )|round(2) }}
+				Tagen, bzw. {{ tidal_expires_in|int }} Sekunden.
+			</p>
+		</div>
+
+		{% elif current_user.get_future()==None %}
+		<p>Sie haben noch kein Tidal-Konto hinzugefügt.</p>
+		<a href="{{ url_for('main.login_tidal') }}" class="button" target="_blank">
+			<svg
+				class="icon"
+				xmlns="http://www.w3.org/2000/svg"
+				x="0px"
+				y="0px"
+				width="100"
+				height="100"
+				viewBox="0 0 48 48"
+			>
+				<linearGradient
+					id="mj306nPyIawCR7dgDrvLUa_c1Sd6GHCDlb9_gr1"
+					x1="24"
+					x2="24"
+					y1="5.023"
+					y2="41.578"
+					gradientUnits="userSpaceOnUse"
+				>
+					<stop offset="0" stop-color="#4b4b4b"></stop>
+					<stop offset=".247" stop-color="#3e3e3e"></stop>
+					<stop offset=".686" stop-color="#2b2b2b"></stop>
+					<stop offset="1" stop-color="#252525"></stop>
+				</linearGradient>
+				<path
+					fill="url(#mj306nPyIawCR7dgDrvLUa_c1Sd6GHCDlb9_gr1)"
+					d="M37,42H11c-2.761,0-5-2.239-5-5V11c0-2.761,2.239-5,5-5h26c2.761,0,5,2.239,5,5v26	C42,39.761,39.761,42,37,42z"
+				></path>
+				<rect
+					width="5.657"
+					height="5.657"
+					x="21.172"
+					y="18.172"
+					fill="#fff"
+					transform="rotate(-45.001 24 21)"
+				></rect>
+				<rect
+					width="5.657"
+					height="5.657"
+					x="29.172"
+					y="18.172"
+					fill="#fff"
+					transform="rotate(-45.001 32 21)"
+				></rect>
+				<rect
+					width="5.657"
+					height="5.657"
+					x="13.172"
+					y="18.172"
+					fill="#fff"
+					transform="rotate(-45.001 16 21)"
+				></rect>
+				<rect
+					width="5.657"
+					height="5.657"
+					x="21.172"
+					y="26.172"
+					fill="#fff"
+					transform="rotate(-45.001 24 29)"
+				></rect>
+			</svg>
+			<span class="">Tidal-Konto hinzufügen</span>
+		</a>
+
+		{% endif %}
+	</section>
+	<section class="section">
+		<table class="table is-fullwidth is-narrow is-hoverable">
+			<thead>
+				<tr>
+					<th>Benutzername</th>
+					<th>E-Mail</th>
+					<th>Admin</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ current_user.username }}</td>
+					<td>{{ current_user.email }}</td>
+					<td>
+						{% if current_user.is_admin %}
+						<i class="material-symbols-outlined">done</i> {% else %}
+						<i class="material-symbols-outlined">close</i>
+						{% endif %}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	<section class="section">
+		<table class="table is-fullwidth is-narrow is-hoverable">
+			<thead>
+				<tr>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for playlist in playlists %}
+				<tr>
+					<td>{{ playlist.name }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</section>
+</div>
+{% endblock %}

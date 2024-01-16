@@ -1,0 +1,145 @@
+<!-- templates/jobs.html -->
+{% extends "base.html" %} {% block content %}
+<h1 class="title">Jobs</h1>
+<div class="box">
+	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
+	{% with messages = get_flashed_messages() %} {% if messages %}
+	<div class="notification is-danger">
+		<button class="delete"></button>
+		<p>{{ messages[0] }}</p>
+	</div>
+	{% endif %} {% endwith %}
+
+	<form
+		action="{{ url_for('music.job_upload_file') }}"
+		method="POST"
+		enctype="multipart/form-data"
+	>
+		<div id="excel_file_upload" class="file has-name is-primary">
+			<label class="file-label">
+				<input class="file-input" type="file" name="song_excel_file" />
+				<span class="file-cta pl-3">
+					<span class="file-icon">
+						<i class="material-symbols-outlined">attach_file</i>
+					</span>
+					<span class="file-label">Song Datei auswählen</span>
+				</span>
+				<span class="file-name">Keine Datei ausgewählt</span>
+			</label>
+		</div>
+		<button class="button is-info load-on-click" type="submit">
+			<span class="icon is-small">
+				<i class="material-symbols-outlined">upload_file</i>
+			</span>
+			<span>Hochladen</span>
+		</button>
+	</form>
+	<table class="table is-fullwidth">
+		<thead>
+			<tr>
+				<th>Job</th>
+				<th>Erstellt am</th>
+				<th>Erstellt von</th>
+				<th>Letzte Änderung am</th>
+				<th>Letzte Änderung von</th>
+				<th>Typ</th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for job in jobs %}
+			<tr>
+				<td>{{ job.name }}</td>
+				<td>{{ job.created_at }}</td>
+				<td>{{ job.created_by }}</td>
+				<td>{{ job.updated_at }}</td>
+				<td>{{ job.updated_by }}</td>
+
+				<td>
+					{% if job.manual == true %}
+					<span class="tag is-warning">Manuell</span>
+					{% else %}
+					<span class="tag is-success">Automatisch</span>
+					{% endif %}
+				</td>
+
+				<td>
+					<form action="{{ url_for('music.playlist_create') }}" method="POST">
+						<input type="hidden" name="job_id" value="{{ job.id }}" />
+						<button class="button is-small is-info" type="submit">
+							<span class="icon is-small">
+								<i class="material-symbols-outlined">playlist_add</i>
+							</span>
+						</button>
+					</form>
+				</td>
+				<td>
+					<a
+						class="button is-small is-warning load-on-click"
+						href="{{ url_for('music.job_details', job_id=job.id) }}"
+					>
+						<span class="icon is-small">
+							<i class="material-symbols-outlined">edit</i>
+						</span>
+					</a>
+				</td>
+				<td>
+					<button
+						class="button is-small is-danger load-on-click"
+						type="button"
+						onclick="deleteJob('{{ job.id }}')"
+					>
+						<span class="icon is-small">
+							<i class="material-symbols-outlined">delete</i>
+						</span>
+					</button>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<a class="button is-info" href="{{ url_for('music.job_create') }}">
+		<span class="icon is-small">
+			<i class="material-symbols-outlined">add</i>
+		</span>
+		<span>Job erstellen</span>
+	</a>
+</div>
+
+<script>
+	// Dateiname anzeigen, wenn Datei ausgewählt wurde
+	const fileInput = document.querySelector(
+		'#excel_file_upload input[type=file]',
+	)
+	fileInput.onchange = () => {
+		if (fileInput.files.length > 0) {
+			const fileName = document.querySelector('#excel_file_upload .file-name')
+			fileName.textContent = fileInput.files[0].name
+		}
+	}
+
+	// Lösche Job (AJAX Workaround für DELETE Request)
+	function deleteJob(job_id) {
+		fetch('/job/' + job_id, {
+			method: 'DELETE',
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data)
+				if (data.success) {
+					window.location.reload()
+				}
+			})
+	}
+
+	// Lade Animation bei Klick auf Button
+	const loadOnClick = document.querySelectorAll('.load-on-click')
+	loadOnClick.forEach((element) => {
+		element.addEventListener('click', () => {
+			element.classList.add('is-loading')
+		})
+	})
+</script>
+{% endblock %}
