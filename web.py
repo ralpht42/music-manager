@@ -14,7 +14,7 @@ from database import (
     signup_user as signup_user_db,
     login_user as login_user_db,
     get_user_by_id as get_user_by_id_db,
-)  
+)
 
 from user import User
 
@@ -28,6 +28,7 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     return get_user_by_id_db(user_id)
+
 
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -113,6 +114,7 @@ def login():
 def logout():
     logout_user_flask()
     return redirect(url_for("logout_success"))
+
 
 @app.route("/logout-success")
 def logout_success():

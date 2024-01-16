@@ -9,7 +9,7 @@
 		<p>{{ messages[0] }}</p>
 	</div>
 	{% endif %} {% endwith %}
-	
+
 	<table class="table is-fullwidth">
 		<thead>
 			<tr>
@@ -73,8 +73,8 @@
 </div>
 
 <script>
-		// Lösche Playlist (AJAX Workaround für DELETE Request)
-		function deletePlaylist(playlist_id) {
+	// Lösche Playlist (AJAX Workaround für DELETE Request)
+	function deletePlaylist(playlist_id) {
 		fetch('/playlist/' + playlist_id, {
 			method: 'DELETE',
 		})
