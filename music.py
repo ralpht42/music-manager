@@ -7,7 +7,12 @@ from flask import request, redirect, url_for, flash, jsonify
 from database import import_excel_songs_manually, get_job_by_id
 from database import get_jobs_by_user_id, delete_job_by_id
 from database import get_job_song_by_id, update_job_song_by_id, delete_job_song_by_id
-from database import create_playlist_from_job, get_playlists_by_user_id, get_playlist_by_id, delete_playlist_by_id
+from database import (
+    create_playlist_from_job,
+    get_playlists_by_user_id,
+    get_playlist_by_id,
+    delete_playlist_by_id,
+)
 
 music = Blueprint("music", __name__)
 
@@ -119,7 +124,9 @@ def job_song_delete(job_id, song_id):
 @music.route("/playlists")
 @login_required
 def playlists():
-    return render_template("playlists.html", playlists=get_playlists_by_user_id(current_user.id))
+    return render_template(
+        "playlists.html", playlists=get_playlists_by_user_id(current_user.id)
+    )
 
 
 @music.route("/playlist/create", methods=["POST"])

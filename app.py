@@ -8,6 +8,7 @@ from database import init_database, get_user_by_id
 
 __version__ = "0.2.0"
 
+
 def create_app():
     app = Flask(__name__)
 
@@ -83,7 +84,7 @@ def create_app():
     return app
 
 
-app = create_app() # Wird auch von Gunicorn verwendet, um die App zu starten
+app = create_app()  # Wird auch von Gunicorn verwendet, um die App zu starten
 
 if __name__ == "__main__":
     app.run()

@@ -1076,15 +1076,16 @@ def create_playlist_from_job(job_id):
                     # Titel und Künstler stimmen überein
                     tidal_song = tidal_song_candidate
                     print(
-                        f"Song \"{tidal_song.name}\" wurde als Übereinstimmung gefunden"
+                        f'Song "{tidal_song.name}" wurde als Übereinstimmung gefunden'
                     )
                     break
-        
+
         if tidal_song is None:
             # Kein Song wurde gefunden, obwohl die Suche mindestens einen Song zurückgegeben hat
-            print(f"Es wurde trotz Suchergebnissen kein Song für \"{song['title']}\" gefunden")
+            print(
+                f"Es wurde trotz Suchergebnissen kein Song für \"{song['title']}\" gefunden"
+            )
             continue
-        
 
         # tidal_song = tidal_songs["tracks"][0] # Alternativ: Nimm den ersten Song aus der Liste
 

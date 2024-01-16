@@ -159,7 +159,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-
 # Mac OS
 #  For more information regarding the .DS_Store files, see: http://en.wikipedia.org/wiki/.DS_Store
 #  https://developer.apple.com/library/mac/documentation/FileSystem/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html

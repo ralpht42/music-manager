@@ -10,7 +10,7 @@
 		<p>{{ messages[0] }}</p>
 	</div>
 	{% endif %} {% endwith %}
-	
+
 	<form
 		action="{{ url_for('music.job_song_update', job_id=job.id, song_id=song.id) }}"
 		method="post"

@@ -3,7 +3,9 @@ import musicbrainzngs
 
 class musicbrainz:
     def __init__(self):
-        musicbrainzngs.set_useragent("Special Music Manager", "0.1", "musicmanager@rberry.de")
+        musicbrainzngs.set_useragent(
+            "Special Music Manager", "0.1", "musicmanager@rberry.de"
+        )
 
     def search_artist(self, artist):
         result = musicbrainzngs.search_artists(artist)
@@ -16,6 +18,7 @@ class musicbrainz:
     def search_recording(self, artist, recording):
         result = musicbrainzngs.search_recordings(artist=artist, recording=recording)
         return result
+
 
 if __name__ == "__main__":
     musicbrainz_instance = musicbrainz()
