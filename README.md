@@ -1,5 +1,12 @@
 # music-manager
 
+## Status
+[![Last PR](https://github.com/ralpht42/music-manager/actions/workflows/build-pr.yml/badge.svg)](https://github.com/ralpht42/music-manager/actions/workflows/build-pr.yml)
+[![Last Release](https://github.com/ralpht42/music-manager/actions/workflows/create-release.yml/badge.svg)](https://github.com/ralpht42/music-manager/actions/workflows/create-release.yml)
+[![Build and Publish to GitHub Container Registry](https://github.com/ralpht42/music-manager/actions/workflows/build-release.yml/badge.svg)](https://github.com/ralpht42/music-manager/actions/workflows/build-release.yml)
+[![CodeQL](https://github.com/ralpht42/music-manager/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/ralpht42/music-manager/actions/workflows/github-code-scanning/codeql)
+
+
 ## Beschreibung
 
 ... TODO ...
