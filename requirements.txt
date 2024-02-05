@@ -1,4 +1,4 @@
-flask==3.0.1
+flask==3.0.2
 flask_login==0.6.3
 tidalapi==0.7.3
 musicbrainzngs==0.7.1
