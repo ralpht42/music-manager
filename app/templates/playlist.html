@@ -12,9 +12,21 @@
 	{% endif %} {% endwith %}
 
 	<div class="table-container">
+		{% if playlist.songs.count() == 0 %}
+		<p class="has-text-centered is-size-4">Keine Songs vorhanden</p>
+		<div class="level">
+			<img
+				src="https://media.giphy.com/media/jou4Cd2mx1lGU/giphy.gif"
+				alt="Trauriger Mann"
+				class="level-item"
+			/>
+		</div>
+
+		{% else %}
+
 		<table class="table is-fullwidth is-narrow is-hoverable">
 			<thead>
-				<tr>
+				<tr class="no-wrap">
 					<th>Titel</th>
 					<th>Interpret</th>
 					<th>Veröffentlichung</th>
@@ -25,9 +37,8 @@
 					<th>Typ</th>
 					<th>Geschwindigkeit</th>
 					<th>Anteil Gesang</th>
-					<th>Anteil Rap (von Gesang)</th>
+					<th>Anteil Rap</th>
 					<th>Bekanntheit</th>
-					<th>Bekanntheit TIDAL</th>
 					<th>Anteil Weird</th>
 					<th>Legende</th>
 					<th>Ordner</th>
@@ -36,20 +47,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% if playlist.songs is none %}
-				<tr>
-					<td colspan="17">Keine Songs vorhanden</td>
-				</tr>
-				{% else %} {% for song in playlist.songs %}
+				{% for song in playlist.songs %}
 				<tr>
 					<td>
 						<div class="columns is-vcentered">
 							<div class="column is-narrow">
-								{% if song.album.tidal_cover is none %} {% else %}
+								{% if song.Album is not none and song.Album.tidal_cover_url is
+								not none %}
 								<figure class="image is-32x32">
 									<img
 										class="is-rounded"
-										src="https://resources.tidal.com/images/{{ song.album.tidal_cover.replace('-','/') }}/160x160.jpg"
+										src="https://resources.tidal.com/images/{{ song.Album.tidal_cover_url.replace('-','/') }}/160x160.jpg"
 										alt="Bild von {{ song.title }}"
 									/>
 								</figure>
@@ -65,11 +73,11 @@
 						{% for artist in song.artists %}
 						<div class="columns is-vcentered">
 							<div class="column is-narrow">
-								{% if artist.tidal_cover is none %} {% else %}
+								{% if artist.tidal_cover_url is not none %}
 								<figure class="image is-32x32">
 									<img
 										class="is-rounded"
-										src="https://resources.tidal.com/images/{{ artist.tidal_cover.replace('-','/') }}/160x160.jpg"
+										src="https://resources.tidal.com/images/{{ artist.tidal_cover_url.replace('-','/') }}/160x160.jpg"
 										alt="Bild von {{ artist.name }}"
 									/>
 								</figure>
@@ -79,17 +87,17 @@
 								<p>{{ artist.name }}</p>
 							</div>
 							<div class="column">
-								<span class="tag is-info">{{ artist.role }}</span>
+								<span class="tag is-info"
+									>{{ artist.get_role_for_song(song).name }}</span
+								>
 							</div>
 						</div>
 						{% endfor %}
 					</td>
 
 					<td>
-						{% if song.album.release_date is none %} - {% else %} {{
-						song.album.release_date.split('-')[2].split('T')[0] }}.{{
-						song.album.release_date.split('-')[1] }}.{{
-						song.album.release_date.split('-')[0] }} {% endif %}
+						{% if song.release_year is not none %} {{ song.release_year
+						}} {% endif %}
 					</td>
 
 					<td>
@@ -112,7 +120,8 @@
 					</td>
 
 					<td>
-						{% if song.type is none %} - {% else %} {{ song.type }} {% endif %}
+						{% if song.SongType is not none %} {{ song.SongType.name }}
+						{% endif %}
 					</td>
 
 					<td>
@@ -125,8 +134,8 @@
 						{% set voice_percent = song.voice_percent|float if
 						song.voice_percent not in [None, ''] else 0 %}
 						<progress
-							class="progress {% if voice_percent < 0.35 %}is-danger {% elif voice_percent < 0.65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ voice_percent * 100 }}"
+							class="progress {% if voice_percent < 35 %}is-danger {% elif voice_percent < 65 %}is-warning {% else %}is-success{% endif %}"
+							value="{{ voice_percent }}"
 							max="100"
 						>
 							{{ voice_percent * 100 }}%
@@ -136,34 +145,22 @@
 						{% set rap_percent = song.rap_percent|float if song.rap_percent not
 						in [None, ''] else 0 %}
 						<progress
-							class="progress {% if rap_percent < 0.35 %}is-danger {% elif rap_percent < 0.65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ rap_percent * 100 }}"
+							class="progress {% if rap_percent < 35 %}is-danger {% elif rap_percent < 65 %}is-warning {% else %}is-success{% endif %}"
+							value="{{ rap_percent }}"
 							max="100"
 						>
-							{{ rap_percent * 100 }}%
+							{{ rap_percent }}%
 						</progress>
 					</td>
 					<td>
-						{% set popularity = song.popularity_percent|float if
+						{% set popularity_percent = song.popularity_percent|float if
 						song.popularity_percent not in [None, ''] else 0 %}
 						<progress
-							class="progress {% if popularity < 0.35 %}is-danger {% elif popularity < 0.65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ popularity * 100 }}"
+							class="progress {% if popularity_percent < 35 %}is-danger {% elif popularity_percent < 65 %}is-warning {% else %}is-success{% endif %}"
+							value="{{ popularity_percent }}"
 							max="100"
 						>
-							{{ popularity * 100 }}%
-						</progress>
-					</td>
-
-					<td>
-						{% set popularity_tidal = song.popularity_tidal / 100|float if
-						song.popularity_tidal not in [None, ''] else 0 %}
-						<progress
-							class="progress {% if popularity_tidal < 0.35 %}is-danger {% elif popularity_tidal < 0.65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ popularity_tidal * 100 }}"
-							max="100"
-						>
-							{{ popularity_tidal * 100 }}%
+							{{ popularity_percent }}%
 						</progress>
 					</td>
 
@@ -171,14 +168,18 @@
 						{% set weird_percent = song.weird_percent|float if
 						song.weird_percent not in [None, ''] else 0 %}
 						<progress
-							class="progress {% if weird_percent < 0.35 %}is-danger {% elif weird_percent < 0.65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ weird_percent * 100 }}"
+							class="progress {% if weird_percent < 35 %}is-danger {% elif weird_percent < 65 %}is-warning {% else %}is-success{% endif %}"
+							value="{{ weird_percent }}"
 							max="100"
 						>
-							{{ weird_percent * 100 }}%
+							{{ weird_percent }}%
 						</progress>
 					</td>
-					<td>Platzhalter für Legende</td>
+					<td>
+						{% for tag in song.tags %} {% if tag.name == 'Legend' %}
+						<span class="tag is-warning">Legende</span> {% endif %} {% endfor %}
+					</td>
+
 					<td>
 						{% for folder in song.folders %}
 						<span class="tag is-info">{{ folder.name }}</span>
@@ -194,7 +195,7 @@
 					<td>
 						<a
 							class="button is-small is-info"
-							href="{{ url_for('music.playlist_edit', playlist_id=playlist.id) }}"
+							href="{{ url_for('playlists.playlist_edit', playlist_id=playlist.id) }}"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">edit</i>
@@ -204,7 +205,7 @@
 					<td>
 						<a
 							class="button is-small is-danger"
-							href="{{ url_for('music.playlist_delete', playlist_id=playlist.id) }}"
+							href="{{ url_for('playlists.playlist_delete', playlist_id=playlist.id) }}"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">delete</i>
@@ -212,9 +213,11 @@
 						</a>
 					</td>
 				</tr>
-				{% endfor %} {% endif %}
+				{% endfor %}
 			</tbody>
 		</table>
+
+		{% endif %}
 	</div>
 </div>
 

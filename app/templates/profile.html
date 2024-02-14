@@ -30,16 +30,18 @@
 			</p>
 			<p>Land: {{ current_user.tidal_session.country_code }}</p>
 			<p>
-				Erstellt am: {{ current_user.tidal_session.user.profile_metadata.created
-				}}
+				Erstellt am: {{
+				current_user.tidal_session.user.profile_metadata.created[:10] }}
 			</p>
 			<p>
-				Login läuft ab in {{ (tidal_expires_in / (60 * 60 * 24) )|round(2) }}
-				Tagen, bzw. {{ tidal_expires_in|int }} Sekunden.
+				Login läuft in {{ ((tidal_expires_in | int) // (60 * 60 * 24) ) | int}}
+				Tagen, {{ ((tidal_expires_in | int) // (60 * 60) ) % 24 | int}} Stunden,
+				{{ ((tidal_expires_in | int) // 60 ) % 60 | int}} Minuten und {{
+				(tidal_expires_in | int) % 60 | int}} Sekunden ab.
 			</p>
 		</div>
 
-		{% elif current_user.get_future()==None %}
+		{% elif current_user.get_tidal_future()==None %}
 		<p>Sie haben noch kein Tidal-Konto hinzugefügt.</p>
 		<a href="{{ url_for('main.login_tidal') }}" class="button" target="_blank">
 			<svg
@@ -126,22 +128,6 @@
 						{% endif %}
 					</td>
 				</tr>
-			</tbody>
-		</table>
-	</section>
-	<section class="section">
-		<table class="table is-fullwidth is-narrow is-hoverable">
-			<thead>
-				<tr>
-					<th>Name</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for playlist in playlists %}
-				<tr>
-					<td>{{ playlist.name }}</td>
-				</tr>
-				{% endfor %}
 			</tbody>
 		</table>
 	</section>

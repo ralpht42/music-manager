@@ -13,7 +13,7 @@ RUN npm install
 # For more information, please refer to https://aka.ms/vscode-docker-python
 FROM python:3.12.1-slim-bookworm AS base
 
-WORKDIR /app
+WORKDIR /opt/music-manager
 
 # Kopiere die installierten Pakete vom npm-Container in dein Hauptimage
 COPY --from=npm-container /usr/src/app/node_modules ./node_modules
@@ -40,14 +40,15 @@ ENV PYTHONUNBUFFERED=1
 
 # Set environment variable to enable debug mode
 ENV FLASK_ENV="development"
-ENV FLASK_APP=app.py
+ENV FLASK_APP=app/__init__.py
 ENV FLASK_DEBUG=1
 
-COPY . .
+COPY config.py .
+COPY ./app ./app
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /opt/music-manager
 USER appuser
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
@@ -62,7 +63,8 @@ EXPOSE 8080
 # TODO: Dependabot soll die Version aktualisieren
 RUN pip install gunicorn==20.1.0
 
-COPY . .
+COPY config.py .
+COPY ./app ./app
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers

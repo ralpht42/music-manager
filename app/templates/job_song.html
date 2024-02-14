@@ -12,7 +12,7 @@
 	{% endif %} {% endwith %}
 
 	<form
-		action="{{ url_for('music.job_song_update', job_id=job.id, song_id=song.id) }}"
+		action="{{ url_for('jobs.job_song_update', job_id=job.id, song_id=song.id) }}"
 		method="post"
 	>
 		<div class="field">
@@ -235,7 +235,7 @@
 			<div class="control">
 				<a
 					class="button is-info"
-					href="{{ url_for('music.job_details', job_id=job.id) }}"
+					href="{{ url_for('jobs.job_details', job_id=job.id) }}"
 				>
 					<span class="icon is-small">
 						<i class="material-symbols-outlined">arrow_back</i>

@@ -16,6 +16,12 @@
 			rel="stylesheet"
 			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
 		/>
+
+		<style>
+			.no-wrap {
+				white-space: nowrap;
+			}
+		</style>
 	</head>
 	<body>
 		<section class="hero is-dark is-fullheight">
@@ -38,11 +44,14 @@
 						<div class="navbar-menu">
 							<div class="navbar-end">
 								{% if current_user.is_authenticated %}
-								<a href="{{ url_for('music.jobs') }}" class="navbar-item">
+								<a href="{{ url_for('jobs.index') }}" class="navbar-item">
 									Jobs
 								</a>
 								{% endif %} {% if current_user.is_authenticated %}
-								<a href="{{ url_for('music.playlists') }}" class="navbar-item">
+								<a
+									href="{{ url_for('playlists.index') }}"
+									class="navbar-item"
+								>
 									Playlists
 								</a>
 								{% endif %} {% if current_user.is_authenticated %}

@@ -29,7 +29,7 @@
         "volumes": [
           {
             "localPath": "${workspaceFolder}",
-            "containerPath": "/app"
+            "containerPath": "/opt/music-manager",
           }
         ]
       },

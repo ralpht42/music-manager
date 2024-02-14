@@ -11,9 +11,10 @@
 	{% endif %} {% endwith %}
 
 	<form
-		action="{{ url_for('music.job_upload_file') }}"
+		action="{{ url_for('jobs.job_upload_file') }}"
 		method="POST"
 		enctype="multipart/form-data"
+		class="is-flex is-justify-content-space-between"
 	>
 		<div id="excel_file_upload" class="file has-name is-primary">
 			<label class="file-label">
@@ -66,19 +67,17 @@
 				</td>
 
 				<td>
-					<form action="{{ url_for('music.playlist_create') }}" method="POST">
-						<input type="hidden" name="job_id" value="{{ job.id }}" />
-						<button class="button is-small is-info" type="submit">
-							<span class="icon is-small">
-								<i class="material-symbols-outlined">playlist_add</i>
-							</span>
-						</button>
-					</form>
+					<a class="button is-small is-info" href="{{ url_for('playlists.playlist_create', job_id=job.id) }}">
+						<span class="icon is-small">
+							<i class="material-symbols-outlined">playlist_add</i>
+						</span>
 				</td>
+
+
 				<td>
 					<a
 						class="button is-small is-warning load-on-click"
-						href="{{ url_for('music.job_details', job_id=job.id) }}"
+						href="{{ url_for('jobs.job_details', job_id=job.id) }}"
 					>
 						<span class="icon is-small">
 							<i class="material-symbols-outlined">edit</i>
@@ -100,12 +99,6 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	<a class="button is-info" href="{{ url_for('music.job_create') }}">
-		<span class="icon is-small">
-			<i class="material-symbols-outlined">add</i>
-		</span>
-		<span>Job erstellen</span>
-	</a>
 </div>
 
 <script>

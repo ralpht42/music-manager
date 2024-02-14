@@ -12,7 +12,7 @@
 
 	<table class="table is-fullwidth">
 		<thead>
-			<tr>
+			<tr class="no-wrap">
 				<th>Playlist</th>
 				<th>Erstellt am</th>
 				<th>Erstellt von</th>
@@ -42,7 +42,7 @@
 				<td>
 					<a
 						class="button is-small is-warning load-on-click"
-						href="{{ url_for('music.playlist_details', playlist_id=playlist.id) }}"
+						href="{{ url_for('playlists.playlist_details', playlist_id=playlist.id) }}"
 					>
 						<span class="icon is-small">
 							<i class="material-symbols-outlined">edit</i>
@@ -64,12 +64,6 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	<a class="button is-info" href="{{ url_for('music.playlist_create') }}">
-		<span class="icon is-small">
-			<i class="material-symbols-outlined">add</i>
-		</span>
-		<span>Neue Playlist</span>
-	</a>
 </div>
 
 <script>
