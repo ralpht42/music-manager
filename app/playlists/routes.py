@@ -52,7 +52,11 @@ def playlist_details(playlist_id):
 @bp.route("/playlist/<int:playlist_id>", methods=["DELETE"])
 @login_required
 def playlist_delete(playlist_id):
-    return redirect(url_for("playlists.index"))
+    playlist = Playlist.query.filter_by(id=playlist_id).first()
+    db.session.delete(playlist)
+    db.session.commit()
+
+    return jsonify({"success": True})
 
 
 @bp.route("/playlist/<int:playlist_id>/refresh", methods=["PATCH"])
@@ -69,10 +73,7 @@ def playlist_refresh(playlist_id):
             if song.tidal_song_id is None:
                 song.search_in_tidal()
 
-        success = True
+        return jsonify({"success": True})
     except Exception as e:
         print(e)
-        success = False
-
-    response = {"success": success}
-    return jsonify(response)
+        return jsonify({"success": False})
