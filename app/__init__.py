@@ -33,13 +33,17 @@ def create_app(config_class=Config):
 
     app.register_blueprint(auth_blueprint)
 
-    from app.main import bp as main_bp
+    from app.main import bp as main_blueprint
 
-    app.register_blueprint(main_bp)
+    app.register_blueprint(main_blueprint)
 
     from app.playlists import bp as playlists_blueprint
 
     app.register_blueprint(playlists_blueprint)
+
+    from app.songs import bp as songs_blueprint
+
+    app.register_blueprint(songs_blueprint)
 
     """
     Die Login-Verwaltung wird über Flask-Login realisiert.

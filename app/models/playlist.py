@@ -1,7 +1,5 @@
 from datetime import datetime
 
-import tidalapi
-
 from app.extensions import db
 
 song_playlist = db.Table(
@@ -44,3 +42,4 @@ class Playlist(db.Model):
             self.songs.append(song)
         db.session.add(self)
         db.session.commit()
+        

@@ -20,6 +20,8 @@
 				<th>Letzte Änderung von</th>
 				<th>Typ</th>
 				<th></th>
+				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -39,6 +41,17 @@
 					<span class="tag is-success">Automatisch</span>
 				</td>
 				{% endif %}
+				<td>
+					<button
+						class="button is-small is-info"
+						type="button"
+						onclick="refreshPlaylist('{{ playlist.id }}')"
+					>
+						<span class="icon is-small">
+							<i class="material-symbols-outlined">refresh</i>
+						</span>
+					</button>
+				</td>
 				<td>
 					<a
 						class="button is-small is-warning load-on-click"
@@ -71,6 +84,20 @@
 	function deletePlaylist(playlist_id) {
 		fetch('/playlist/' + playlist_id, {
 			method: 'DELETE',
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data)
+				if (data.success) {
+					window.location.reload()
+				}
+			})
+	}
+
+	// Aktualisiert die Playlist
+	function refreshPlaylist(playlist_id) {
+		fetch('/playlist/' + playlist_id + '/refresh', {
+			method: 'PATCH',
 		})
 			.then((response) => response.json())
 			.then((data) => {

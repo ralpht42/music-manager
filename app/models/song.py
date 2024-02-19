@@ -1,5 +1,8 @@
-from app.extensions import db
+from flask_login import current_user
+import tidalapi
 
+from app.extensions import db
+from app.helpers import levenshtein_distance_dp
 
 # Die Many-to-Many Beziehungen werden in eigenen Tabellen definiert
 # Die Tabellen werden in der Datenbank automatisch erstellt
@@ -158,6 +161,7 @@ class Song(db.Model):
         self,
         title,
         duration=None,
+        release_year=None,
         explicit=None,
         type_id=None,
         album_id=None,
@@ -170,6 +174,7 @@ class Song(db.Model):
     ):
         self.title = title
         self.duration = duration
+        self.release_year = release_year
         self.explicit = explicit
         self.type_id = type_id
         self.album_id = album_id
@@ -179,6 +184,77 @@ class Song(db.Model):
         self.weird_percent = weird_percent
         self.isrc = isrc
         self.tidal_song_id = tidal_song_id
+
+    def search_in_tidal(self):
+        """
+        Searches for the song in Tidal and extends the song with the found information.
+        """
+
+        session = current_user.get_tidal_session()
+        if session is None:
+            raise Exception("No Tidal session available.")
+
+        search_result = session.search(
+            query=f"{self.title} {self.artists[0].name}",
+            limit=30,
+            models=[tidalapi.media.Track],
+        )
+
+        # Überprüfung, ob es mindestens einen Treffer gibt
+        if len(search_result["tracks"]) == 0:
+            print(f"No track found for {self.title} by {self.artists[0].name}.")
+
+            search_result = session.search(
+                query=f"{self.title}",
+                limit=30,
+                models=[tidalapi.media.Track],
+            )
+
+            if len(search_result["tracks"]) == 0:
+                print(f"No track found for {self.title}.")
+
+                return
+        
+        # Wähle den Song mit der besten Übereinstimmung aus
+        # Die Übereinstimmung wird anhand des Levenshtein-Algorithmus berechnet
+        score_dict = {}
+        for track in search_result["tracks"]:
+            score = levenshtein_distance_dp(self.title, track.name)
+            # TODO: Add more factors to the score (e.g. artist, album, etc.)
+
+            # Vergleiche die Dauer des Songs
+            # In diesem Fall ist ein Unterschied von 5 Sekunden ein Punkt teuer,
+            # d. h. vergleichbar mit einem Unterschied von einem Buchstaben im Titel
+            score += abs(self.duration - track.duration) / 5
+
+            score_dict[track] = score
+
+        best_match = min(score_dict, key=score_dict.get)
+
+        # Erweitere die Informationen des Songs, Albums und der Künstler
+        self.tidal_song_id = best_match.id
+        self.isrc = best_match.isrc
+        
+
+        self.explicit = best_match.explicit
+        
+        if self.Album is None:
+            self.Album = Album(title=best_match.album.name)
+            db.session.add(self.Album)
+        self.Album.tidal_album_id = best_match.album.id
+        self.Album.tidal_cover_url = best_match.album.cover
+
+        for artist in self.artists:
+            # Finde den Künstler in dem Suchergebnis
+            for artist_search in best_match.artists:
+                if artist_search.name == artist.name:
+                    artist.tidal_artist_id = artist_search.id
+                    artist.tidal_cover_url = artist_search.picture
+                    break
+        
+        db.session.add(self)
+        db.session.commit()
+
 
 
 class SongType(db.Model):

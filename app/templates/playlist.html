@@ -29,7 +29,7 @@
 				<tr class="no-wrap">
 					<th>Titel</th>
 					<th>Interpret</th>
-					<th>Veröffentlichung</th>
+					<th>Jahr</th>
 					<th>Sprache</th>
 					<th>Länge</th>
 					<th>Genre</th>
@@ -191,16 +191,16 @@
 						<span class="tag is-info">{{ serie.name }}</span>
 						{% endfor %}
 					</td>
-
 					<td>
-						<a
+						<button
 							class="button is-small is-info"
-							href="{{ url_for('playlists.playlist_edit', playlist_id=playlist.id) }}"
+							type="button"
+							onclick="refreshSong('{{ song.id }}')"
 						>
 							<span class="icon is-small">
-								<i class="material-symbols-outlined">edit</i>
+								<i class="material-symbols-outlined">refresh</i>
 							</span>
-						</a>
+						</button>
 					</td>
 					<td>
 						<a
@@ -220,5 +220,21 @@
 		{% endif %}
 	</div>
 </div>
+
+<script>
+		// Aktualisiert den Song
+		function refreshSong(song_id) {
+			fetch('/song/' + song_id + '/refresh', {
+				method: 'PATCH',
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					console.log(data)
+					if (data.success) {
+						window.location.reload()
+					}
+				})
+		}
+</script>
 
 {% endblock %}

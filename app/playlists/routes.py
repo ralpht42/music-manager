@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, jsonify, flash
 from flask_login import login_required, current_user
 
 from app.playlists import bp
@@ -49,13 +49,30 @@ def playlist_details(playlist_id):
     )
 
 
-@bp.route("/playlist/<int:playlist_id>", methods=["PATCH"])
-@login_required
-def playlist_edit(playlist_id):
-    return render_template("playlist.html", playlist_id=playlist_id)
-
-
 @bp.route("/playlist/<int:playlist_id>", methods=["DELETE"])
 @login_required
 def playlist_delete(playlist_id):
     return redirect(url_for("playlists.index"))
+
+
+@bp.route("/playlist/<int:playlist_id>/refresh", methods=["PATCH"])
+@login_required
+def playlist_refresh(playlist_id):
+    """
+    Refreshes the song data for each song in playlist from TIDAL
+    """
+    playlist = Playlist.query.filter_by(id=playlist_id).first()
+    success = None
+    try:
+        for song in playlist.songs:
+            # Only search for songs that have not been found in TIDAL yet
+            if song.tidal_song_id is None:
+                song.search_in_tidal()
+
+        success = True
+    except Exception as e:
+        print(e)
+        success = False
+
+    response = {"success": success}
+    return jsonify(response)

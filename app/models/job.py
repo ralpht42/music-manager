@@ -103,6 +103,7 @@ class Job(db.Model):
             song = Song(
                 title=row["Title"].strip(),
                 duration=seconds,
+                release_year=row["Year"],
                 type_id=SongType.query.filter_by(name=row["Type"]).first().id,
                 voice_percent=row["Voice %"],
                 rap_percent=row["Rap % from Voice"],
