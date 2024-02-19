@@ -53,7 +53,8 @@
 
 					<td>
 						{% if song.duration is none %} - {% else %} {{ song.duration // 60
-						}}:{{ song.duration % 60 }} {% endif %}
+						}}:{% if song.duration % 60 < 10 %}0{% endif %}{{ song.duration % 60
+						}} {% endif %}
 					</td>
 
 					<td>

@@ -97,8 +97,8 @@
 					</td>
 
 					<td>
-						{% if song.release_year is not none %} {{ song.release_year
-						}} {% endif %}
+						{% if song.release_year is not none %} {{ song.release_year }} {%
+						endif %}
 					</td>
 
 					<td>
@@ -106,7 +106,11 @@
 						ohne {% else %} {{ language.name }} {% endif %} {% endfor %}
 					</td>
 
-					<td>{{ song.duration }}</td>
+					<td>
+						{% if song.duration is none %} - {% else %} {{ song.duration // 60
+						}}:{% if song.duration % 60 < 10 %}0{% endif %}{{ song.duration % 60
+						}} {% endif %}
+					</td>
 
 					<td>
 						{% for genre in song.genres %}
@@ -121,8 +125,8 @@
 					</td>
 
 					<td>
-						{% if song.SongType is not none %} {{ song.SongType.name }}
-						{% endif %}
+						{% if song.SongType is not none %} {{ song.SongType.name }} {% endif
+						%}
 					</td>
 
 					<td>
@@ -223,19 +227,19 @@
 </div>
 
 <script>
-		// Aktualisiert den Song
-		function refreshSong(song_id) {
-			fetch('/song/' + song_id + '/refresh', {
-				method: 'PATCH',
+	// Aktualisiert den Song
+	function refreshSong(song_id) {
+		fetch('/song/' + song_id + '/refresh', {
+			method: 'PATCH',
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data)
+				if (data.success) {
+					window.location.reload()
+				}
 			})
-				.then((response) => response.json())
-				.then((data) => {
-					console.log(data)
-					if (data.success) {
-						window.location.reload()
-					}
-				})
-		}
+	}
 </script>
 
 {% endblock %}
