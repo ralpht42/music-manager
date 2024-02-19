@@ -12,13 +12,15 @@
 
 	<table class="table is-fullwidth">
 		<thead>
-			<tr>
+			<tr class="no-wrap">
 				<th>Playlist</th>
 				<th>Erstellt am</th>
 				<th>Erstellt von</th>
 				<th>Letzte Änderung am</th>
 				<th>Letzte Änderung von</th>
 				<th>Typ</th>
+				<th></th>
+				<th></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -40,9 +42,20 @@
 				</td>
 				{% endif %}
 				<td>
+					<button
+						class="button is-small is-info"
+						type="button"
+						onclick="refreshPlaylist('{{ playlist.id }}')"
+					>
+						<span class="icon is-small">
+							<i class="material-symbols-outlined">refresh</i>
+						</span>
+					</button>
+				</td>
+				<td>
 					<a
 						class="button is-small is-warning load-on-click"
-						href="{{ url_for('music.playlist_details', playlist_id=playlist.id) }}"
+						href="{{ url_for('playlists.playlist_details', playlist_id=playlist.id) }}"
 					>
 						<span class="icon is-small">
 							<i class="material-symbols-outlined">edit</i>
@@ -64,12 +77,6 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	<a class="button is-info" href="{{ url_for('music.playlist_create') }}">
-		<span class="icon is-small">
-			<i class="material-symbols-outlined">add</i>
-		</span>
-		<span>Neue Playlist</span>
-	</a>
 </div>
 
 <script>
@@ -77,6 +84,20 @@
 	function deletePlaylist(playlist_id) {
 		fetch('/playlist/' + playlist_id, {
 			method: 'DELETE',
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data)
+				if (data.success) {
+					window.location.reload()
+				}
+			})
+	}
+
+	// Aktualisiert die Playlist
+	function refreshPlaylist(playlist_id) {
+		fetch('/playlist/' + playlist_id + '/refresh', {
+			method: 'PATCH',
 		})
 			.then((response) => response.json())
 			.then((data) => {

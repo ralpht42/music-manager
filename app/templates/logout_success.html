@@ -1,0 +1,22 @@
+<!-- templates/logout_success.html -->
+
+{% extends "base.html" %} {% block content %}
+<div class="column is-4 is-offset-4">
+	<h3 class="title has-text-centered">Abgemeldet</h3>
+	<div class="box">
+		<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
+		{% with messages = get_flashed_messages() %} {% if messages %}
+		<div class="notification is-danger">
+			<button class="delete"></button>
+			<p>{{ messages[0] }}</p>
+		</div>
+		{% endif %} {% endwith %}
+
+		<main>
+			<div class="content is-medium">
+				<p>Sie wurden erfolgreich abgemeldet.</p>
+			</div>
+		</main>
+	</div>
+</div>
+{% endblock %}

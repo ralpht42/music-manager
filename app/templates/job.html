@@ -13,21 +13,21 @@
 	<div class="table-container">
 		<table class="table is-fullwidth is-narrow is-hoverable">
 			<thead>
-				<tr>
+				<tr class="no-wrap">
 					<th>Titel</th>
 					<th>Interpret</th>
 					<th>Jahr</th>
 					<th>Sprache</th>
 					<th>Länge</th>
 					<th>Genre</th>
-					<th>Stimmung</th>
+					<th>Feels</th>
 					<th>Typ</th>
 					<th>Geschwindigkeit</th>
 					<th>Anteil Gesang</th>
 					<th>Anteil Rap</th>
 					<th>Bekanntheit</th>
 					<th>Anteil Weird</th>
-					<th>Legende</th>
+					<th>Tags</th>
 					<th>Ordner</th>
 					<th>Serie</th>
 					<th></th>
@@ -36,115 +36,122 @@
 			</thead>
 			<tbody>
 				{% for song in job.songs %}
-				<tr>
+				<tr class="no-wrap">
 					<td>{{ song.title }}</td>
 
 					<td>
-						{% if song.artists is none %} - {% else %} {{ song.artists }} {%
-						endif %}
+						{% for artist in song.artists %} {{ artist.name }}{% if not
+						loop.last %}, {% endif %} {% endfor %}
+					</td>
+
+					<td>{{ song.release_year }}</td>
+
+					<td>
+						{% for language in song.languages %} {{ language.name }}{% if not
+						loop.last %}, {% endif %} {% endfor %}
 					</td>
 
 					<td>
-						{% if song.year is none %} - {% else %} {{ song.year }} {% endif %}
+						{% if song.duration is none %} - {% else %} {{ song.duration // 60
+						}}:{{ song.duration % 60 }} {% endif %}
 					</td>
 
 					<td>
-						{% if song.language is none %} - {% elif song.language == 'non' %}
-						ohne {% else %} {{ song.language }} {% endif %}
+						{% for genre in song.genres %} {{ genre.name }}{% if not loop.last
+						%}, {% endif %} {% endfor %}
 					</td>
 
 					<td>
-						{% if song.length is none %} - {% else %} {{ song.length }} {% endif
-						%}
+						{% for feel in song.feels %} {{ feel.name }}{% if not loop.last %},
+						{% endif %} {% endfor %}
 					</td>
 
 					<td>
-						{% if song.genre is none %} - {% else %} {{ song.genre }} {% endif
-						%}
+						{% if song.SongType is none %} - {% else %} {{ song.SongType.name }}
+						{% endif %}
 					</td>
 
 					<td>
-						{% if song.feels is none %} - {% else %} {{ song.feels }} {% endif
-						%}
-					</td>
-
-					<td>
-						{% if song.type is none %} - {% else %} {{ song.type }} {% endif %}
-					</td>
-
-					<td>
-						{% if song.speed is none %} - {% else %} {{ song.speed }} {% endif
-						%}
+						{% for speed in song.speeds %} {{ speed.name }}{% if not loop.last
+						%}, {% endif %} {% endfor %}
 					</td>
 
 					<td>
 						{% set voice_percent = song.voice_percent|float if
 						song.voice_percent not in [None, ''] else 0 %}
 						<progress
-							class="progress {% if voice_percent < 0.35 %}is-danger {% elif voice_percent < 0.65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ voice_percent * 100 }}"
+							class="progress {% if voice_percent < 35 %}is-danger {% elif voice_percent < 65 %}is-warning {% else %}is-success{% endif %}"
+							value="{{ voice_percent }}"
 							max="100"
 						>
-							{{ voice_percent * 100 }}%
+							{{ voice_percent }}%
 						</progress>
 					</td>
 					<td>
 						{% set rap_percent = song.rap_percent|float if song.rap_percent not
 						in [None, ''] else 0 %}
 						<progress
-							class="progress {% if rap_percent < 0.35 %}is-danger {% elif rap_percent < 0.65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ rap_percent * 100 }}"
+							class="progress {% if rap_percent < 35 %}is-danger {% elif rap_percent < 65 %}is-warning {% else %}is-success{% endif %}"
+							value="{{ rap_percent }}"
 							max="100"
 						>
-							{{ rap_percent * 100 }}%
+							{{ rap_percent }}%
 						</progress>
 					</td>
 					<td>
-						{% set popularity = song.popularity_percent|float if
+						{% set popularity_percent = song.popularity_percent|float if
 						song.popularity_percent not in [None, ''] else 0 %}
 						<progress
-							class="progress {% if popularity < 0.35 %}is-danger {% elif popularity < 0.65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ popularity * 100 }}"
+							class="progress {% if popularity_percent < 35 %}is-danger {% elif popularity_percent < 65 %}is-warning {% else %}is-success{% endif %}"
+							value="{{ popularity_percent }}"
 							max="100"
 						>
-							{{ popularity * 100 }}%
+							{{ popularity_percent }}%
 						</progress>
 					</td>
 					<td>
 						{% set weird_percent = song.weird_percent|float if
 						song.weird_percent not in [None, ''] else 0 %}
 						<progress
-							class="progress {% if weird_percent < 0.35 %}is-danger {% elif weird_percent < 0.65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ weird_percent * 100 }}"
+							class="progress {% if weird_percent < 35 %}is-danger {% elif weird_percent < 65 %}is-warning {% else %}is-success{% endif %}"
+							value="{{ weird_percent }}"
 							max="100"
 						>
-							{{ weird_percent * 100 }}%
+							{{ weird_percent }}%
 						</progress>
 					</td>
 					<td>
-						{% if song.is_legend is none %} - {% elif song.is_legend == true %}
+						{% for tag in song.tags %} {% if tag.name == 'Legend' %}
 						<span class="tag is-warning">
 							<i class="material-symbols-outlined">hotel_class</i>
 							<p>Legende</p>
 						</span>
+						{% elif tag.name == 'Explicit' %}
+						<span class="tag is-danger">
+							<i class="material-symbols-outlined">explicit</i>
+							<p>Explizit</p>
+						</span>
 						{% else %}
-						<!-- Wenn Song keine Legende ist, wird hier nichts angezeigt -->
-						{% endif %}
+						<span class="tag is-info">
+							<i class="material-symbols-outlined">label</i>
+							<p>{{ tag.name }}</p>
+						</span>
+						{% endif %} {% endfor %}
 					</td>
 					<td>
-						{% if song.folder is none %} - {% else %} {{ song.folder }} {% endif
-						%}
+						{% for folder in song.folders %} {{ folder.name }}{% if not
+						loop.last %}, {% endif %} {% endfor %}
 					</td>
 
 					<td>
-						{% if song.series is none %} - {% else %} {{ song.series }} {% endif
-						%}
+						{% for serie in song.series %} {{ serie.name }}{% if not loop.last
+						%}, {% endif %} {% endfor %}
 					</td>
 
 					<td>
 						<a
 							class="button is-small is-info"
-							href="{{ url_for('music.job_song_details', job_id=job.id, song_id=song.id) }}"
+							href="{{ url_for('jobs.job_song_details', job_id=job.id, song_id=song.id) }}"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">edit</i>
