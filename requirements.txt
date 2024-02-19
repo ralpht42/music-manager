@@ -1,6 +1,6 @@
 flask==3.0.2
 flask_login==0.6.3
-tidalapi==0.7.3
+tidalapi==0.7.4
 musicbrainzngs==0.7.1
 faker==23.2.1
 argon2-cffi==23.1.0
