@@ -1,13 +1,14 @@
 from app.extensions import db
 
 
+# Die Many-to-Many Beziehungen werden in eigenen Tabellen definiert
+# Die Tabellen werden in der Datenbank automatisch erstellt
 song_artist_role = db.Table(
     "song_artist_role",
     db.Column("song_id", db.Integer, db.ForeignKey("songs.id"), primary_key=True),
     db.Column("artist_id", db.Integer, db.ForeignKey("artists.id"), primary_key=True),
     db.Column("role_id", db.Integer, db.ForeignKey("roles.id"), primary_key=True),
 )
-
 
 song_language = db.Table(
     "song_language",
@@ -16,7 +17,6 @@ song_language = db.Table(
         "language_id", db.Integer, db.ForeignKey("languages.id"), primary_key=True
     ),
 )
-
 
 song_genre = db.Table(
     "song_genre",
@@ -47,6 +47,7 @@ song_series = db.Table(
     db.Column("song_id", db.Integer, db.ForeignKey("songs.id"), primary_key=True),
     db.Column("series_id", db.Integer, db.ForeignKey("series.id"), primary_key=True),
 )
+
 song_tag = db.Table(
     "song_tag",
     db.Column("song_id", db.Integer, db.ForeignKey("songs.id"), primary_key=True),
