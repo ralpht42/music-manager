@@ -28,10 +28,7 @@ Die folgenden Umgebungsvariablen müssen gesetzt werden, um das Programm auszuf�
 | Variable                | Beschreibung                                                     | Notwendig |
 | ----------------------- | ---------------------------------------------------------------- | --------- |
 | SECRET_KEY              | Geheimer Schlüssel die Session Verschlüsselung                   | Ja        |
-| TIDAL_APP_CLIENT_ID     | Tidal App Client ID, zur Authentifizierung der App bei Tidal     | Ja        |
-| TIDAL_APP_CLIENT_SECRET | Tidal App Client Secret, zur Authentifizierung der App bei Tidal | Ja        |
 
-Die TIDAL_APP_CLIENT_ID und TIDAL_APP_CLIENT_SECRET können über die Tidal Developer Seite erstellt werden. Die Seite ist unter https://developer.tidal.com/dashboard zu finden. Nach der Registrierung und Erstellung der App, werden die Werte für die Variablen angezeigt.
 
 ### Docker-Startoptionen
 
