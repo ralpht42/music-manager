@@ -3,9 +3,19 @@
 
 # This setting contains a list of rules that Sweep will check for. If any of these rules are broken in a new commit, Sweep will create an pull request to fix the broken rule.
 rules:
-  - "All new business logic should have corresponding unit tests."
-  - "Refactor large functions to be more modular."
-  - "Add docstrings to all functions and file headers."
+  - "All new business logic should have corresponding unit tests. This ensures that any new functionality introduced into the codebase is thoroughly tested, helping to identify and prevent regressions and bugs. Unit tests should cover both expected and edge cases to provide comprehensive test coverage."
+  - "Refactor large functions to be more modular. Large functions can be difficult to understand, maintain, and test. By breaking them down into smaller, more manageable units of functionality, code becomes more modular, reusable, and easier to maintain. This promotes cleaner code architecture and facilitates better code organization."
+  - "Add docstrings to all functions and file headers. Docstrings serve as inline documentation, providing insights into the purpose, behavior, and usage of functions and modules. Comprehensive docstrings improve code readability and understandability, aiding developers who consume and maintain the codebase. They also facilitate automated documentation generation tools."
+  - "Ensure adherence to coding standards (e.g., PEP 8 for Python). Consistent coding standards improve code readability and maintainability across the codebase, especially in collaborative environments. Adhering to established conventions reduces confusion, enhances code consistency, and makes code reviews more efficient by focusing on functionality rather than style."
+  - "Replace magic numbers and strings with named constants or variables. Magic numbers and strings make code less readable and maintainable by obscuring their purpose and significance. By replacing them with descriptive constants or variables, code becomes self-documenting, enhancing readability and easing future modifications or updates."
+  - "Avoid excessive code nesting for improved readability. Excessive code nesting, such as deeply nested loops or conditional statements, can lead to code that is difficult to understand and prone to errors. Refactoring nested code into smaller, more linear structures enhances readability, clarity, and maintainability, making code easier to comprehend and debug."
+  - "Use comments where necessary to clarify code intent. Comments provide additional context and explanations within the code, aiding comprehension and understanding, especially for complex or non-obvious logic. However, comments should be used judiciously and kept up-to-date to avoid misleading or outdated information."
+  - "Implement proper error and exception handling. Robust error and exception handling are essential for handling unexpected situations gracefully, preventing crashes and ensuring the reliability of the software. Error handling should be thorough and informative, providing users with actionable feedback and logging relevant information for debugging purposes."
+  - "Ensure logging is appropriately implemented for debugging and monitoring. Logging is crucial for tracking the behavior of an application during runtime, facilitating debugging, troubleshooting, and performance monitoring. Log messages should be informative, concise, and appropriately leveled to provide relevant information without overwhelming the logs."
+  - "Optimize code performance where feasible. Performance optimization involves identifying and addressing bottlenecks and inefficiencies in the code to improve execution speed and resource utilization. This may include algorithmic optimizations, caching strategies, or minimizing unnecessary operations to enhance overall system performance."
+  - "Adhere to security best practices to prevent vulnerabilities. Security vulnerabilities can lead to data breaches, system compromises, and other security incidents. Following established security best practices, such as input validation, secure authentication, and proper data encryption, helps mitigate the risk of exploitation and enhances the overall security posture of the software."
+  - "Verify the completeness and accuracy of documentation. Documentation should be comprehensive, accurate, and up-to-date to provide developers and users with reliable guidance on using, extending, and maintaining the software. Regularly review and update documentation to reflect changes in the codebase and ensure alignment with current practices and conventions."
+  - "Maintain a comprehensive suite of automated tests for code validation. Automated tests, including unit tests, integration tests, and end-to-end tests, validate the correctness and robustness of the codebase, helping to detect regressions and ensure reliable software delivery. Test coverage should be extensive, covering critical paths and edge cases to provide confidence in the stability and functionality of the software."
 
 # This is the branch that Sweep will develop from and make pull requests to. Most people use 'main' or 'master' but some users also use 'dev' or 'staging'.
 branch: "main"
@@ -18,7 +28,7 @@ gha_enabled: True
 # Example:
 #
 # description: sweepai/sweep is a python project. The main api endpoints are in sweepai/api.py. Write code that adheres to PEP8.
-description: ""
+description: "music-manager is a Python project. The source code is located in the app directory. The project uses the Flask framework."
 
 # This sets whether to create pull requests as drafts. If this is set to True, then all pull requests will be created as drafts and GitHub Actions will not be triggered.
 draft: False

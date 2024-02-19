@@ -6,7 +6,7 @@ from flask_login import (
     current_user,
 )
 from sqlalchemy.exc import IntegrityError
-import re
+from email_validator import validate_email, EmailNotValidError
 
 from app.models.user import User
 from app.extensions import db
@@ -28,17 +28,17 @@ def signup_post():
     if len(password) < 8:
         flash("Das Passwort muss mindestens 8 Zeichen lang sein.")
         return redirect(url_for("auth.signup"))
-    if len(email) > 255:
-        flash("Die E-Mail-Adresse darf maximal 255 Zeichen lang sein.")
-        return redirect(url_for("auth.signup"))
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-        flash("Die E-Mail-Adresse ist ungültig.")
-        return redirect(url_for("auth.signup"))
-    if email == "":
-        flash("E-Mail-Adresse darf nicht leer sein.")
-        return redirect(url_for("auth.signup"))
     if password == "":
         flash("Passwort darf nicht leer sein.")
+        return redirect(url_for("auth.signup"))
+
+    # E-Mail-Adresse validieren
+    try:
+        emailinfo = validate_email(email, check_deliverability=False)
+        email = emailinfo.normalized
+    except EmailNotValidError as e:
+        flash("E-Mail-Adresse ist ungültig.")
+        print(str(e))
         return redirect(url_for("auth.signup"))
 
     # Versuche, den Benutzer anzulegen, falls über die Datenbank ein Fehler erkannt wird,
