@@ -28,11 +28,11 @@ def job_upload_file():
         flash("Ungültige Datei hochgeladen")
         return redirect(url_for("jobs.index"))
     else:
-        # TODO: Funktion überprüfen
+        # Erstellen eines neuen Jobs und Importieren der Excel-Datei
+        # Der Job wird dabei nach der Datei benannt und als manuell markiert
+
         job = Job(
-            name="Manueller Excel-Import am "
-            + datetime.now().strftime("%d.%m.%Y um %H:%M:%S Uhr")
-            + ".",
+            name=f"Job {file.filename} von {current_user.username} am {datetime.now().strftime('%d.%m.%Y um %H:%M:%S')}",
             created_by=current_user.id,
             manual=True,
         )
