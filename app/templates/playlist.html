@@ -60,6 +60,7 @@
 										class="is-rounded"
 										src="https://resources.tidal.com/images/{{ song.Album.tidal_cover_url.replace('-','/') }}/160x160.jpg"
 										alt="Bild von {{ song.title }}"
+										loading="lazy"
 									/>
 								</figure>
 								{% endif %}
@@ -80,6 +81,7 @@
 										class="is-rounded"
 										src="https://resources.tidal.com/images/{{ artist.tidal_cover_url.replace('-','/') }}/160x160.jpg"
 										alt="Bild von {{ artist.name }}"
+										loading="lazy"
 									/>
 								</figure>
 								{% endif %}
