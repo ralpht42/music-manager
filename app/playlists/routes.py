@@ -1,10 +1,13 @@
-from flask import render_template, redirect, url_for, request, jsonify, flash
+from flask import render_template, redirect, url_for, request, jsonify, flash, abort
 from flask_login import login_required, current_user
+from flask_sqlalchemy import SQLAlchemy
+
 
 from app.playlists import bp
 from app.extensions import db
 from app.models.playlist import Playlist, song_playlist
 from app.models.job import Job
+from app.models.song import Song
 
 
 @bp.route("/playlists")
@@ -41,12 +44,32 @@ def playlist_create(job_id):
     return redirect(url_for("playlists.index"))
 
 
+@bp.route("/playlist/<int:playlist_id>/page/<int:page>", methods=["GET"])
 @bp.route("/playlist/<int:playlist_id>", methods=["GET"])
 @login_required
-def playlist_details(playlist_id):
-    return render_template(
-        "playlist.html", playlist=Playlist.query.filter_by(id=playlist_id).first()
+def playlist_details(playlist_id, page=1):
+
+    if page < 1: # In this case we save a query to the database
+        abort(404) # TODO: Implement a custom error page
+    
+    # TODO: Validate the playlist_id and if the user has access to it
+
+    # Get the playlist and the songs, but only 50 songs at a time
+    playlist = Playlist.query.filter_by(id=playlist_id).first()
+    songs = (
+        Song.query.join(song_playlist)
+        .filter(song_playlist.c.playlist_id == playlist_id)
+        .paginate(page=page, per_page=50, error_out=False)
     )
+
+    # Validate whether the page exists
+    if page > songs.pages:
+        abort(404)
+
+    # with songs.has_prev and songs.has_next we can check if there are more songs,
+    # and with songs.prev_num and songs.next_num we can get the page number. 
+    # We can use this information to create a pagination in the template.
+    return render_template("playlist.html", playlist=playlist, songs=songs)
 
 
 @bp.route("/playlist/<int:playlist_id>", methods=["DELETE"])

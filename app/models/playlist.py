@@ -24,7 +24,7 @@ class Playlist(db.Model):
     updated_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     manual = db.Column(db.Boolean, default=False, nullable=False)
 
-    songs = db.relationship("Song", secondary=song_playlist, backref="Playlist", lazy="dynamic")
+    songs = db.relationship("Song", secondary=song_playlist, backref="Playlist", lazy="joined")
 
     def __repr__(self):
         return f"<Playlist {self.name}>"

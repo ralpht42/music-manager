@@ -19,7 +19,8 @@
 
 		<style>
 			.no-wrap {
-				white-space: nowrap;
+				white-space: nowrap; /* no line break */
+				flex-wrap: nowrap; /* no flex line break */
 			}
 		</style>
 	</head>
@@ -48,10 +49,7 @@
 									Jobs
 								</a>
 								{% endif %} {% if current_user.is_authenticated %}
-								<a
-									href="{{ url_for('playlists.index') }}"
-									class="navbar-item"
-								>
+								<a href="{{ url_for('playlists.index') }}" class="navbar-item">
 									Playlists
 								</a>
 								{% endif %} {% if current_user.is_authenticated %}

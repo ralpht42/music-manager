@@ -66,7 +66,7 @@ class Album(db.Model):
     tidal_cover_url = db.Column(db.String(60), nullable=True)
     tidal_explicit = db.Column(db.Boolean, nullable=True)
 
-    songs = db.relationship("Song", backref="Album", lazy="dynamic")
+    songs = db.relationship("Song", backref="Album", lazy="joined")
 
     def __repr__(self):
         return f"<Album {self.title}>"
@@ -80,7 +80,7 @@ class Artist(db.Model):
     tidal_cover_url = db.Column(db.String(60), nullable=True)
 
     songs = db.relationship(
-        "Song", secondary=song_artist_role, back_populates="artists", lazy="dynamic"
+        "Song", secondary=song_artist_role, back_populates="artists", lazy="joined"
     )
 
     def __init__(self, name, tidal_artist_id=None, tidal_cover_url=None):
@@ -129,29 +129,29 @@ class Song(db.Model):
     tidal_song_id = db.Column(db.Integer, nullable=True)
 
     artists = db.relationship(
-        "Artist", secondary=song_artist_role, back_populates="songs", lazy="dynamic"
+        "Artist", secondary=song_artist_role, back_populates="songs", lazy="joined"
     )
 
     languages = db.relationship(
-        "Language", secondary=song_language, back_populates="songs", lazy="dynamic"
+        "Language", secondary=song_language, back_populates="songs", lazy="joined"
     )
     genres = db.relationship(
-        "Genre", secondary=song_genre, back_populates="songs", lazy="dynamic"
+        "Genre", secondary=song_genre, back_populates="songs", lazy="joined"
     )
     feels = db.relationship(
-        "Feel", secondary=song_feel, back_populates="songs", lazy="dynamic"
+        "Feel", secondary=song_feel, back_populates="songs", lazy="joined"
     )
     speeds = db.relationship(
-        "Speed", secondary=song_speed, back_populates="songs", lazy="dynamic"
+        "Speed", secondary=song_speed, back_populates="songs", lazy="joined"
     )
     folders = db.relationship(
-        "Folder", secondary=song_folder, back_populates="songs", lazy="dynamic"
+        "Folder", secondary=song_folder, back_populates="songs", lazy="joined"
     )
     series = db.relationship(
-        "Series", secondary=song_series, back_populates="songs", lazy="dynamic"
+        "Series", secondary=song_series, back_populates="songs", lazy="joined"
     )
     tags = db.relationship(
-        "Tag", secondary=song_tag, back_populates="songs", lazy="dynamic"
+        "Tag", secondary=song_tag, back_populates="songs", lazy="joined"
     )
 
     def __repr__(self):
@@ -262,7 +262,7 @@ class SongType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60), index=True, unique=True, nullable=False)
 
-    songs = db.relationship("Song", backref="SongType", lazy="dynamic")
+    songs = db.relationship("Song", backref="SongType", lazy="joined")
 
     def __repr__(self):
         return f"<SongType {self.name}>"
@@ -275,7 +275,7 @@ class Language(db.Model):
     name = db.Column(db.String(2), index=True, unique=True, nullable=False)
 
     songs = db.relationship(
-        "Song", secondary=song_language, back_populates="languages", lazy="dynamic"
+        "Song", secondary=song_language, back_populates="languages", lazy="joined"
     )
 
     def __repr__(self):
@@ -288,7 +288,7 @@ class Genre(db.Model):
     name = db.Column(db.String(60), index=True, unique=True, nullable=False)
 
     songs = db.relationship(
-        "Song", secondary=song_genre, back_populates="genres", lazy="dynamic"
+        "Song", secondary=song_genre, back_populates="genres", lazy="joined"
     )
 
     def __repr__(self):
@@ -301,7 +301,7 @@ class Feel(db.Model):
     name = db.Column(db.String(60), index=True, unique=True, nullable=False)
 
     songs = db.relationship(
-        "Song", secondary=song_feel, back_populates="feels", lazy="dynamic"
+        "Song", secondary=song_feel, back_populates="feels", lazy="joined"
     )
 
     def __repr__(self):
@@ -314,7 +314,7 @@ class Speed(db.Model):
     name = db.Column(db.String(60), index=True, unique=True, nullable=False)
 
     songs = db.relationship(
-        "Song", secondary=song_speed, back_populates="speeds", lazy="dynamic"
+        "Song", secondary=song_speed, back_populates="speeds", lazy="joined"
     )
 
     def __repr__(self):
@@ -327,7 +327,7 @@ class Folder(db.Model):
     name = db.Column(db.String(60), index=True, unique=True, nullable=False)
 
     songs = db.relationship(
-        "Song", secondary=song_folder, back_populates="folders", lazy="dynamic"
+        "Song", secondary=song_folder, back_populates="folders", lazy="joined"
     )
 
     def __repr__(self):
@@ -340,7 +340,7 @@ class Series(db.Model):
     name = db.Column(db.String(60), index=True, unique=True, nullable=False)
 
     songs = db.relationship(
-        "Song", secondary=song_series, back_populates="series", lazy="dynamic"
+        "Song", secondary=song_series, back_populates="series", lazy="joined"
     )
 
     def __repr__(self):
@@ -353,7 +353,7 @@ class Tag(db.Model):
     name = db.Column(db.String(60), index=True, unique=True, nullable=False)
 
     songs = db.relationship(
-        "Song", secondary=song_tag, back_populates="tags", lazy="dynamic"
+        "Song", secondary=song_tag, back_populates="tags", lazy="joined"
     )
 
     def __repr__(self):
