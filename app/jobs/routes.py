@@ -54,8 +54,29 @@ def job_create(job_id):
 @bp.route("/job/<int:job_id>", methods=["GET"])
 @login_required
 def job_details(job_id):
+
+    # Load additional query parameters from the URL
+    page = request.args.get("page", 1, type=int)
+
+    # Exception handling for invalid arguments
+    if page < 1:  # In this case we save a query to the database
+        abort(404)  # TODO: Implement a custom error page
+
+    # TODO: Validate the job_id and if the user has access to it
+
+    # Get the playlist and the songs, but only 50 songs at a time
     job = Job.query.filter_by(id=job_id).first()
-    return render_template("job.html", job=job)
+    songs = (
+        Song.query.join(song_job)
+        .filter(song_job.c.job_id == job_id)
+        .paginate(page=page, per_page=50, error_out=False)
+    )
+
+    # Validate whether the page exists
+    if page > songs.pages:
+        abort(404)
+
+    return render_template("job.html", job=job, songs=songs)
 
 
 @bp.route("/job/<int:job_id>", methods=["DELETE"])

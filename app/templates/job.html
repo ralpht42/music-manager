@@ -35,7 +35,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for song in job.songs %}
+				{% for song in songs.items %}
 				<tr class="no-wrap">
 					<td>{{ song.title }}</td>
 
@@ -175,6 +175,61 @@
 			</tbody>
 		</table>
 	</div>
+
+
+
+	
+
+
+	<nav class="pagination" role="navigation" aria-label="pagination">
+		<ul class="pagination-list">
+			<li>
+				<a
+					class="pagination-link {% if songs.page == 1 %}is-current{% endif %}"
+					aria-label="Goto page 1"
+					href="{{ url_for('jobs.job_details', job_id=job.id, page=1) }}"
+					>1</a
+				>
+			</li>
+			{% if songs.page > 2 %}
+			<li>
+				<span class="pagination-ellipsis">&hellip;</span>
+			</li>
+			{% endif %} {% for page_num in songs.iter_pages(left_edge=1, left_current=1, right_current=1, right_edge=1) %} {% if page_num is not
+			none and page_num > 1 and page_num < songs.pages %}
+			<li>
+				<a
+					class="pagination-link {% if page_num == songs.page %}is-current{% endif %}"
+					aria-label="Goto page {{ page_num }}"
+					{%
+					if
+					page_num
+					!="songs.page"
+					%}href="{{ url_for('jobs.job_details', job_id=job.id, page=page_num) }}"
+					{%
+					endif
+					%}
+					>{{ page_num }}</a
+				>
+			</li>
+			{% endif %} {% endfor %} {% if songs.page < songs.pages - 1 %}
+			<li>
+				<span class="pagination-ellipsis">&hellip;</span>
+			</li>
+			{% endif %}
+
+			{% if songs.pages > 1 %}
+			<li>
+				<a
+					class="pagination-link {% if songs.page == songs.pages %}is-current{% endif %}"
+					aria-label="Goto page {{ songs.pages }}"
+					href="{{ url_for('jobs.job_details', job_id=job.id, page=songs.pages) }}"
+					>{{ songs.pages }}</a
+				>
+			</li>
+			{% endif %}
+		</ul>
+	</nav>
 </div>
 
 <script>

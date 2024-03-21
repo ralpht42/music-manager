@@ -44,14 +44,17 @@ def playlist_create(job_id):
     return redirect(url_for("playlists.index"))
 
 
-@bp.route("/playlist/<int:playlist_id>/page/<int:page>", methods=["GET"])
 @bp.route("/playlist/<int:playlist_id>", methods=["GET"])
 @login_required
-def playlist_details(playlist_id, page=1):
+def playlist_details(playlist_id):
 
-    if page < 1: # In this case we save a query to the database
-        abort(404) # TODO: Implement a custom error page
-    
+    # Load additional query parameters from the URL
+    page = request.args.get("page", 1, type=int)
+
+    # Exception handling for invalid arguments
+    if page < 1:  # In this case we save a query to the database
+        abort(404)  # TODO: Implement a custom error page
+
     # TODO: Validate the playlist_id and if the user has access to it
 
     # Get the playlist and the songs, but only 50 songs at a time
@@ -67,7 +70,7 @@ def playlist_details(playlist_id, page=1):
         abort(404)
 
     # with songs.has_prev and songs.has_next we can check if there are more songs,
-    # and with songs.prev_num and songs.next_num we can get the page number. 
+    # and with songs.prev_num and songs.next_num we can get the page number.
     # We can use this information to create a pagination in the template.
     return render_template("playlist.html", playlist=playlist, songs=songs)
 
