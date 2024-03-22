@@ -5,41 +5,38 @@
 <div class="box">
 	<section class="section">
 		{% if current_user.tidal_session %}
-		<div class="box">
-			<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
-			{% with messages = get_flashed_messages() %} {% if messages %}
-			<div class="notification is-danger">
-				<button class="delete"></button>
-				<p>{{ messages[0] }}</p>
-			</div>
-			{% endif %} {% endwith %}
-
-			<h3 class="title has-text-dark">Tidal-Konto</h3>
-			<p>Benutzername: {{ current_user.tidal_session.user.username }}</p>
-			<p>
-				Profilname: {{
-				current_user.tidal_session.user.profile_metadata.profileName }}
-			</p>
-			<p>
-				E-Mail Adresse: {{
-				current_user.tidal_session.user.profile_metadata.email }} {% if
-				current_user.tidal_session.user.profile_metadata.emailVerified %}
-				<span class="tag is-success">bestätigt</span> {% else %}
-				<span class="tag is-warning">nicht bestätigt</span>
-				{% endif %}
-			</p>
-			<p>Land: {{ current_user.tidal_session.country_code }}</p>
-			<p>
-				Erstellt am: {{
-				current_user.tidal_session.user.profile_metadata.created[:10] }}
-			</p>
-			<p>
-				Login läuft in {{ ((tidal_expires_in | int) // (60 * 60 * 24) ) | int}}
-				Tagen, {{ ((tidal_expires_in | int) // (60 * 60) ) % 24 | int}} Stunden,
-				{{ ((tidal_expires_in | int) // 60 ) % 60 | int}} Minuten und {{
-				(tidal_expires_in | int) % 60 | int}} Sekunden ab.
-			</p>
+		<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
+		{% with messages = get_flashed_messages() %} {% if messages %}
+		<div class="notification is-danger">
+			<button class="delete"></button>
+			<p>{{ messages[0] }}</p>
 		</div>
+		{% endif %} {% endwith %}
+
+		<h3 class="title">Tidal-Konto</h3>
+		<p>Benutzername: {{ current_user.tidal_session.user.username }}</p>
+		<p>
+			Profilname: {{
+			current_user.tidal_session.user.profile_metadata.profileName }}
+		</p>
+		<p>
+			E-Mail Adresse: {{ current_user.tidal_session.user.profile_metadata.email
+			}} {% if current_user.tidal_session.user.profile_metadata.emailVerified %}
+			<span class="tag is-success">bestätigt</span> {% else %}
+			<span class="tag is-warning">nicht bestätigt</span>
+			{% endif %}
+		</p>
+		<p>Land: {{ current_user.tidal_session.country_code }}</p>
+		<p>
+			Erstellt am: {{
+			current_user.tidal_session.user.profile_metadata.created[:10] }}
+		</p>
+		<p>
+			Login läuft in {{ ((tidal_expires_in | int) // (60 * 60 * 24) ) | int}}
+			Tagen, {{ ((tidal_expires_in | int) // (60 * 60) ) % 24 | int}} Stunden,
+			{{ ((tidal_expires_in | int) // 60 ) % 60 | int}} Minuten und {{
+			(tidal_expires_in | int) % 60 | int}} Sekunden ab.
+		</p>
 
 		{% elif current_user.get_tidal_future()==None %}
 		<p>Sie haben noch kein Tidal-Konto hinzugefügt.</p>
