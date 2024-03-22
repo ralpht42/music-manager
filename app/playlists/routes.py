@@ -121,3 +121,19 @@ def playlist_song_delete(playlist_id, song_id):
             return jsonify({"success": False, "error": str(e)})
     else:
         return jsonify({"success": False, "error": "Song not in playlist"})
+
+
+# Export the playlist to TIDAL (Create a playlist in TIDAL and add the songs)
+@bp.route("/playlists/<int:playlist_id>/export", methods=["POST"])
+@login_required
+def playlist_export(playlist_id):
+    playlist = Playlist.query.filter_by(id=playlist_id).first()
+    try:
+        playlist = playlist.export_to_tidal(current_user)
+
+        url = f"https://listen.tidal.com/playlist/{playlist.tidal_playlist_id}"
+
+        return jsonify({"success": True, "url": url})
+    except Exception as e:
+        print(e)
+        return jsonify({"success": False, "error": str(e)})

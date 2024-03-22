@@ -19,6 +19,7 @@
 				<th>Letzte Änderung am</th>
 				<th>Letzte Änderung von</th>
 				<th>Typ</th>
+				<th>Exportieren</th>
 				<th></th>
 				<th></th>
 				<th></th>
@@ -41,6 +42,17 @@
 					<span class="tag is-success">Automatisch</span>
 				</td>
 				{% endif %}
+				<td>
+					<a
+						class="button is-small is-primary"
+						type="button"
+						onclick="exportPlaylistToTIDAL('{{ playlist.id }}')"
+					>
+						<span class="icon is-small">
+							<i class="material-symbols-outlined">cloud_download</i>
+						</span>
+					</a>
+				</td>
 				<td>
 					<button
 						class="button is-small is-info"
@@ -80,10 +92,24 @@
 </div>
 
 <script>
-	// Lösche Playlist (AJAX Workaround für DELETE Request)
-	function deletePlaylist(playlist_id) {
-		fetch('/playlists/' + playlist_id, {
-			method: 'DELETE',
+	// Exportiere Playlist zu TIDAL (AJAX Workaround für POST Request)
+	function exportPlaylistToTIDAL(playlist_id) {
+		fetch('/playlists/' + playlist_id + '/export', {
+			method: 'POST',
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data)
+				if (data.success) {
+					window.location.href = data.url
+				}
+			})
+	}
+
+	// Aktualisiert die Playlist (AJAX Workaround für PATCH Request)
+	function refreshPlaylist(playlist_id) {
+		fetch('/playlists/' + playlist_id + '/refresh', {
+			method: 'PATCH',
 		})
 			.then((response) => response.json())
 			.then((data) => {
@@ -94,10 +120,10 @@
 			})
 	}
 
-	// Aktualisiert die Playlist
-	function refreshPlaylist(playlist_id) {
-		fetch('/playlists/' + playlist_id + '/refresh', {
-			method: 'PATCH',
+	// Lösche Playlist (AJAX Workaround für DELETE Request)
+	function deletePlaylist(playlist_id) {
+		fetch('/playlists/' + playlist_id, {
+			method: 'DELETE',
 		})
 			.then((response) => response.json())
 			.then((data) => {
