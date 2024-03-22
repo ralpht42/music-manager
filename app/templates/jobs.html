@@ -115,7 +115,7 @@
 
 	// Lösche Job (AJAX Workaround für DELETE Request)
 	function deleteJob(job_id) {
-		fetch('/job/' + job_id, {
+		fetch('/jobs/' + job_id, {
 			method: 'DELETE',
 		})
 			.then((response) => response.json())

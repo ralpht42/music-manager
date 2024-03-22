@@ -6,8 +6,7 @@ from app.extensions import db
 from app.models.song import Song, Tag, Genre, Feel, Speed, Folder, Series
 
 
-
-@bp.route("/song/<int:song_id>/refresh", methods=["PATCH"])
+@bp.route("/songs/<int:song_id>/refresh", methods=["PATCH"])
 @login_required
 def refresh_song(song_id):
     """
@@ -21,14 +20,21 @@ def refresh_song(song_id):
     except Exception as e:
         print(e)
         success = False
-    
+
     response = {"success": success}
     return jsonify(response)
 
 
-@bp.route("/song/<int:song_id>/tag/<string:tag_type>/<int:tag_id>", methods=["DELETE"])
+@bp.route("/songs/<int:song_id>/tags", methods=["DELETE"])
 @login_required
-def song_tag_delete(song_id, tag_type, tag_id):
+def song_tag_delete(song_id):
+    """
+    Removes a tag from a song
+    """
+
+    tag_type = request.args.get("tag_type")
+    tag_id = request.args.get("tag_id")
+
     song = Song.query.filter_by(id=song_id).first()
 
     if tag_type == "genre":
@@ -51,8 +57,6 @@ def song_tag_delete(song_id, tag_type, tag_id):
         song.series.remove(tag)
     else:
         return jsonify({"success": False})
-    
+
     db.session.commit()
     return jsonify({"success": True})
-
-    

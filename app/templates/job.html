@@ -235,7 +235,7 @@
 <script>
 	// Lösche Song (AJAX Workaround für DELETE Request)
 	function deleteSong(job_id, song_id) {
-		fetch('/job/' + job_id + '/song/' + song_id, {
+		fetch('/jobs/' + job_id + '/songs/' + song_id, {
 			method: 'DELETE',
 		})
 			.then((response) => response.json())

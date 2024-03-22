@@ -82,7 +82,7 @@
 <script>
 	// Lösche Playlist (AJAX Workaround für DELETE Request)
 	function deletePlaylist(playlist_id) {
-		fetch('/playlist/' + playlist_id, {
+		fetch('/playlists/' + playlist_id, {
 			method: 'DELETE',
 		})
 			.then((response) => response.json())
@@ -96,7 +96,7 @@
 
 	// Aktualisiert die Playlist
 	function refreshPlaylist(playlist_id) {
-		fetch('/playlist/' + playlist_id + '/refresh', {
+		fetch('/playlists/' + playlist_id + '/refresh', {
 			method: 'PATCH',
 		})
 			.then((response) => response.json())

@@ -17,7 +17,7 @@ def index():
     return render_template("jobs.html", jobs=jobs)
 
 
-@bp.route("/job/upload_file", methods=["POST"])
+@bp.route("/jobs/upload_file", methods=["POST"])
 @login_required
 def job_upload_file():
     if "song_excel_file" not in request.files:
@@ -44,14 +44,14 @@ def job_upload_file():
         return redirect(url_for("jobs.index"))
 
 
-@bp.route("/job/create", methods=["POST"])
+@bp.route("/jobs/create", methods=["POST"])
 @login_required
 def job_create(job_id):
     # TODO: Job erstellen implementieren
     return render_template("job.html", job_id=job_id)
 
 
-@bp.route("/job/<int:job_id>", methods=["GET"])
+@bp.route("/jobs/<int:job_id>", methods=["GET"])
 @login_required
 def job_details(job_id):
 
@@ -79,7 +79,7 @@ def job_details(job_id):
     return render_template("job.html", job=job, songs=songs)
 
 
-@bp.route("/job/<int:job_id>", methods=["DELETE"])
+@bp.route("/jobs/<int:job_id>", methods=["DELETE"])
 @login_required
 def job_delete(job_id):
     success = None
@@ -96,7 +96,7 @@ def job_delete(job_id):
     return jsonify(response)
 
 
-@bp.route("/job/<int:job_id>/song/<int:song_id>", methods=["GET"])
+@bp.route("/jobs/<int:job_id>/song/<int:song_id>", methods=["GET"])
 @login_required
 def job_song_details(job_id, song_id):
     return render_template(
@@ -106,7 +106,7 @@ def job_song_details(job_id, song_id):
     )
 
 
-@bp.route("/job/<int:job_id>/song/<int:song_id>", methods=["POST"])
+@bp.route("/jobs/<int:job_id>/song/<int:song_id>", methods=["POST"])
 @login_required
 def job_song_update(job_id, song_id):
     song = {
@@ -137,7 +137,7 @@ def job_song_update(job_id, song_id):
     )
 
 
-@bp.route("/job/<int:job_id>/song/<int:song_id>", methods=["DELETE"])
+@bp.route("/jobs/<int:job_id>/song/<int:song_id>", methods=["DELETE"])
 @login_required
 def job_song_delete(job_id, song_id):
     success = None

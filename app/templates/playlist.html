@@ -256,7 +256,8 @@
 					<td>
 						<a
 							class="button is-small is-danger"
-							href="{{ url_for('playlists.playlist_delete', playlist_id=playlist.id) }}"
+							type="button"
+							onclick="deleteSong('{{ playlist.id }}', '{{ song.id }}')"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">delete</i>
@@ -284,7 +285,8 @@
 			<li>
 				<span class="pagination-ellipsis">&hellip;</span>
 			</li>
-			{% endif %} {% for page_num in songs.iter_pages(left_edge=1, left_current=1, right_current=1, right_edge=1) %} {% if page_num is not
+			{% endif %} {% for page_num in songs.iter_pages(left_edge=1,
+			left_current=1, right_current=1, right_edge=1) %} {% if page_num is not
 			none and page_num > 1 and page_num < songs.pages %}
 			<li>
 				<a
@@ -305,9 +307,7 @@
 			<li>
 				<span class="pagination-ellipsis">&hellip;</span>
 			</li>
-			{% endif %}
-
-			{% if songs.pages > 1 %}
+			{% endif %} {% if songs.pages > 1 %}
 			<li>
 				<a
 					class="pagination-link {% if songs.page == songs.pages %}is-current{% endif %}"
@@ -324,7 +324,7 @@
 <script>
 	// Aktualisiert den Song
 	function refreshSong(song_id) {
-		fetch('/song/' + song_id + '/refresh', {
+		fetch('/songs/' + song_id + '/refresh', {
 			method: 'PATCH',
 		})
 			.then((response) => response.json())
@@ -338,7 +338,30 @@
 
 	// Lösche ein Tag (AJAX Workaround für DELETE Request)
 	function deleteTag(song_id, tag_type, tag_id) {
-		fetch('/song/' + song_id + '/tag/' + tag_type + '/' + tag_id, {
+		fetch(
+			'/songs/' +
+				song_id +
+				'/tags' +
+				'?tag_type=' +
+				tag_type +
+				'&tag_id=' +
+				tag_id,
+			{
+				method: 'DELETE',
+			},
+		)
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data)
+				if (data.success) {
+					window.location.reload()
+				}
+			})
+	}
+
+	// Lösche Song aus Playlist (AJAX Workaround für DELETE Request)
+	function deleteSong(playlist_id, song_id) {
+		fetch('/playlists/' + playlist_id + '/songs/' + song_id, {
 			method: 'DELETE',
 		})
 			.then((response) => response.json())
@@ -346,6 +369,8 @@
 				console.log(data)
 				if (data.success) {
 					window.location.reload()
+				} else {
+					alert(data.error)
 				}
 			})
 	}

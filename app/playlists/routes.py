@@ -18,7 +18,7 @@ def index():
     )
 
 
-@bp.route("/playlist/create?job_id=<int:job_id>", methods=["GET"])
+@bp.route("/playlists/create?job_id=<int:job_id>", methods=["GET"])
 @login_required
 def playlist_create(job_id):
     job = Job.query.filter_by(id=job_id).first()
@@ -44,7 +44,7 @@ def playlist_create(job_id):
     return redirect(url_for("playlists.index"))
 
 
-@bp.route("/playlist/<int:playlist_id>", methods=["GET"])
+@bp.route("/playlists/<int:playlist_id>", methods=["GET"])
 @login_required
 def playlist_details(playlist_id):
 
@@ -75,7 +75,7 @@ def playlist_details(playlist_id):
     return render_template("playlist.html", playlist=playlist, songs=songs)
 
 
-@bp.route("/playlist/<int:playlist_id>", methods=["DELETE"])
+@bp.route("/playlists/<int:playlist_id>", methods=["DELETE"])
 @login_required
 def playlist_delete(playlist_id):
     playlist = Playlist.query.filter_by(id=playlist_id).first()
@@ -85,7 +85,7 @@ def playlist_delete(playlist_id):
     return jsonify({"success": True})
 
 
-@bp.route("/playlist/<int:playlist_id>/refresh", methods=["PATCH"])
+@bp.route("/playlists/<int:playlist_id>/refresh", methods=["PATCH"])
 @login_required
 def playlist_refresh(playlist_id):
     """
@@ -103,3 +103,21 @@ def playlist_refresh(playlist_id):
     except Exception as e:
         print(e)
         return jsonify({"success": False})
+
+
+@bp.route("/playlists/<int:playlist_id>/songs/<int:song_id>", methods=["DELETE"])
+@login_required
+def playlist_song_delete(playlist_id, song_id):
+    playlist = Playlist.query.filter_by(id=playlist_id).first()
+    song = Song.query.filter_by(id=song_id).first()
+
+    if song in playlist.songs:
+        try:
+            playlist.songs.remove(song)
+            db.session.commit()
+            return jsonify({"success": True})
+        except Exception as e:
+            print(e)
+            return jsonify({"success": False, "error": str(e)})
+    else:
+        return jsonify({"success": False, "error": "Song not in playlist"})
