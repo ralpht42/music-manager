@@ -14,9 +14,9 @@
 		action="{{ url_for('jobs.job_upload_file') }}"
 		method="POST"
 		enctype="multipart/form-data"
-		class="is-flex is-justify-content-space-between"
+		class="is-flex is-justify-content-space-between block"
 	>
-		<div id="excel_file_upload" class="file has-name is-primary">
+		<div id="excel_file_upload" class="file has-name is-primary mb-0">
 			<label class="file-label">
 				<input class="file-input" type="file" name="song_excel_file" />
 				<span class="file-cta">
@@ -67,12 +67,15 @@
 				</td>
 
 				<td>
-					<a class="button is-small is-info" href="{{ url_for('playlists.playlist_create', job_id=job.id) }}">
+					<a
+						class="button is-small is-info"
+						href="{{ url_for('playlists.playlist_create', job_id=job.id) }}"
+					>
 						<span class="icon is-small">
 							<i class="material-symbols-outlined">playlist_add</i>
 						</span>
+					</a>
 				</td>
-
 
 				<td>
 					<a
