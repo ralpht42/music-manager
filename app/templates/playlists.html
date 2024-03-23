@@ -47,6 +47,7 @@
 							class="button is-small is-primary"
 							type="button"
 							onclick="exportPlaylistToTIDAL('{{ playlist.id }}')"
+							data-tooltip="Exportiere die Playliste nach TIDAL"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">cloud_download</i>
@@ -58,6 +59,7 @@
 							class="button is-small is-info"
 							type="button"
 							onclick="refreshPlaylist('{{ playlist.id }}')"
+							data-tooltip="Suche die Songs erneut bei TIDAL"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">refresh</i>
@@ -68,6 +70,7 @@
 						<a
 							class="button is-small is-warning load-on-click"
 							href="{{ url_for('playlists.playlist_details', playlist_id=playlist.id) }}"
+							data-tooltip="Songs anzeigen"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">edit</i>
@@ -79,6 +82,7 @@
 							class="button is-small is-danger load-on-click"
 							type="button"
 							onclick="deletePlaylist('{{ playlist.id }}')"
+							data-tooltip="Playliste löschen"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">delete</i>
