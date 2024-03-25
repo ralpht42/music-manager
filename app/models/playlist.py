@@ -24,6 +24,7 @@ class Playlist(db.Model):
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     updated_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     manual = db.Column(db.Boolean, default=False, nullable=False)
+    tidal_playlist_id = db.Column(db.String(60), nullable=True)
 
     songs = db.relationship(
         "Song", secondary=song_playlist, backref="Playlist", lazy="joined"
