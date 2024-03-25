@@ -27,6 +27,11 @@
 		<table class="table is-fullwidth is-narrow is-hoverable">
 			<thead>
 				<tr class="no-wrap">
+					<th>
+						<div class="checkbox-wrapper-13">
+							<input id="checkbox-all" type="checkbox" />
+						</div>
+					</th>
 					<th>Titel</th>
 					<th>Interpret</th>
 					<th>Jahr</th>
@@ -50,6 +55,11 @@
 			<tbody>
 				{% for song in songs.items %}
 				<tr>
+					<td>
+						<div class="checkbox-wrapper-13">
+							<input id="checkbox-{{ song.id }}" type="checkbox" />
+						</div>
+					</td>
 					<td>
 						<div class="columns is-vcentered">
 							<div class="column is-narrow">
@@ -122,6 +132,7 @@
 							<span
 								class="tag is-delete"
 								onclick="deleteTag('{{ song.id }}', 'genre', '{{ genre.id }}')"
+								onmouseover="this.style.cursor='pointer'"
 							></span>
 						</div>
 						{% endfor %}
@@ -136,6 +147,7 @@
 							<span
 								class="tag is-delete"
 								onclick="deleteTag('{{ song.id }}', 'feel', '{{ feel.id }}')"
+								onmouseover="this.style.cursor='pointer'"
 							></span>
 						</div>
 						{% endfor %}
@@ -154,6 +166,7 @@
 							<span
 								class="tag is-delete"
 								onclick="deleteTag('{{ song.id }}', 'speed', '{{ speed.id }}')"
+								onmouseover="this.style.cursor='pointer'"
 							></span>
 						</div>
 						{% endfor %}
@@ -212,6 +225,7 @@
 							<span
 								class="tag is-delete"
 								onclick="deleteTag('{{ song.id }}', 'tag', '{{ tag.id }}')"
+								onmouseover="this.style.cursor='pointer'"
 							></span>
 						</div>
 						{% endif %} {% endfor %}
@@ -225,6 +239,7 @@
 							<span
 								class="tag is-delete"
 								onclick="deleteTag('{{ song.id }}', 'folder', '{{ folder.id }}')"
+								onmouseover="this.style.cursor='pointer'"
 							></span>
 						</div>
 						{% endfor %}
@@ -238,6 +253,7 @@
 							<span
 								class="tag is-delete"
 								onclick="deleteTag('{{ song.id }}', 'serie', '{{ serie.id }}')"
+								onmouseover="this.style.cursor='pointer'"
 							></span>
 						</div>
 						{% endfor %}
