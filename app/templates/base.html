@@ -13,37 +13,17 @@
 			href="{{ url_for('static', filename='css/bulma.css') }}"
 		/>
 		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='css/extensions.css') }}"
+		/>
+		<link
 			href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-tooltip@1.2.0/dist/bulma-tooltip.min.css"
 			rel="stylesheet"
 		/>
-
 		<link
 			rel="stylesheet"
 			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
 		/>
-
-		<style>
-			.no-wrap {
-				white-space: nowrap; /* no line break */
-				flex-wrap: nowrap; /* no flex line break */
-			}
-			:root {
-				--body-background-color: #c2e4ff;
-			}
-
-			@media (prefers-color-scheme: dark) {
-				:root {
-					--body-background-color: #2c3744;
-					--bulma-scheme-main: #2b3238;
-					--bulma-shadow: 0 0.5em 1em -0.125em hsl(0deg 0% 0% / 36%),
-						0 0px 0 1px hsl(183.19, 100%, 44.31%, 0.5);
-				}
-			}
-
-			body {
-				background-color: var(--body-background-color);
-			}
-		</style>
 	</head>
 	<body>
 		<section class="hero is-fullheight">
