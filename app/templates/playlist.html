@@ -263,6 +263,7 @@
 							class="button is-small is-info"
 							type="button"
 							onclick="refreshSong('{{ song.id }}')"
+							data-tooltip="Aktualisiere Song über TIDAL"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">refresh</i>
@@ -274,6 +275,7 @@
 							class="button is-small is-danger"
 							type="button"
 							onclick="deleteSong('{{ playlist.id }}', '{{ song.id }}')"
+							data-tooltip="Lösche Song aus Playlist"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">delete</i>

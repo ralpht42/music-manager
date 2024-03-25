@@ -153,6 +153,7 @@
 						<a
 							class="button is-small is-info"
 							href="{{ url_for('jobs.job_song_details', job_id=job.id, song_id=song.id) }}"
+							data-tooltip="Song bearbeiten"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">edit</i>
@@ -164,6 +165,7 @@
 							class="button is-small is-danger load-on-click"
 							type="button"
 							onclick="deleteSong('{{ job.id }}', '{{ song.id }}')"
+							data-tooltip="Song löschen"
 						>
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">delete</i>
