@@ -99,6 +99,8 @@
 <script>
 	// Exportiere Playlist zu TIDAL (AJAX Workaround für POST Request)
 	function exportPlaylistToTIDAL(playlist_id) {
+		var newWindow = window.open('', '_blank') // Bereitet ein neues Fenster vor
+
 		fetch('/playlists/' + playlist_id + '/export', {
 			method: 'POST',
 		})
@@ -106,8 +108,16 @@
 			.then((data) => {
 				console.log(data)
 				if (data.success) {
-					window.location.href = data.url
+					newWindow.location = data.url // Leitet das neue Fenster auf die TIDAL Seite weiter
+				} else {
+					// Schließe das Fenster, wenn der Aufruf fehlgeschlagen ist
+					newWindow.close()
 				}
+			})
+			.catch((error) => {
+				console.error('Error:', error)
+				// Schließen Sie das Fenster, wenn ein Fehler auftritt
+				newWindow.close()
 			})
 	}
 
