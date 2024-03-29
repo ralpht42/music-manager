@@ -118,7 +118,7 @@ def playlist_song_delete(playlist_id, song_id):
             return jsonify({"success": True})
         except Exception as e:
             print(e)
-            return jsonify({"success": False, "error": str(e)})
+            return jsonify({"success": False, "error": "Could not delete song from playlist. Check the logs for more information."})
     else:
         return jsonify({"success": False, "error": "Song not in playlist"})
 
@@ -136,4 +136,4 @@ def playlist_export(playlist_id):
         return jsonify({"success": True, "url": url})
     except Exception as e:
         print(e)
-        return jsonify({"success": False, "error": str(e)})
+        return jsonify({"success": False, "error": "Could not export playlist to TIDAL. Check the logs for more information."})
