@@ -2,6 +2,383 @@
 
 
 
+## v0.4.0 (2024-03-29)
+
+### Build
+
+* build(deps): bump faker from 24.2.0 to 24.3.0
+
+Bumps [faker](https://github.com/joke2k/faker) from 24.2.0 to 24.3.0.
+- [Release notes](https://github.com/joke2k/faker/releases)
+- [Changelog](https://github.com/joke2k/faker/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/joke2k/faker/compare/v24.2.0...v24.3.0)
+
+---
+updated-dependencies:
+- dependency-name: faker
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`6237217`](https://github.com/ralpht42/music-manager/commit/6237217073fa7a1711a3bbea126522c47057ba3b))
+
+* build(deps): bump python-semantic-release/python-semantic-release
+
+Bumps [python-semantic-release/python-semantic-release](https://github.com/python-semantic-release/python-semantic-release) from 9.1.1 to 9.3.1.
+- [Release notes](https://github.com/python-semantic-release/python-semantic-release/releases)
+- [Changelog](https://github.com/python-semantic-release/python-semantic-release/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/python-semantic-release/python-semantic-release/compare/c82bd673c30da94a02e039963c8c4c8a51758096...12517edf299b8f04a1e3f12dda85c383ceb864c0)
+
+---
+updated-dependencies:
+- dependency-name: python-semantic-release/python-semantic-release
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`c3288a4`](https://github.com/ralpht42/music-manager/commit/c3288a4b305c73f9e8dd8a63eaf3d92ca03f9dd7))
+
+* build(deps): bump tidalapi from 0.7.3 to 0.7.5
+
+Bumps [tidalapi](https://github.com/tamland/python-tidal) from 0.7.3 to 0.7.5.
+- [Release notes](https://github.com/tamland/python-tidal/releases)
+- [Changelog](https://github.com/tamland/python-tidal/blob/master/HISTORY.rst)
+- [Commits](https://github.com/tamland/python-tidal/compare/v0.7.3...v0.7.5)
+
+---
+updated-dependencies:
+- dependency-name: tidalapi
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`d56c882`](https://github.com/ralpht42/music-manager/commit/d56c882227b713f7f37d9112d3f22927fdf0a5f0))
+
+* build(deps): bump faker from 23.2.1 to 24.2.0
+
+Bumps [faker](https://github.com/joke2k/faker) from 23.2.1 to 24.2.0.
+- [Release notes](https://github.com/joke2k/faker/releases)
+- [Changelog](https://github.com/joke2k/faker/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/joke2k/faker/compare/v23.2.1...v24.2.0)
+
+---
+updated-dependencies:
+- dependency-name: faker
+  dependency-type: direct:production
+  update-type: version-update:semver-major
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`5858456`](https://github.com/ralpht42/music-manager/commit/585845658853e0cae95460a0fc8fb4eb7b2e4043))
+
+* build(deps): bump docker/login-action from 3.0.0 to 3.1.0
+
+Bumps [docker/login-action](https://github.com/docker/login-action) from 3.0.0 to 3.1.0.
+- [Release notes](https://github.com/docker/login-action/releases)
+- [Commits](https://github.com/docker/login-action/compare/343f7c4344506bcbf9b4de18042ae17996df046d...e92390c5fb421da1463c202d546fed0ec5c39f20)
+
+---
+updated-dependencies:
+- dependency-name: docker/login-action
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`ce2fa96`](https://github.com/ralpht42/music-manager/commit/ce2fa96aea7981a946bb35651a3530cb33be8270))
+
+* build(deps): bump docker/build-push-action from 5.1.0 to 5.3.0
+
+Bumps [docker/build-push-action](https://github.com/docker/build-push-action) from 5.1.0 to 5.3.0.
+- [Release notes](https://github.com/docker/build-push-action/releases)
+- [Commits](https://github.com/docker/build-push-action/compare/4a13e500e55cf31b7a5d59a38ab2040ab0f42f56...2cdde995de11925a030ce8070c3d77a52ffcf1c0)
+
+---
+updated-dependencies:
+- dependency-name: docker/build-push-action
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`bdd2682`](https://github.com/ralpht42/music-manager/commit/bdd2682c7bc70826795432630021ebc16098fbd4))
+
+* build(deps): bump docker/setup-buildx-action from 3.1.0 to 3.2.0
+
+Bumps [docker/setup-buildx-action](https://github.com/docker/setup-buildx-action) from 3.1.0 to 3.2.0.
+- [Release notes](https://github.com/docker/setup-buildx-action/releases)
+- [Commits](https://github.com/docker/setup-buildx-action/compare/0d103c3126aa41d772a8362f6aa67afac040f80c...2b51285047da1547ffb1b2203d8be4c0af6b1f20)
+
+---
+updated-dependencies:
+- dependency-name: docker/setup-buildx-action
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`eb7dbe2`](https://github.com/ralpht42/music-manager/commit/eb7dbe2392ba1fd075c88822ce4ed868d74b96ba))
+
+* build(deps): bump actions/checkout from 4.1.1 to 4.1.2
+
+Bumps [actions/checkout](https://github.com/actions/checkout) from 4.1.1 to 4.1.2.
+- [Release notes](https://github.com/actions/checkout/releases)
+- [Commits](https://github.com/actions/checkout/compare/v4.1.1...v4.1.2)
+
+---
+updated-dependencies:
+- dependency-name: actions/checkout
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`461e88e`](https://github.com/ralpht42/music-manager/commit/461e88e93f4398548dc67d184a13bc2cff5392d4))
+
+* build(deps): bump node from 21.6.2-bookworm-slim to 21.7.1-bookworm-slim
+
+Bumps node from 21.6.2-bookworm-slim to 21.7.1-bookworm-slim.
+
+---
+updated-dependencies:
+- dependency-name: node
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`d927b76`](https://github.com/ralpht42/music-manager/commit/d927b761943bf932d3806376d063173fc6d31107))
+
+* build(deps): bump docker/setup-buildx-action from 3.0.0 to 3.1.0
+
+Bumps [docker/setup-buildx-action](https://github.com/docker/setup-buildx-action) from 3.0.0 to 3.1.0.
+- [Release notes](https://github.com/docker/setup-buildx-action/releases)
+- [Commits](https://github.com/docker/setup-buildx-action/compare/f95db51fddba0c2d1ec667646a06c2ce06100226...0d103c3126aa41d772a8362f6aa67afac040f80c)
+
+---
+updated-dependencies:
+- dependency-name: docker/setup-buildx-action
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`24fc324`](https://github.com/ralpht42/music-manager/commit/24fc3244dbe0c31fb21821e0aa0d44371b5ac294))
+
+* build(deps): bump email-validator from 2.1.0 to 2.1.1
+
+Bumps [email-validator](https://github.com/JoshData/python-email-validator) from 2.1.0 to 2.1.1.
+- [Release notes](https://github.com/JoshData/python-email-validator/releases)
+- [Changelog](https://github.com/JoshData/python-email-validator/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/JoshData/python-email-validator/compare/2.1.0...v2.1.1)
+
+---
+updated-dependencies:
+- dependency-name: email-validator
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`bd0fa82`](https://github.com/ralpht42/music-manager/commit/bd0fa827912b1e83470120319d9cc0ce82f8670d))
+
+* build(deps): bump pandas from 2.2.0 to 2.2.1
+
+Bumps [pandas](https://github.com/pandas-dev/pandas) from 2.2.0 to 2.2.1.
+- [Release notes](https://github.com/pandas-dev/pandas/releases)
+- [Commits](https://github.com/pandas-dev/pandas/compare/v2.2.0...v2.2.1)
+
+---
+updated-dependencies:
+- dependency-name: pandas
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`1f3a6f2`](https://github.com/ralpht42/music-manager/commit/1f3a6f2f9b45058cb648cebc6c9d8b4447f3646b))
+
+* build(deps): bump python-semantic-release/python-semantic-release
+
+Bumps [python-semantic-release/python-semantic-release](https://github.com/python-semantic-release/python-semantic-release) from 9.1.0 to 9.1.1.
+- [Release notes](https://github.com/python-semantic-release/python-semantic-release/releases)
+- [Changelog](https://github.com/python-semantic-release/python-semantic-release/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/python-semantic-release/python-semantic-release/compare/82bfcd3ba619ce6bda0eb79b903be48d3ac5ff2c...c82bd673c30da94a02e039963c8c4c8a51758096)
+
+---
+updated-dependencies:
+- dependency-name: python-semantic-release/python-semantic-release
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`5e0d7c9`](https://github.com/ralpht42/music-manager/commit/5e0d7c913d65dba011ec030598c97870a4b0ce31))
+
+* build(deps): bump faker from 22.6.0 to 23.2.1
+
+Bumps [faker](https://github.com/joke2k/faker) from 22.6.0 to 23.2.1.
+- [Release notes](https://github.com/joke2k/faker/releases)
+- [Changelog](https://github.com/joke2k/faker/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/joke2k/faker/compare/v22.6.0...v23.2.1)
+
+---
+updated-dependencies:
+- dependency-name: faker
+  dependency-type: direct:production
+  update-type: version-update:semver-major
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`62d342c`](https://github.com/ralpht42/music-manager/commit/62d342c908b9ec966a9edaf3ba7333e2e0e35bff))
+
+* build(deps): bump node from 21.6.1-bookworm-slim to 21.6.2-bookworm-slim
+
+Bumps node from 21.6.1-bookworm-slim to 21.6.2-bookworm-slim.
+
+---
+updated-dependencies:
+- dependency-name: node
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`0cd0dc8`](https://github.com/ralpht42/music-manager/commit/0cd0dc8101b9810d5cb278981c1a3b4688826891))
+
+### Documentation
+
+* docs: Entferne TIDAL_APP_CLIENT_ID und TIDAL_APP_CLIENT_SECRET aus README.md ([`a80fd89`](https://github.com/ralpht42/music-manager/commit/a80fd8912ad9e95c1a6a2e4fc06fcd1f63fd89bb))
+
+### Feature
+
+* feat: Aktualisiere die Anzeige der Willkommensnachricht basierend auf dem Benutzerstatus ([`5aaae9c`](https://github.com/ralpht42/music-manager/commit/5aaae9c53697de0dfbda7267fdd44537d09d9caa))
+
+* feat: added tooltip in job and playlist details ([`12eb998`](https://github.com/ralpht42/music-manager/commit/12eb998a40fb5abb58344b16b14a1093f3a8bcb9))
+
+* feat: added onmouseover cursor style pointer to the tags in playlist
+feat: added selection boxes for playlist items ([`d3a8304`](https://github.com/ralpht42/music-manager/commit/d3a8304fea40f180e032c4d40e7f7ff7762c61a3))
+
+* feat: Bulma Tooltips über CDN hinzugefügt
+fix: Jobs und Playlists Tabellen angepasst ([`73d9a7c`](https://github.com/ralpht42/music-manager/commit/73d9a7c068e306c227897f081b67887831ab76d8))
+
+* feat: using custom sass of bulma io now instead of cdn
+feat: added darkmode
+fix: changed UI to work with dark mode ([`16da389`](https://github.com/ralpht42/music-manager/commit/16da3894f1084dee7aeb537b36cf8342e340a9fd))
+
+* feat: better support for password managers, as fields are now marked as username, email or password ([`e2c22c3`](https://github.com/ralpht42/music-manager/commit/e2c22c3791ede9d8680f2749a6fff79f204d9277))
+
+* feat: added playlist upload to tidal function ([`13dfc8b`](https://github.com/ralpht42/music-manager/commit/13dfc8b3f47fb00798c275dd4c508f257e041d92))
+
+* feat: added pagination in job view
+feat: changed url to accept optional parameters instead of own url ([`5f1bc1b`](https://github.com/ralpht42/music-manager/commit/5f1bc1b3768a7061edfb5f17c3a167dfb4956dc2))
+
+### Fix
+
+* fix: removed sensitive error infomation output to client. ([`eb3fb8f`](https://github.com/ralpht42/music-manager/commit/eb3fb8f2741be75058c5c4176c0ccf59cb0b870f))
+
+* fix: Aktualisiere das Erscheinungsbild der Checkboxen in der CSS-Datei ([`6c59e92`](https://github.com/ralpht42/music-manager/commit/6c59e920dcb5717e2c9ecd31d436f17c602c0a52))
+
+* fix: opening the tidal site with the new playlist does now not raise a problem with the popup blocker of the browser ([`aa7b184`](https://github.com/ralpht42/music-manager/commit/aa7b184d04f4e118661cc4a91937732d46977131))
+
+* fix: fixed url in playlist_export endpoint
+doc: added todo in export_to_tidal method
+fix: added darkmode support in checkbox ([`4f86969`](https://github.com/ralpht42/music-manager/commit/4f869694e363e1fcccff42f04421776d3f380811))
+
+* fix: database structure now has a tidal playlist id attribute to store the reference to the corresponding tidal song ([`1fd73ff`](https://github.com/ralpht42/music-manager/commit/1fd73ffe2187a38f844b8bb7efcd3f1d5e4a502b))
+
+* fix: fixed alignment of upload buttons ([`c31496d`](https://github.com/ralpht42/music-manager/commit/c31496d78b05517ce13a89ffff69e977a49f5698))
+
+* fix: fixed register method to accept new password method ([`4623095`](https://github.com/ralpht42/music-manager/commit/462309525a16f6c6420c09067d70d0d3940d2709))
+
+* fix: renamed methods to fit REST specification
+fix fixed the delete song from playlist funcitonality ([`8cf9db9`](https://github.com/ralpht42/music-manager/commit/8cf9db92f892cb1b10fbb0566503d5fcf720e38a))
+
+* fix: enabled lazy loading for images in playlists ([`4c6ac45`](https://github.com/ralpht42/music-manager/commit/4c6ac45f34b7efa65f6c5085ba7a7b14f5c900a7))
+
+* fix: changed db layout to improve loading speeds (maybe not sufficient)
+feat: added pagination in playlists
+feat: added delete tag feature in playlists
+fix: extended nowrap css attribute ([`a0542af`](https://github.com/ralpht42/music-manager/commit/a0542af3d49b60b5637cf3570a2320901e89dc77))
+
+* fix: Aktualisiere Anzeige von Dauer von Songs, sodass statt der Dauer in Sekunden, die Dauer im Format MM:SS liegt, wobei bei den Sekunden eine führende 0 bei Werten kleiner als 10 verwendet wird. ([`a63c12b`](https://github.com/ralpht42/music-manager/commit/a63c12bab191fda2240280c584e1881d6b126a94))
+
+* fix: Aktualisiere die Überprüfung des Jahres in der Job-Klasse, um auch Gleitkommazahlen zu akzeptieren. Bei manchen Excel Dateien wird statt einem Int ein Float verwendet z. B. 2014.0 statt 2014 ([`4c0c590`](https://github.com/ralpht42/music-manager/commit/4c0c590e32c0595d63e0518bfdaa5b3aff9b3f09))
+
+* fix: neue Jobs werden jetzt nach dem Namen der Excel Datei benannt ([`d109f9d`](https://github.com/ralpht42/music-manager/commit/d109f9d9fd579a4894aab5e8c9718b5b9e85c424))
+
+* fix: Aktualisieren Sie die Playlist-Löschfunktion und die Aktualisierungsfunktion für die Playlist. Beheben Sie auch ein Anzeigeproblem in der Playlist-Vorlage. ([`699fdb7`](https://github.com/ralpht42/music-manager/commit/699fdb74d4a23c00c22f67d7e652f1bea82831b4))
+
+### Refactor
+
+* refactor: moved custom css code from base.html to an extra file for custom css code
+feat: added an experimental selection box over css ([`a808371`](https://github.com/ralpht42/music-manager/commit/a8083718573aa1eafc0d657f2713e2dd3f200bc4))
+
+### Style
+
+* style: reformatted index.html ([`50b2dcf`](https://github.com/ralpht42/music-manager/commit/50b2dcf69233f813f21bd24cd162e8e9492ef423))
+
+### Unknown
+
+* Merge pull request #89 from ralpht42/export-playlist-to-tidal
+
+Fix various issues and add new features ([`de3b2a7`](https://github.com/ralpht42/music-manager/commit/de3b2a72d988aad6373593500f1d060869a84134))
+
+* Merge remote-tracking branch &#39;origin/HEAD&#39; into export-playlist-to-tidal ([`11e0159`](https://github.com/ralpht42/music-manager/commit/11e01593ac652d93efaba3513d180d963931912e))
+
+* Merge pull request #87 from ralpht42/dependabot/github_actions/python-semantic-release/python-semantic-release-9.3.1
+
+build(deps): bump python-semantic-release/python-semantic-release from 9.1.1 to 9.3.1 ([`802428f`](https://github.com/ralpht42/music-manager/commit/802428fdf2792f64c8932ba5ea430b643d497d20))
+
+* Merge pull request #88 from ralpht42/dependabot/pip/faker-24.3.0
+
+build(deps): bump faker from 24.2.0 to 24.3.0 ([`e743aec`](https://github.com/ralpht42/music-manager/commit/e743aeca3f8efb4b52a150b9f44be93e5c978a50))
+
+* Merge remote-tracking branch &#39;origin/HEAD&#39; into export-playlist-to-tidal ([`cea1eee`](https://github.com/ralpht42/music-manager/commit/cea1eeecda2a933b109e1320af2e1a14a3b74d59))
+
+* Merge pull request #80 from ralpht42/dependabot/docker/node-21.7.1-bookworm-slim
+
+build(deps): bump node from 21.6.2-bookworm-slim to 21.7.1-bookworm-slim ([`6280262`](https://github.com/ralpht42/music-manager/commit/6280262d6421b81969227be6b43d7a6576a363e4))
+
+* Merge pull request #72 from ralpht42/dependabot/pip/tidalapi-0.7.5
+
+build(deps): bump tidalapi from 0.7.3 to 0.7.5 ([`e96ae0b`](https://github.com/ralpht42/music-manager/commit/e96ae0bb6c26f7a116fbe4250f766fd61cfdaf90))
+
+* Merge remote-tracking branch &#39;origin/HEAD&#39; into export-playlist-to-tidal ([`dec301c`](https://github.com/ralpht42/music-manager/commit/dec301ceb209cf44ba08da7791f7cd66a09303d9))
+
+* Merge pull request #81 from ralpht42/dependabot/github_actions/actions/checkout-4.1.2
+
+build(deps): bump actions/checkout from 4.1.1 to 4.1.2 ([`9cfbc57`](https://github.com/ralpht42/music-manager/commit/9cfbc57ad5ae6dd8c6f0f6cf86f50c57762261d9))
+
+* Merge pull request #85 from ralpht42/dependabot/pip/faker-24.2.0
+
+build(deps): bump faker from 23.2.1 to 24.2.0 ([`fa81bb3`](https://github.com/ralpht42/music-manager/commit/fa81bb302fd8e710351ac9d102f5fa3cd8708de3))
+
+* Merge pull request #82 from ralpht42/dependabot/github_actions/docker/setup-buildx-action-3.2.0
+
+build(deps): bump docker/setup-buildx-action from 3.1.0 to 3.2.0 ([`d8b23c7`](https://github.com/ralpht42/music-manager/commit/d8b23c7a8913b681fd9d289eb30525dff60411aa))
+
+* Merge pull request #83 from ralpht42/dependabot/github_actions/docker/build-push-action-5.3.0
+
+build(deps): bump docker/build-push-action from 5.1.0 to 5.3.0 ([`cc9b96f`](https://github.com/ralpht42/music-manager/commit/cc9b96f4a4b7edb460439283974711de2412292a))
+
+* Merge pull request #84 from ralpht42/dependabot/github_actions/docker/login-action-3.1.0
+
+build(deps): bump docker/login-action from 3.0.0 to 3.1.0 ([`fbbd6b3`](https://github.com/ralpht42/music-manager/commit/fbbd6b3bddebd040dc6344e231e06f4e7724ca3b))
+
+* Merge pull request #73 from ralpht42/dependabot/pip/email-validator-2.1.1
+
+build(deps): bump email-validator from 2.1.0 to 2.1.1 ([`b5f3a99`](https://github.com/ralpht42/music-manager/commit/b5f3a9966e5f7bd18e347e1dd053f3fbb807bd53))
+
+* Merge pull request #70 from ralpht42/dependabot/pip/pandas-2.2.1
+
+build(deps): bump pandas from 2.2.0 to 2.2.1 ([`866df24`](https://github.com/ralpht42/music-manager/commit/866df24eed97216cda99846fff4368ff7cfc209d))
+
+* Merge pull request #75 from ralpht42/dependabot/github_actions/docker/setup-buildx-action-3.1.0
+
+build(deps): bump docker/setup-buildx-action from 3.0.0 to 3.1.0 ([`cda2f67`](https://github.com/ralpht42/music-manager/commit/cda2f671616bb0a9e261fd79cf36c0c8559fa2a5))
+
+* Merge pull request #69 from ralpht42/dependabot/github_actions/python-semantic-release/python-semantic-release-9.1.1
+
+build(deps): bump python-semantic-release/python-semantic-release from 9.1.0 to 9.1.1 ([`09f714d`](https://github.com/ralpht42/music-manager/commit/09f714d4c41f354649ee333631a3c0b4bb36d2fc))
+
+* Merge pull request #65 from ralpht42/dependabot/docker/node-21.6.2-bookworm-slim
+
+build(deps): bump node from 21.6.1-bookworm-slim to 21.6.2-bookworm-slim ([`461a4fc`](https://github.com/ralpht42/music-manager/commit/461a4fc4108b66d9be6f284dcf3c827f5946cac6))
+
+* Merge pull request #66 from ralpht42/dependabot/pip/faker-23.2.1
+
+build(deps): bump faker from 22.6.0 to 23.2.1 ([`1fbe7b8`](https://github.com/ralpht42/music-manager/commit/1fbe7b818dd9505715b42a62c3edd311ae982ff1))
+
+
 ## v0.3.0 (2024-02-19)
 
 ### Build
@@ -237,6 +614,10 @@ Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`7f02282`](https://g
 * build(deps): bump docker/metadata-action from 5.4.0 to 5.5.0
 
 Merge pull request #41 from ralpht42/dependabot/github_actions/docker/metadata-action-5.5.0 ([`2885362`](https://github.com/ralpht42/music-manager/commit/2885362306970da8b88a4895accfead4d1edd87f))
+
+### Chore
+
+* chore(release): release 0.3.0 ([`32e6737`](https://github.com/ralpht42/music-manager/commit/32e6737a5cb4b62a651139af93933b546f2dfe39))
 
 ### Ci
 
