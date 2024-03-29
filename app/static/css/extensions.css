@@ -38,6 +38,7 @@ body {
 		--disabled-inner: #e1e6f9;
 		-webkit-appearance: none;
 		-moz-appearance: none;
+		appearance: none;
 		height: 21px;
 		outline: none;
 		display: inline-block;
@@ -129,7 +130,7 @@ body {
 			--active: #275efe;
 		}
 		.checkbox-wrapper-13 input[type='checkbox']:disabled {
-			--disabled: #444; 
+			--disabled: #444;
 		}
 		.checkbox-wrapper-13 input[type='checkbox']:disabled:checked {
 			--disabled-inner: #373e53;
