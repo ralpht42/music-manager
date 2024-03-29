@@ -14,12 +14,12 @@
 		action="{{ url_for('jobs.job_upload_file') }}"
 		method="POST"
 		enctype="multipart/form-data"
-		class="is-flex is-justify-content-space-between"
+		class="is-flex is-justify-content-space-between block"
 	>
-		<div id="excel_file_upload" class="file has-name is-primary">
+		<div id="excel_file_upload" class="file has-name is-primary mb-0">
 			<label class="file-label">
 				<input class="file-input" type="file" name="song_excel_file" />
-				<span class="file-cta pl-3">
+				<span class="file-cta">
 					<span class="file-icon">
 						<i class="material-symbols-outlined">attach_file</i>
 					</span>
@@ -35,70 +35,78 @@
 			<span>Hochladen</span>
 		</button>
 	</form>
-	<table class="table is-fullwidth">
-		<thead>
-			<tr>
-				<th>Job</th>
-				<th>Erstellt am</th>
-				<th>Erstellt von</th>
-				<th>Letzte Änderung am</th>
-				<th>Letzte Änderung von</th>
-				<th>Typ</th>
-				<th></th>
-				<th></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for job in jobs %}
-			<tr>
-				<td>{{ job.name }}</td>
-				<td>{{ job.created_at }}</td>
-				<td>{{ job.created_by }}</td>
-				<td>{{ job.updated_at }}</td>
-				<td>{{ job.updated_by }}</td>
+	<div class="table-container">
+		<table class="table is-fullwidth is-narrow is-hoverable">
+			<thead>
+				<tr class="no-wrap">
+					<th>Job</th>
+					<th>Erstellt am</th>
+					<th>Erstellt von</th>
+					<th>Aktualisiert am</th>
+					<th>Aktualisiert von</th>
+					<th>Typ</th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for job in jobs %}
+				<tr>
+					<td>{{ job.name }}</td>
+					<td>{{ job.created_at }}</td>
+					<td>{{ job.created_by }}</td>
+					<td>{{ job.updated_at }}</td>
+					<td>{{ job.updated_by }}</td>
 
-				<td>
-					{% if job.manual == true %}
-					<span class="tag is-warning">Manuell</span>
-					{% else %}
-					<span class="tag is-success">Automatisch</span>
-					{% endif %}
-				</td>
+					<td>
+						{% if job.manual == true %}
+						<span class="tag is-warning">Manuell</span>
+						{% else %}
+						<span class="tag is-success">Automatisch</span>
+						{% endif %}
+					</td>
 
-				<td>
-					<a class="button is-small is-info" href="{{ url_for('playlists.playlist_create', job_id=job.id) }}">
-						<span class="icon is-small">
-							<i class="material-symbols-outlined">playlist_add</i>
-						</span>
-				</td>
+					<td>
+						<a
+							class="button is-small is-info"
+							href="{{ url_for('playlists.playlist_create', job_id=job.id) }}"
+							data-tooltip="Playliste erstellen"
+						>
+							<span class="icon is-small">
+								<i class="material-symbols-outlined">playlist_add</i>
+							</span>
+						</a>
+					</td>
 
-
-				<td>
-					<a
-						class="button is-small is-warning load-on-click"
-						href="{{ url_for('jobs.job_details', job_id=job.id) }}"
-					>
-						<span class="icon is-small">
-							<i class="material-symbols-outlined">edit</i>
-						</span>
-					</a>
-				</td>
-				<td>
-					<button
-						class="button is-small is-danger load-on-click"
-						type="button"
-						onclick="deleteJob('{{ job.id }}')"
-					>
-						<span class="icon is-small">
-							<i class="material-symbols-outlined">delete</i>
-						</span>
-					</button>
-				</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+					<td>
+						<a
+							class="button is-small is-warning load-on-click"
+							href="{{ url_for('jobs.job_details', job_id=job.id) }}"
+							data-tooltip="Songs anzeigen"
+						>
+							<span class="icon is-small">
+								<i class="material-symbols-outlined">edit</i>
+							</span>
+						</a>
+					</td>
+					<td>
+						<button
+							class="button is-small is-danger load-on-click"
+							type="button"
+							onclick="deleteJob('{{ job.id }}')"
+							data-tooltip="Job löschen"
+						>
+							<span class="icon is-small">
+								<i class="material-symbols-outlined">delete</i>
+							</span>
+						</button>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <script>
@@ -115,7 +123,7 @@
 
 	// Lösche Job (AJAX Workaround für DELETE Request)
 	function deleteJob(job_id) {
-		fetch('/job/' + job_id, {
+		fetch('/jobs/' + job_id, {
 			method: 'DELETE',
 		})
 			.then((response) => response.json())

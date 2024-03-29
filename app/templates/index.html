@@ -2,10 +2,10 @@
 
 {% extends "base.html" %} {% block content %}
 
-<h3 class="title">
-	{% if current_user.is_authenticated %} Willkommen, {{ current_user.username
-	}}! {% else %} Willkommen Fremder! {% endif %}
-</h3>
+<!-- Der Benutzer ist angemeldet -->
+{% if current_user.is_authenticated %}
+
+<h3 class="title">Willkommen, {{ current_user.username}}!</h3>
 <div class="box">
 	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
 	{% with messages = get_flashed_messages() %} {% if messages %}
@@ -13,11 +13,11 @@
 		<button class="delete"></button>
 		<p>{{ messages[0] }}</p>
 	</div>
-	{% endif %} {% endwith %} {% if current_user.is_authenticated %}
+	{% endif %} {% endwith %}
 
 	<main>
 		<div class="content is-medium">
-			<h2 class="subtitle is-4 has-text-dark">Was ist das hier?</h2>
+			<h2 class="subtitle is-4">Was ist das hier?</h2>
 			<p>
 				Dies ist eine Webanwendung, die es ermöglicht, Musik zu verwalten und zu
 				organisieren. Sie ist für den privaten Gebrauch gedacht.
@@ -38,14 +38,14 @@
 				gefunden werden.
 			</p>
 
-			<h2 class="subtitle is-4 has-text-dark">Was kann die Anwendung?</h2>
+			<h2 class="subtitle is-4">Was kann die Anwendung?</h2>
 			<p>
 				Die Anwendung kann Musik verwalten. Es können Songs, Alben und
 				Interpreten angelegt werden. Außerdem können Playlists erstellt werden,
 				die entweder manuell oder automatisch mit Songs gefüllt werden können.
 			</p>
 
-			<h2 class="subtitle is-4 has-text-dark">Was kann die Anwendung nicht?</h2>
+			<h2 class="subtitle is-4">Was kann die Anwendung nicht?</h2>
 			<p>
 				Die Anwendung kann keine Musik abspielen. Sie kann auch keine Musik
 				herunterladen. Sie kann auch keine Musik erkennen. Sie kann keine Musik
@@ -54,6 +54,37 @@
 		</div>
 	</main>
 
-	{% else %} {% endif %}
+	<!-- Der Benutzer ist nicht angemeldet -->
+	{% else %}
+	<div class="column is-4 is-offset-4 has-text-centered">
+		<h3 class="title">Willkommen!</h3>
+		<main class="box">
+			<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
+			{% with messages = get_flashed_messages() %} {% if messages %}
+			<div class="notification is-danger">
+				<button class="delete"></button>
+				<p>{{ messages[0] }}</p>
+			</div>
+			{% endif %} {% endwith %}
+
+			<div class="content is-medium">
+				<h2 class="subtitle is-4">Registriere dich!</h2>
+				<p>
+					Um die Anwendung nutzen zu können, musst du dich registrieren. Das
+					geht ganz einfach und ist kostenlos. Um alle Funktionen nutzen zu
+					können, musst du jedoch ein gültiges TIDAL-Konto haben.
+				</p>
+				<a href="{{ url_for('auth.signup') }}" class="button is-primary"
+					>Registrieren</a
+				>
+			</div>
+			<p>
+				Wenn du bereits einen Account hast, kannst du dich auch einfach
+				<a href="{{ url_for('auth.login') }}">anmelden</a>.
+			</p>
+		</main>
+	</div>
+
+	{% endif %}
 </div>
 {% endblock %}

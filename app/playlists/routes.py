@@ -1,10 +1,13 @@
-from flask import render_template, redirect, url_for, request, jsonify, flash
+from flask import render_template, redirect, url_for, request, jsonify, flash, abort
 from flask_login import login_required, current_user
+from flask_sqlalchemy import SQLAlchemy
+
 
 from app.playlists import bp
 from app.extensions import db
 from app.models.playlist import Playlist, song_playlist
 from app.models.job import Job
+from app.models.song import Song
 
 
 @bp.route("/playlists")
@@ -15,7 +18,7 @@ def index():
     )
 
 
-@bp.route("/playlist/create?job_id=<int:job_id>", methods=["GET"])
+@bp.route("/playlists/create?job_id=<int:job_id>", methods=["GET"])
 @login_required
 def playlist_create(job_id):
     job = Job.query.filter_by(id=job_id).first()
@@ -41,21 +44,48 @@ def playlist_create(job_id):
     return redirect(url_for("playlists.index"))
 
 
-@bp.route("/playlist/<int:playlist_id>", methods=["GET"])
+@bp.route("/playlists/<int:playlist_id>", methods=["GET"])
 @login_required
 def playlist_details(playlist_id):
-    return render_template(
-        "playlist.html", playlist=Playlist.query.filter_by(id=playlist_id).first()
+
+    # Load additional query parameters from the URL
+    page = request.args.get("page", 1, type=int)
+
+    # Exception handling for invalid arguments
+    if page < 1:  # In this case we save a query to the database
+        abort(404)  # TODO: Implement a custom error page
+
+    # TODO: Validate the playlist_id and if the user has access to it
+
+    # Get the playlist and the songs, but only 50 songs at a time
+    playlist = Playlist.query.filter_by(id=playlist_id).first()
+    songs = (
+        Song.query.join(song_playlist)
+        .filter(song_playlist.c.playlist_id == playlist_id)
+        .paginate(page=page, per_page=50, error_out=False)
     )
 
+    # Validate whether the page exists
+    if page > songs.pages:
+        abort(404)
 
-@bp.route("/playlist/<int:playlist_id>", methods=["DELETE"])
+    # with songs.has_prev and songs.has_next we can check if there are more songs,
+    # and with songs.prev_num and songs.next_num we can get the page number.
+    # We can use this information to create a pagination in the template.
+    return render_template("playlist.html", playlist=playlist, songs=songs)
+
+
+@bp.route("/playlists/<int:playlist_id>", methods=["DELETE"])
 @login_required
 def playlist_delete(playlist_id):
-    return redirect(url_for("playlists.index"))
+    playlist = Playlist.query.filter_by(id=playlist_id).first()
+    db.session.delete(playlist)
+    db.session.commit()
+
+    return jsonify({"success": True})
 
 
-@bp.route("/playlist/<int:playlist_id>/refresh", methods=["PATCH"])
+@bp.route("/playlists/<int:playlist_id>/refresh", methods=["PATCH"])
 @login_required
 def playlist_refresh(playlist_id):
     """
@@ -69,10 +99,41 @@ def playlist_refresh(playlist_id):
             if song.tidal_song_id is None:
                 song.search_in_tidal()
 
-        success = True
+        return jsonify({"success": True})
     except Exception as e:
         print(e)
-        success = False
+        return jsonify({"success": False})
 
-    response = {"success": success}
-    return jsonify(response)
+
+@bp.route("/playlists/<int:playlist_id>/songs/<int:song_id>", methods=["DELETE"])
+@login_required
+def playlist_song_delete(playlist_id, song_id):
+    playlist = Playlist.query.filter_by(id=playlist_id).first()
+    song = Song.query.filter_by(id=song_id).first()
+
+    if song in playlist.songs:
+        try:
+            playlist.songs.remove(song)
+            db.session.commit()
+            return jsonify({"success": True})
+        except Exception as e:
+            print(e)
+            return jsonify({"success": False, "error": "Could not delete song from playlist. Check the logs for more information."})
+    else:
+        return jsonify({"success": False, "error": "Song not in playlist"})
+
+
+# Export the playlist to TIDAL (Create a playlist in TIDAL and add the songs)
+@bp.route("/playlists/<int:playlist_id>/export", methods=["POST"])
+@login_required
+def playlist_export(playlist_id):
+    playlist = Playlist.query.filter_by(id=playlist_id).first()
+    try:
+        playlist = playlist.export_to_tidal(current_user)
+
+        url = f"https://listen.tidal.com/playlist/{playlist.id}"
+
+        return jsonify({"success": True, "url": url})
+    except Exception as e:
+        print(e)
+        return jsonify({"success": False, "error": "Could not export playlist to TIDAL. Check the logs for more information."})

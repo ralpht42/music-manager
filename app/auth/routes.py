@@ -43,8 +43,8 @@ def signup_post():
 
     # Versuche, den Benutzer anzulegen, falls über die Datenbank ein Fehler erkannt wird,
     # wird eine Exception geworfen, die hier abgefangen und als Fehlermeldung angezeigt wird.
-    user = User(username=username, email=email)
-    user.set_password(password)
+    # Das Passwort wird in der init-Methode gehasht und dann in der Datenbank gespeichert.
+    user = User(username=username, email=email, password=password)
     db.session.add(user)
     try:
         db.session.commit()

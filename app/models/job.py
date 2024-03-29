@@ -77,7 +77,7 @@ class Job(db.Model):
                 or not row["Artists"]
                 or type(row["Artists"]) != str
                 or not row["Year"]
-                or type(row["Year"]) != int
+                or type(row["Year"]) not in [int, float]
                 or not row["Language"]
                 or type(row["Language"]) != str
                 or not row["Length"]

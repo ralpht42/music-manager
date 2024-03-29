@@ -17,7 +17,7 @@ def index():
     return render_template("jobs.html", jobs=jobs)
 
 
-@bp.route("/job/upload_file", methods=["POST"])
+@bp.route("/jobs/upload_file", methods=["POST"])
 @login_required
 def job_upload_file():
     if "song_excel_file" not in request.files:
@@ -28,11 +28,11 @@ def job_upload_file():
         flash("Ungültige Datei hochgeladen")
         return redirect(url_for("jobs.index"))
     else:
-        # TODO: Funktion überprüfen
+        # Erstellen eines neuen Jobs und Importieren der Excel-Datei
+        # Der Job wird dabei nach der Datei benannt und als manuell markiert
+
         job = Job(
-            name="Manueller Excel-Import am "
-            + datetime.now().strftime("%d.%m.%Y um %H:%M:%S Uhr")
-            + ".",
+            name=f"Job {file.filename} von {current_user.username} am {datetime.now().strftime('%d.%m.%Y um %H:%M:%S')}",
             created_by=current_user.id,
             manual=True,
         )
@@ -44,21 +44,42 @@ def job_upload_file():
         return redirect(url_for("jobs.index"))
 
 
-@bp.route("/job/create", methods=["POST"])
+@bp.route("/jobs/create", methods=["POST"])
 @login_required
 def job_create(job_id):
     # TODO: Job erstellen implementieren
     return render_template("job.html", job_id=job_id)
 
 
-@bp.route("/job/<int:job_id>", methods=["GET"])
+@bp.route("/jobs/<int:job_id>", methods=["GET"])
 @login_required
 def job_details(job_id):
+
+    # Load additional query parameters from the URL
+    page = request.args.get("page", 1, type=int)
+
+    # Exception handling for invalid arguments
+    if page < 1:  # In this case we save a query to the database
+        abort(404)  # TODO: Implement a custom error page
+
+    # TODO: Validate the job_id and if the user has access to it
+
+    # Get the playlist and the songs, but only 50 songs at a time
     job = Job.query.filter_by(id=job_id).first()
-    return render_template("job.html", job=job)
+    songs = (
+        Song.query.join(song_job)
+        .filter(song_job.c.job_id == job_id)
+        .paginate(page=page, per_page=50, error_out=False)
+    )
+
+    # Validate whether the page exists
+    if page > songs.pages:
+        abort(404)
+
+    return render_template("job.html", job=job, songs=songs)
 
 
-@bp.route("/job/<int:job_id>", methods=["DELETE"])
+@bp.route("/jobs/<int:job_id>", methods=["DELETE"])
 @login_required
 def job_delete(job_id):
     success = None
@@ -75,7 +96,7 @@ def job_delete(job_id):
     return jsonify(response)
 
 
-@bp.route("/job/<int:job_id>/song/<int:song_id>", methods=["GET"])
+@bp.route("/jobs/<int:job_id>/song/<int:song_id>", methods=["GET"])
 @login_required
 def job_song_details(job_id, song_id):
     return render_template(
@@ -85,7 +106,7 @@ def job_song_details(job_id, song_id):
     )
 
 
-@bp.route("/job/<int:job_id>/song/<int:song_id>", methods=["POST"])
+@bp.route("/jobs/<int:job_id>/song/<int:song_id>", methods=["POST"])
 @login_required
 def job_song_update(job_id, song_id):
     song = {
@@ -116,7 +137,7 @@ def job_song_update(job_id, song_id):
     )
 
 
-@bp.route("/job/<int:job_id>/song/<int:song_id>", methods=["DELETE"])
+@bp.route("/jobs/<int:job_id>/song/<int:song_id>", methods=["DELETE"])
 @login_required
 def job_song_delete(job_id, song_id):
     success = None

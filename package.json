@@ -1,5 +1,11 @@
 {
   "dependencies": {
-    "prettier": "^3.2.5"
+    "bulma": "^1.0.0",
+    "prettier": "^3.2.5",
+    "sass": "^1.72.0"
+  },
+  "scripts": {
+    "build-bulma": "sass --load-path=node_modules bulma-customisation.scss ./app/static/css/bulma.css",
+    "start": "npm run build-bulma -- --watch"
   }
 }
