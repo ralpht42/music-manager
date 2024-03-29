@@ -75,6 +75,7 @@ class Playlist(db.Model):
             self.name, "Playlist created by Music Manager"
         )
         # Split the songs in chunks of 100 songs to avoid TIDAL API limit
+        # TODO: Improve the speed of this process, maybe threading is a solution
         for i in range(0, len(songs_ids), 100):
             tidal_playlist.add(songs_ids[i : i + 100])
 

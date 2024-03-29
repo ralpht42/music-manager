@@ -131,7 +131,7 @@ def playlist_export(playlist_id):
     try:
         playlist = playlist.export_to_tidal(current_user)
 
-        url = f"https://listen.tidal.com/playlist/{playlist.tidal_playlist_id}"
+        url = f"https://listen.tidal.com/playlist/{playlist.id}"
 
         return jsonify({"success": True, "url": url})
     except Exception as e:

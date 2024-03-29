@@ -120,6 +120,21 @@ body {
 	.checkbox-wrapper-13 input[type='checkbox']:not(.switch):checked {
 		--r: 43deg;
 	}
+
+	@media (prefers-color-scheme: dark) {
+		.checkbox-wrapper-13 input[type='checkbox'] {
+			--background: #333;
+		}
+		.checkbox-wrapper-13 input[type='checkbox']:checked {
+			--active: #275efe;
+		}
+		.checkbox-wrapper-13 input[type='checkbox']:disabled {
+			--disabled: #444; 
+		}
+		.checkbox-wrapper-13 input[type='checkbox']:disabled:checked {
+			--disabled-inner: #373e53;
+		}
+	}
 }
 
 .checkbox-wrapper-13 * {
