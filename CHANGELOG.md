@@ -2,6 +2,34 @@
 
 
 
+## v0.4.1 (2024-03-31)
+
+### Fix
+
+* fix: added curly closing bracket in css code ([`08f9880`](https://github.com/ralpht42/music-manager/commit/08f98806e60b28d6ca86e49fb778501aa3ae95ef))
+
+* fix: Aktualisiere Titel-Tags in HTML-Vorlagen ([`51da064`](https://github.com/ralpht42/music-manager/commit/51da06418584fc7f17a8bcd18f723f572c6a5b71))
+
+* fix: adjustments for the bright/dark theme
+feat: added background image
+feat: added error message when there is a connection problem with the TIDAL servers
+fix: error handling when there is a problem with the connection to the tidal servers
+style: autoformated many files
+refactor: moved darkmode from css to scss file
+feat: added the title from each page to the browsers title of the page
+fix: changed index page to refer to the login page as standard instead of register page ([`b5222df`](https://github.com/ralpht42/music-manager/commit/b5222dfc8bb82a726e33be494bea088dc2b4be4b))
+
+### Style
+
+* style: restyled with css formater from vs code instead of prettier extension ([`cb436d2`](https://github.com/ralpht42/music-manager/commit/cb436d295a7c8eca238b7b84b1c22aebbbeaf593))
+
+### Unknown
+
+* Merge pull request #90 from ralpht42/automatische-weiterleitung-nach-logout
+
+Implement UI changes and fix connection issues ([`26e2515`](https://github.com/ralpht42/music-manager/commit/26e25153993f431979092e00ef865b780083e234))
+
+
 ## v0.4.0 (2024-03-29)
 
 ### Build
@@ -233,6 +261,10 @@ updated-dependencies:
 ...
 
 Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`0cd0dc8`](https://github.com/ralpht42/music-manager/commit/0cd0dc8101b9810d5cb278981c1a3b4688826891))
+
+### Chore
+
+* chore(release): release 0.4.0 ([`665cbd0`](https://github.com/ralpht42/music-manager/commit/665cbd0f6b5a0932133a810cf177af3d63fa53fe))
 
 ### Documentation
 
