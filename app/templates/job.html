@@ -1,6 +1,6 @@
 <!-- templates/job.html -->
 {% extends "base.html" %} {% block content %}
-<h1 class="title">Job: {{ job.name }}</h1>
+<h1 class="title">{% block title %} Job: {{ job.name }} {% endblock %}</h1>
 <div class="box">
 	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
 	{% with messages = get_flashed_messages() %} {% if messages %}
@@ -178,11 +178,6 @@
 		</table>
 	</div>
 
-
-
-	
-
-
 	<nav class="pagination" role="navigation" aria-label="pagination">
 		<ul class="pagination-list">
 			<li>
@@ -197,7 +192,8 @@
 			<li>
 				<span class="pagination-ellipsis">&hellip;</span>
 			</li>
-			{% endif %} {% for page_num in songs.iter_pages(left_edge=1, left_current=1, right_current=1, right_edge=1) %} {% if page_num is not
+			{% endif %} {% for page_num in songs.iter_pages(left_edge=1,
+			left_current=1, right_current=1, right_edge=1) %} {% if page_num is not
 			none and page_num > 1 and page_num < songs.pages %}
 			<li>
 				<a
@@ -218,9 +214,7 @@
 			<li>
 				<span class="pagination-ellipsis">&hellip;</span>
 			</li>
-			{% endif %}
-
-			{% if songs.pages > 1 %}
+			{% endif %} {% if songs.pages > 1 %}
 			<li>
 				<a
 					class="pagination-link {% if songs.page == songs.pages %}is-current{% endif %}"

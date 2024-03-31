@@ -5,7 +5,10 @@
 <!-- Der Benutzer ist angemeldet -->
 {% if current_user.is_authenticated %}
 
-<h3 class="title">Willkommen, {{ current_user.username}}!</h3>
+<h3 class="title">
+	{% block title %} Willkommen{% if current_user.is_authenticated %}, {{
+	current_user.username }}{% endif %}! {% endblock %}
+</h3>
 <div class="box">
 	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
 	{% with messages = get_flashed_messages() %} {% if messages %}
@@ -68,19 +71,17 @@
 			{% endif %} {% endwith %}
 
 			<div class="content is-medium">
-				<h2 class="subtitle is-4">Registriere dich!</h2>
+				<h2 class="subtitle is-4">Melde dich an!</h2>
 				<p>
-					Um die Anwendung nutzen zu können, musst du dich registrieren. Das
-					geht ganz einfach und ist kostenlos. Um alle Funktionen nutzen zu
-					können, musst du jedoch ein gültiges TIDAL-Konto haben.
+					Wenn du bereits einen Account hast, kannst du dich einfach anmelden.
 				</p>
-				<a href="{{ url_for('auth.signup') }}" class="button is-primary"
-					>Registrieren</a
+				<a href="{{ url_for('auth.login') }}" class="button is-primary"
+					>Anmelden</a
 				>
 			</div>
 			<p>
-				Wenn du bereits einen Account hast, kannst du dich auch einfach
-				<a href="{{ url_for('auth.login') }}">anmelden</a>.
+				Noch kein Konto?
+				<a href="{{ url_for('auth.signup') }}">Registrieren</a>.
 			</p>
 		</main>
 	</div>

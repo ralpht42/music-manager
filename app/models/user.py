@@ -1,4 +1,5 @@
 from datetime import datetime
+import requests
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from argon2.low_level import Type
@@ -81,13 +82,22 @@ class User(db.Model):
 
     def get_tidal_session(self):
         return self.tidal_session
-    
+
     def load_tidal_session(self):
         if self.tidal_account is not None:
             self.tidal_session = tidalapi.Session()
             # Überprüfen, ob die Anmeldung bei TIDAL noch gültig ist
             if self.tidal_account.expiry_time < datetime.now():
-                self.tidal_session.token_refresh(self.tidal_account.refresh_token)
+                try:
+                    self.tidal_session.token_refresh(self.tidal_account.refresh_token)
+                except requests.exceptions.ConnectionError as e:
+                    print(
+                        f"Der TIDAL-Token für den Benutzer {self.username} konnte nicht aktualisiert werden.\nVermutlich besteht keine Verbindung zu den TIDAL-Servern:\n{e}"
+                    )
+                    raise Exception(
+                        f"Der TIDAL-Token für den Benutzer {self.username} konnte nicht aktualisiert werden.\nVermutlich besteht keine Verbindung zu den TIDAL-Servern:\n{e}"
+                    )
+
                 # Aktualisiere die Daten in der Datenbank
                 self.tidal_account.access_token = self.tidal_session.access_token
                 # Aktualisiere nicht den Refresh-Token, da dieser None ist (eventuell ein Bug in tidalapi)
@@ -96,12 +106,23 @@ class User(db.Model):
                 db.session.add(self.tidal_account)
                 db.session.commit()
 
-            self.tidal_session.load_oauth_session(
-                "Bearer",
-                self.tidal_account.access_token,
-                self.tidal_account.refresh_token,
-                self.tidal_account.expiry_time,
-            )
+            # Fehlerbehandelung, falls keine Verbindung zu den TIDAL Servern hergestellt werden kann.
+            # Das ist der Fall, falls der Server keine Internetverbindung hat oder die TIDAL Server nicht verfügbar sind.
+            try:
+                self.tidal_session.load_oauth_session(
+                    "Bearer",
+                    self.tidal_account.access_token,
+                    self.tidal_account.refresh_token,
+                    self.tidal_account.expiry_time,
+                )
+            except requests.exceptions.ConnectionError as e:
+                print(
+                    f"Es konnte keine Verbindung zu den Tidal-Servern hergestellt werden: {e}"
+                )
+                raise Exception(
+                    f"Der TIDAL-Token für den Benutzer {self.username} konnte nicht aktualisiert werden.\nVermutlich besteht keine Verbindung zu den TIDAL-Servern:\n{e}"
+                )
+
 
 class TidalAccount(db.Model):
     __tablename__ = "tidal_accounts"

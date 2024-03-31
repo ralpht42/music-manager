@@ -1,7 +1,9 @@
 <!-- templates/playlist.html -->
 {% extends "base.html" %} {% block content %}
 
-<h1 class="title">Playlist: {{ playlist.name }}</h1>
+<h1 class="title">
+	{% block title %} Playlist: {{ playlist.name }} {% endblock %}
+</h1>
 <div class="box">
 	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
 	{% with messages = get_flashed_messages() %} {% if messages %}

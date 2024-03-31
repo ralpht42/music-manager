@@ -214,7 +214,7 @@ class Song(db.Model):
                 print(f"No track found for {self.title}.")
 
                 return
-        
+
         # Wähle den Song mit der besten Übereinstimmung aus
         # Die Übereinstimmung wird anhand des Levenshtein-Algorithmus berechnet
         score_dict = {}
@@ -234,10 +234,9 @@ class Song(db.Model):
         # Erweitere die Informationen des Songs, Albums und der Künstler
         self.tidal_song_id = best_match.id
         self.isrc = best_match.isrc
-        
 
         self.explicit = best_match.explicit
-        
+
         if self.Album is None:
             self.Album = Album(title=best_match.album.name)
             db.session.add(self.Album)
@@ -251,10 +250,9 @@ class Song(db.Model):
                     artist.tidal_artist_id = artist_search.id
                     artist.tidal_cover_url = artist_search.picture
                     break
-        
+
         db.session.add(self)
         db.session.commit()
-
 
 
 class SongType(db.Model):

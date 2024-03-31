@@ -1,7 +1,9 @@
 <!-- templates/job_song.html -->
 {% extends "base.html" %} {% block content %}
 
-<h1 class="title">Job: {{ job.name }} - Song: {{ song.title }}</h1>
+<h1 class="title">
+	{% block title %} Job: {{ job.name }} - Song: {{ song.title }} {% endblock %}
+</h1>
 <div class="box">
 	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
 	{% with messages = get_flashed_messages() %} {% if messages %}
