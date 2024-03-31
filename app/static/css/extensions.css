@@ -3,8 +3,10 @@
 
 /* Additional classes */
 .no-wrap {
-	white-space: nowrap; /* no line break */
-	flex-wrap: nowrap; /* no flex line break */
+	white-space: nowrap;
+	/* no line break */
+	flex-wrap: nowrap;
+	/* no flex line break */
 }
 
 .hero-head {
@@ -38,6 +40,7 @@
 				border-color 0.3s,
 				box-shadow 0.2s;
 		}
+
 		.checkbox-wrapper-13 input[type='checkbox']:after {
 			content: '';
 			display: block;
@@ -48,6 +51,7 @@
 				transform var(--d-t, 0.3s) var(--d-t-e, ease),
 				opacity var(--d-o, 0.2s);
 		}
+
 		.checkbox-wrapper-13 input[type='checkbox']:checked {
 			--b: var(--active);
 			--bc: var(--active);
@@ -55,35 +59,43 @@
 			--d-t: 0.6s;
 			--d-t-e: cubic-bezier(0.2, 0.85, 0.32, 1.2);
 		}
+
 		.checkbox-wrapper-13 input[type='checkbox']:disabled {
 			--b: var(--disabled);
 			cursor: not-allowed;
 			opacity: 0.9;
 		}
+
 		.checkbox-wrapper-13 input[type='checkbox']:disabled:checked {
 			--b: var(--disabled-inner);
 			--bc: var(--border);
 		}
-		.checkbox-wrapper-13 input[type='checkbox']:disabled + label {
+
+		.checkbox-wrapper-13 input[type='checkbox']:disabled+label {
 			cursor: not-allowed;
 		}
-		.checkbox-wrapper-13
-			input[type='checkbox']:hover:not(:checked):not(:disabled) {
+
+		.checkbox-wrapper-13 input[type='checkbox']:hover:not(:checked):not(:disabled) {
 			--bc: var(--border-hover);
 		}
+
 		.checkbox-wrapper-13 input[type='checkbox']:focus {
 			box-shadow: 0 0 0 var(--focus);
 		}
+
 		.checkbox-wrapper-13 input[type='checkbox']:not(.switch) {
 			width: 21px;
 		}
+
 		.checkbox-wrapper-13 input[type='checkbox']:not(.switch):after {
 			opacity: var(--o, 0);
 		}
+
 		.checkbox-wrapper-13 input[type='checkbox']:not(.switch):checked {
 			--o: 1;
 		}
-		.checkbox-wrapper-13 input[type='checkbox'] + label {
+
+		.checkbox-wrapper-13 input[type='checkbox']+label {
 			display: inline-block;
 			vertical-align: middle;
 			cursor: pointer;
@@ -93,6 +105,7 @@
 		.checkbox-wrapper-13 input[type='checkbox']:not(.switch) {
 			border-radius: 7px;
 		}
+
 		.checkbox-wrapper-13 input[type='checkbox']:not(.switch):after {
 			width: 5px;
 			height: 9px;
@@ -103,6 +116,7 @@
 			top: 4px;
 			transform: rotate(var(--r, 20deg));
 		}
+
 		.checkbox-wrapper-13 input[type='checkbox']:not(.switch):checked {
 			--r: 43deg;
 		}
@@ -111,12 +125,15 @@
 			.checkbox-wrapper-13 input[type='checkbox'] {
 				--background: #333;
 			}
+
 			.checkbox-wrapper-13 input[type='checkbox']:checked {
 				--active: #275efe;
 			}
+
 			.checkbox-wrapper-13 input[type='checkbox']:disabled {
 				--disabled: #444;
 			}
+
 			.checkbox-wrapper-13 input[type='checkbox']:disabled:checked {
 				--disabled-inner: #373e53;
 			}
@@ -126,6 +143,7 @@
 	.checkbox-wrapper-13 * {
 		box-sizing: inherit;
 	}
+
 	.checkbox-wrapper-13 *:before,
 	.checkbox-wrapper-13 *:after {
 		box-sizing: inherit;
