@@ -1,0 +1,33 @@
+<!-- templates/index.html -->
+
+{% extends "base.html" %}
+{% set background_class = 'background-image' %}
+{% block content %}
+
+<!-- Der Benutzer ist nicht angemeldet -->
+<div class="column is-4 is-offset-4 has-text-centered">
+	<h3 class="title">{% block title %} Willkommen! {% endblock %}</h3>
+	<main class="box">
+		<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
+		{% with messages = get_flashed_messages() %} {% if messages %}
+		<div class="notification is-danger">
+			<button class="delete"></button>
+			<p>{{ messages[0] }}</p>
+		</div>
+		{% endif %} {% endwith %}
+
+		<div class="content is-medium">
+			<h2 class="subtitle is-4">Melde dich an!</h2>
+			<p>
+				Wenn du bereits einen Account hast, kannst du dich einfach anmelden.
+			</p>
+			<a href="{{ url_for('auth.login') }}" class="button is-primary">Anmelden</a>
+		</div>
+		<p>
+			Noch kein Konto?
+			<a href="{{ url_for('auth.signup') }}">Registrieren</a>.
+		</p>
+	</main>
+</div>
+</div>
+{% endblock %}
