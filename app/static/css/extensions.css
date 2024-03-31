@@ -7,23 +7,13 @@
 	flex-wrap: nowrap; /* no flex line break */
 }
 
-/* Different color scheme for light and dark mode */
-:root {
-	--body-background-color: #c2e4ff;
-}
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--body-background-color: #2c3744;
-		--bulma-scheme-main: #2b3238;
-		--bulma-shadow: 0 0.5em 1em -0.125em hsl(0deg 0% 0% / 36%),
-			0 0px 0 1px hsl(183.19, 100%, 44.31%, 0.5);
-	}
-}
 
-body {
-	background-color: var(--body-background-color);
-}
+
+
+
+.hero-head {
+	background-color: var(--bulma-scheme-main);
 
 /* Custom checkbox implementation */
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {

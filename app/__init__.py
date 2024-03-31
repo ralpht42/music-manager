@@ -1,7 +1,7 @@
 # init.py
 import os
 
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, flash
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
@@ -57,7 +57,13 @@ def create_app(config_class=Config):
     @login_manager.user_loader
     def load_user(user_id):
         user = User.query.get(int(user_id))
-        user.load_tidal_session()
+        try:
+            user.load_tidal_session()
+        except Exception as e:
+            print(
+                f"Fehler beim Laden der TIDAL-Session für den Benutzer {user.username}:\n{e}"
+            )
+            flash(f"Fehler beim Laden der TIDAL-Session", "danger")
         return user
 
     @login_manager.unauthorized_handler

@@ -1,6 +1,6 @@
 <!-- templates/jobs.html -->
 {% extends "base.html" %} {% block content %}
-<h1 class="title">Jobs</h1>
+<h1 class="title">{% block title %} Jobs {% endblock %}</h1>
 <div class="box">
 	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
 	{% with messages = get_flashed_messages() %} {% if messages %}

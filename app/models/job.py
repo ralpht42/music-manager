@@ -88,7 +88,6 @@ class Job(db.Model):
                 or type(row["Type"]) != str
             ):
 
-
                 print("Zeile " + str(index) + " wird übersprungen.")
                 continue
 
@@ -140,11 +139,11 @@ class Job(db.Model):
 
             artists = {
                 "main": [artist.strip() for artist in artists_in_roles[0].split(", ")],
-                "featured": [
-                    artist.strip() for artist in artists_in_roles[1].split(", ")
-                ]
-                if len(artists_in_roles) > 1
-                else [],
+                "featured": (
+                    [artist.strip() for artist in artists_in_roles[1].split(", ")]
+                    if len(artists_in_roles) > 1
+                    else []
+                ),
             }
 
             for role in artists:

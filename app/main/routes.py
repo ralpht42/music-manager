@@ -25,7 +25,6 @@ def login_thread(app, user):
     tidal_future = user.get_tidal_future()
     tidal_session = user.get_tidal_session()
 
-
     # Warten Sie, bis der Benutzer sich angemeldet hat
     tidal_future.result()
 
