@@ -4,6 +4,7 @@
 @use 'bulma/sass' with (
 	$family-primary: '"Nunito", sans-serif',
 	$primary: #00d6e2,
+	$table-background-color: #00000000, // Transparent tables, to make them look like cards
 
 	// Customise the colors
 	$title-color: #f5f5f5,
@@ -18,7 +19,7 @@
 	/*--body-background-color: #2c3744; */
 
 	// This is the color of the main content
-	--bulma-scheme-main: #2b3238;
+	--bulma-scheme-main: #2b3238f2;
 	--bulma-shadow: 0 0.5em 1em -0.125em hsl(0deg 0% 0% / 36%),
 		0 0px 0 1px hsl(183.19, 100%, 44.31%, 0.5);
 }
@@ -27,7 +28,7 @@
 	/*--body-background-color: #f5f5f5; */
 
 	// This is the color of the main content
-	--bulma-scheme-main: #f5f5f5;
+	--bulma-scheme-main: #f5f5f5f2;
 }
 
 .background-image {

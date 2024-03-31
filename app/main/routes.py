@@ -51,7 +51,10 @@ def login_thread(app, user):
 
 @bp.route("/")
 def index():
-    return render_template("index.html")
+    if isinstance(current_user, User):
+        return render_template("index_logged_in.html")
+    else:
+        return render_template("index_not_logged_in.html")
 
 
 @bp.route("/profile")

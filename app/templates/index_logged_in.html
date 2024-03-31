@@ -3,11 +3,8 @@
 {% extends "base.html" %} {% block content %}
 
 <!-- Der Benutzer ist angemeldet -->
-{% if current_user.is_authenticated %}
-
 <h3 class="title">
-	{% block title %} Willkommen{% if current_user.is_authenticated %}, {{
-	current_user.username }}{% endif %}! {% endblock %}
+	{% block title %} Willkommen, {{ current_user.username }}! {% endblock %}
 </h3>
 <div class="box">
 	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
@@ -27,17 +24,12 @@
 			</p>
 			<p>
 				Die Anwendung ist in Python geschrieben und nutzt das
-				<a href="https://flask.palletsprojects.com/" class="has-text-link"
-					>Flask</a
-				>-Framework. Die Daten werden in einer SQLite-Datenbank gespeichert.
+				<a href="https://flask.palletsprojects.com/" class="has-text-link">Flask</a>-Framework. Die Daten werden in
+				einer SQLite-Datenbank gespeichert.
 			</p>
 			<p>
 				Die Anwendung ist Open Source und kann auf
-				<a
-					href="https://github.com/ralpht42/music-manager"
-					class="has-text-link"
-					>GitHub</a
-				>
+				<a href="https://github.com/ralpht42/music-manager" class="has-text-link">GitHub</a>
 				gefunden werden.
 			</p>
 
@@ -56,36 +48,5 @@
 			</p>
 		</div>
 	</main>
-
-	<!-- Der Benutzer ist nicht angemeldet -->
-	{% else %}
-	<div class="column is-4 is-offset-4 has-text-centered">
-		<h3 class="title">Willkommen!</h3>
-		<main class="box">
-			<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
-			{% with messages = get_flashed_messages() %} {% if messages %}
-			<div class="notification is-danger">
-				<button class="delete"></button>
-				<p>{{ messages[0] }}</p>
-			</div>
-			{% endif %} {% endwith %}
-
-			<div class="content is-medium">
-				<h2 class="subtitle is-4">Melde dich an!</h2>
-				<p>
-					Wenn du bereits einen Account hast, kannst du dich einfach anmelden.
-				</p>
-				<a href="{{ url_for('auth.login') }}" class="button is-primary"
-					>Anmelden</a
-				>
-			</div>
-			<p>
-				Noch kein Konto?
-				<a href="{{ url_for('auth.signup') }}">Registrieren</a>.
-			</p>
-		</main>
-	</div>
-
-	{% endif %}
 </div>
 {% endblock %}
