@@ -27,7 +27,7 @@
 		{% block head %}{% endblock %}
 	</head>
 	<body>
-		<div class="background-image"></div>
+		<div class="{{ background_class | default('background-image-blur') }}"></div>
 		<section class="hero is-fullheight">
 			<header class="hero-head">
 				<nav class="navbar" role="navigation" aria-label="main navigation">

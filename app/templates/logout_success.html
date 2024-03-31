@@ -1,6 +1,8 @@
 <!-- templates/logout_success.html -->
 
-{% extends "base.html" %} {% block head %}
+{% extends "base.html" %}
+{% set background_class = 'background-image' %}
+{% block head %}
 <meta http-equiv="refresh" content="5;url={{ url_for('main.index') }}" />
 {% endblock %} {% block content %}
 <div class="column is-4 is-offset-4">
