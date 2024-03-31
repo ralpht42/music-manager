@@ -1,6 +1,6 @@
 <!-- templates/playlists.html -->
 {% extends "base.html" %} {% block content %}
-<h1 class="title">Playlists</h1>
+<h1 class="title">{% block title %} Playlists {% endblock %}</h1>
 <div class="box">
 	<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
 	{% with messages = get_flashed_messages() %} {% if messages %}

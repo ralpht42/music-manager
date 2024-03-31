@@ -1,10 +1,11 @@
 <!-- templates/profile.html -->
 
 {% extends "base.html" %} {% block content %}
-<h1 class="title">Willkommen, {{ current_user.username }}!</h1>
+<h1 class="title">
+	{% block title %} Willkommen, {{ current_user.username }}! {% endblock %}
+</h1>
 <div class="box">
 	<section class="section">
-		{% if current_user.tidal_session %}
 		<!--- Hier wird die Fehlermeldung angezeigt, sofern vorhanden --->
 		{% with messages = get_flashed_messages() %} {% if messages %}
 		<div class="notification is-danger">
@@ -12,8 +13,12 @@
 			<p>{{ messages[0] }}</p>
 		</div>
 		{% endif %} {% endwith %}
+		<!-- Wenn der Benutzer ein Tidal-Konto hinzugefügt hat, und vermutlich
+			eine Internetverbindung besteht, wird das Tidal-Konto angezeigt. -->
+		{% if current_user.tidal_session is not none and
+		current_user.tidal_session.user is not none and
+		current_user.tidal_session.user.profile_metadata.email is not none %}
 
-		<h3 class="title">Tidal-Konto</h3>
 		<p>Benutzername: {{ current_user.tidal_session.user.username }}</p>
 		<p>
 			Profilname: {{
@@ -36,6 +41,14 @@
 			Tagen, {{ ((tidal_expires_in | int) // (60 * 60) ) % 24 | int}} Stunden,
 			{{ ((tidal_expires_in | int) // 60 ) % 60 | int}} Minuten und {{
 			(tidal_expires_in | int) % 60 | int}} Sekunden ab.
+		</p>
+		{% elif current_user.tidal_session is not none and
+		current_user.tidal_session.user is none %}
+		<!-- Wenn der Benutzer ein Tidal-Konto hinzugefügt hat, aber keine
+			Internetverbindung besteht, wird eine Warnung angezeigt. -->
+		<p>
+			Sie haben ein TIDAL-Konto hinzugefügt, es konnte jedoch keine Verbindung
+			zu TIDAL hergestellt werden. Bitte versuchen Sie es später erneut.
 		</p>
 
 		{% elif current_user.get_tidal_future()==None %}
