@@ -2,8 +2,9 @@
 
 // Path to Bulma's sass folder
 @use 'bulma/sass' with (
-	$family-primary: '"Nunito", sans-serif',
-	$primary: #00d6e2,
+	$family-primary: 'Nunito, sans-serif',
+	$primary: #5ECADB,
+	
 	$table-background-color: #00000000, // Transparent tables, to make them look like cards
 
 	// Customise the colors
