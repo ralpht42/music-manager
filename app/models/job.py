@@ -45,7 +45,9 @@ class Job(db.Model):
         db.DateTime, index=True, nullable=False, default=datetime.now()
     )
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    created_by_user = db.relationship('User', foreign_keys=[created_by])
     updated_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    updated_by_user = db.relationship('User', foreign_keys=[updated_by])
     manual = db.Column(db.Boolean, default=False, nullable=False)
 
     songs = db.relationship("Song", secondary=song_job, backref="Job", lazy="dynamic")

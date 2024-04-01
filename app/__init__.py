@@ -1,9 +1,11 @@
 # init.py
 import os
+from datetime import datetime
 
 from flask import Flask, redirect, url_for, flash
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 from config import Config
 
@@ -19,6 +21,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     db.init_app(app)
+    migrate = Migrate(app, db) # Datenbankmigrationen
 
     """
     Einzelne Teile der App werden in Blueprints organisiert.
@@ -70,6 +73,13 @@ def create_app(config_class=Config):
     def unauthorized():
         # Wenn der Benutzer nicht eingeloggt ist, wird er auf die Login-Seite weitergeleitet
         return redirect(url_for("auth.login"))
+
+    # Filter für die Darstellung von Datumsangaben, der in den Templates verwendet werden kann
+    # Beispiel: {{ job.created_at | date_format }}
+    # Das Datum wird dann im Format "dd.mm.yyyy" statt "yyyy-mm-dd hh:mm:ss.ms" angezeigt
+    @app.template_filter('date_format')
+    def date_format(value):
+        return value.strftime("%d.%m.%Y")
 
     # Erstelle die Tabellen in der Datenbank, falls sie noch nicht existieren
     # Es wird noch keine Migration durchgeführt, falls sich das Datenbankschema ändert,

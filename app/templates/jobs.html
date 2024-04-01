@@ -54,10 +54,10 @@
 				{% for job in jobs %}
 				<tr>
 					<td>{{ job.name }}</td>
-					<td>{{ job.created_at }}</td>
-					<td>{{ job.created_by }}</td>
-					<td>{{ job.updated_at }}</td>
-					<td>{{ job.updated_by }}</td>
+					<td>{{ job.created_at | date_format }}</td>
+					<td>{{ job.created_by_user.username }}</td>
+					<td>{{ job.updated_at | date_format }}</td>
+					<td>{{ job.updated_by_user.username }}</td>
 
 					<td>
 						{% if job.manual == true %}

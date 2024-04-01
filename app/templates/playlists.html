@@ -29,10 +29,10 @@
 				{% for playlist in playlists %}
 				<tr>
 					<td>{{ playlist.name }}</td>
-					<td>{{ playlist.created_at }}</td>
-					<td>{{ playlist.created_by }}</td>
-					<td>{{ playlist.updated_at }}</td>
-					<td>{{ playlist.updated_by }}</td>
+					<td>{{ playlist.created_at | date_format }}</td>
+					<td>{{ playlist.created_by_user.username }}</td>
+					<td>{{ playlist.updated_at | date_format }}</td>
+					<td>{{ playlist.updated_by_user.username }}</td>
 					{% if playlist.manual == true %}
 					<td>
 						<span class="tag is-warning">Manuell</span>
