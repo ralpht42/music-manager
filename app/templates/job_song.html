@@ -13,215 +13,131 @@
 	</div>
 	{% endif %} {% endwith %}
 
-	<form
-		action="{{ url_for('jobs.job_song_update', job_id=job.id, song_id=song.id) }}"
-		method="post"
-	>
+	<form action="{{ url_for('jobs.job_song_update', job_id=job.id, song_id=song.id) }}" method="post">
 		<div class="field">
 			<label class="label">Titel</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Titel"
-					name="title"
-					value="{{ song.title }}"
-				/>
+				<input class="input" type="text" placeholder="Titel" name="title" value="{{ song.title }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Interpret</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Interpret"
-					name="artists"
-					value="{{ song.artists if song.artists is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Interpret" name="artists"
+					value="{{ song.artists if song.artists is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Jahr</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Jahr"
-					name="year"
-					value="{{ song.year if song.year is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Jahr" name="year"
+					value="{{ song.year if song.year is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Sprache</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Sprache"
-					name="language"
-					value="{{ song.language if song.language is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Sprache" name="language"
+					value="{{ song.language if song.language is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Länge</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Länge"
-					name="length"
-					value="{{ song.length if song.length is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Länge" name="length"
+					value="{{ song.length if song.length is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Genre</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Genre"
-					name="genre"
-					value="{{ song.genre if song.genre is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Genre" name="genre"
+					value="{{ song.genre if song.genre is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Stimmung</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Stimmung"
-					name="feels"
-					value="{{ song.feels if song.feels is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Stimmung" name="feels"
+					value="{{ song.feels if song.feels is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Typ</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Typ"
-					name="type"
-					value="{{ song.type if song.type is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Typ" name="type"
+					value="{{ song.type if song.type is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Geschwindigkeit</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Geschwindigkeit"
-					name="speed"
-					value="{{ song.speed if song.speed is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Geschwindigkeit" name="speed"
+					value="{{ song.speed if song.speed is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Anteil Gesang</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Anteil Gesang"
-					name="voice_percent"
-					value="{{ song.voice_percent if song.voice_percent is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Anteil Gesang" name="voice_percent"
+					value="{{ song.voice_percent if song.voice_percent is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Anteil Rap (von Gesang)</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Anteil Rap (von Gesang)"
-					name="rap_percent"
-					value="{{ song.rap_percent if song.rap_percent is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Anteil Rap (von Gesang)" name="rap_percent"
+					value="{{ song.rap_percent if song.rap_percent is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Bekanntheit</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Bekanntheit"
-					name="popularity_percent"
-					value="{{ song.popularity_percent if song.popularity_percent is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Bekanntheit" name="popularity_percent"
+					value="{{ song.popularity_percent if song.popularity_percent is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Anteil Weird</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Anteil Weird"
-					name="weird_percent"
-					value="{{ song.weird_percent if song.weird_percent is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Anteil Weird" name="weird_percent"
+					value="{{ song.weird_percent if song.weird_percent is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Legende</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Legende"
-					name="is_legend"
-					value="{{ song.is_legend if song.is_legend is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Legende" name="is_legend"
+					value="{{ song.is_legend if song.is_legend is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Ordner</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Ordner"
-					name="folder"
-					value="{{ song.folder if song.folder is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Ordner" name="folder"
+					value="{{ song.folder if song.folder is not none else '' }}" />
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">Serie</label>
 			<div class="control">
-				<input
-					class="input"
-					type="text"
-					placeholder="Serie"
-					name="series"
-					value="{{ song.series if song.series is not none else '' }}"
-				/>
+				<input class="input" type="text" placeholder="Serie" name="series"
+					value="{{ song.series if song.series is not none else '' }}" />
 			</div>
 		</div>
 
@@ -235,10 +151,7 @@
 		</div>
 		<div class="field">
 			<div class="control">
-				<a
-					class="button is-info"
-					href="{{ url_for('jobs.job_details', job_id=job.id) }}"
-				>
+				<a class="button is-info" href="{{ url_for('jobs.job_details', job_id=job.id) }}">
 					<span class="icon is-small">
 						<i class="material-symbols-outlined">arrow_back</i>
 					</span>
