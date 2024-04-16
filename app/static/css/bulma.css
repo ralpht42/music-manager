@@ -22449,14 +22449,17 @@ has-background-danger.is-hoverable:active {
   }
 }
 .background-image, .background-image-blur {
-  background-image: url("/static/images/background.jpg"); /* Path is not dynamicly generated, because jinja2 is not available in CSS */
+  background-image: url("/static/images/background.jpg");
+  /* Path is not dynamicly generated, because this SCSS Code is not included in the HTML,
+  where jinja templates could be used to generate the path.*/
   background-size: cover;
   background-position: center;
   position: fixed;
   width: 100%;
   height: 100%;
   z-index: -1;
-  transform: scale(1.1); /* Scale the image to hide the edges */
+  /* Scale the image to hide the edges */
+  transform: scale(1.1);
 }
 
 .background-image-blur {
