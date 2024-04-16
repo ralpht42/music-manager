@@ -2,9 +2,9 @@ flask==3.0.3
 flask_login==0.6.3
 tidalapi==0.7.5
 musicbrainzngs==0.7.1
-faker==24.7.1
+faker==24.9.0
 argon2-cffi==23.1.0
-pandas==2.2.1
+pandas==2.2.2
 openpyxl==3.1.2
 gunicorn==21.2.0
 Flask-SQLAlchemy==3.1.1

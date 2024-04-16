@@ -1,5 +1,5 @@
 # Verwende das Node-Image für den npm-Befehl
-FROM node:21.7.2-bookworm-slim as npm-container
+FROM node:21.7.3-bookworm-slim as npm-container
 
 # Setze das Arbeitsverzeichnis
 WORKDIR /usr/src/app
@@ -11,7 +11,7 @@ COPY package-lock.json .
 RUN npm install 
 
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.12.2-slim-bookworm AS base
+FROM python:3.12.3-slim-bookworm AS base
 
 WORKDIR /opt/music-manager
 
