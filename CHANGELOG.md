@@ -2,7 +2,364 @@
 
 
 
+## v0.6.0 (2024-04-17)
+
+### Build
+
+* build(deps): bump gunicorn from 21.2.0 to 22.0.0 in the pip group
+
+Bumps the pip group with 1 update: [gunicorn](https://github.com/benoitc/gunicorn).
+
+
+Updates `gunicorn` from 21.2.0 to 22.0.0
+- [Release notes](https://github.com/benoitc/gunicorn/releases)
+- [Commits](https://github.com/benoitc/gunicorn/compare/21.2.0...22.0.0)
+
+---
+updated-dependencies:
+- dependency-name: gunicorn
+  dependency-type: direct:production
+  dependency-group: pip
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`b687a6d`](https://github.com/ralpht42/music-manager/commit/b687a6ddfd8c1d4ae99d70b63fd0f40eafcb8980))
+
+* build(deps): bump pandas from 2.2.1 to 2.2.2
+
+Bumps [pandas](https://github.com/pandas-dev/pandas) from 2.2.1 to 2.2.2.
+- [Release notes](https://github.com/pandas-dev/pandas/releases)
+- [Commits](https://github.com/pandas-dev/pandas/compare/v2.2.1...v2.2.2)
+
+---
+updated-dependencies:
+- dependency-name: pandas
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`0d86167`](https://github.com/ralpht42/music-manager/commit/0d8616743e7da36b588aab4f7815ba889318df21))
+
+* build(deps): bump faker from 24.7.1 to 24.9.0
+
+Bumps [faker](https://github.com/joke2k/faker) from 24.7.1 to 24.9.0.
+- [Release notes](https://github.com/joke2k/faker/releases)
+- [Changelog](https://github.com/joke2k/faker/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/joke2k/faker/compare/v24.7.1...v24.9.0)
+
+---
+updated-dependencies:
+- dependency-name: faker
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`15998b1`](https://github.com/ralpht42/music-manager/commit/15998b191e06f79bd0aa070a5367f68d10081adc))
+
+* build(deps): bump node from 21.7.2-bookworm-slim to 21.7.3-bookworm-slim
+
+Bumps node from 21.7.2-bookworm-slim to 21.7.3-bookworm-slim.
+
+---
+updated-dependencies:
+- dependency-name: node
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`824d741`](https://github.com/ralpht42/music-manager/commit/824d741e56e77126bc244822ff556358eb2505f3))
+
+* build(deps): bump python
+
+Bumps python from 3.12.2-slim-bookworm to 3.12.3-slim-bookworm.
+
+---
+updated-dependencies:
+- dependency-name: python
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`e9e0b6c`](https://github.com/ralpht42/music-manager/commit/e9e0b6c99ac9a147ad047332eecaf5d9407d62b0))
+
+* build(deps): bump docker/setup-buildx-action from 3.2.0 to 3.3.0
+
+Bumps [docker/setup-buildx-action](https://github.com/docker/setup-buildx-action) from 3.2.0 to 3.3.0.
+- [Release notes](https://github.com/docker/setup-buildx-action/releases)
+- [Commits](https://github.com/docker/setup-buildx-action/compare/2b51285047da1547ffb1b2203d8be4c0af6b1f20...d70bba72b1f3fd22344832f00baa16ece964efeb)
+
+---
+updated-dependencies:
+- dependency-name: docker/setup-buildx-action
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`3fe8714`](https://github.com/ralpht42/music-manager/commit/3fe87149bcc026825d84cfd02454ec12b939d5ac))
+
+* build(deps): bump python-semantic-release/python-semantic-release
+
+Bumps [python-semantic-release/python-semantic-release](https://github.com/python-semantic-release/python-semantic-release) from 9.4.1 to 9.4.2.
+- [Release notes](https://github.com/python-semantic-release/python-semantic-release/releases)
+- [Changelog](https://github.com/python-semantic-release/python-semantic-release/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/python-semantic-release/python-semantic-release/compare/074cff45a89828d547109f8296e8bcbcbe5f427d...421bb5003074aee269297671d487331b87f732ea)
+
+---
+updated-dependencies:
+- dependency-name: python-semantic-release/python-semantic-release
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`07b8a99`](https://github.com/ralpht42/music-manager/commit/07b8a99585ff6616c201dc04d89795adc62dafac))
+
+* build(deps): bump sigstore/cosign-installer from 3.4.0 to 3.5.0
+
+Bumps [sigstore/cosign-installer](https://github.com/sigstore/cosign-installer) from 3.4.0 to 3.5.0.
+- [Release notes](https://github.com/sigstore/cosign-installer/releases)
+- [Commits](https://github.com/sigstore/cosign-installer/compare/e1523de7571e31dbe865fd2e80c5c7c23ae71eb4...59acb6260d9c0ba8f4a2f9d9b48431a222b68e20)
+
+---
+updated-dependencies:
+- dependency-name: sigstore/cosign-installer
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`93b2d64`](https://github.com/ralpht42/music-manager/commit/93b2d64fa2175f9f0e5edcf508224a3117e9356d))
+
+* build(deps): bump sass from 1.74.1 to 1.75.0
+
+Bumps [sass](https://github.com/sass/dart-sass) from 1.74.1 to 1.75.0.
+- [Release notes](https://github.com/sass/dart-sass/releases)
+- [Changelog](https://github.com/sass/dart-sass/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/sass/dart-sass/compare/1.74.1...1.75.0)
+
+---
+updated-dependencies:
+- dependency-name: sass
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`615893b`](https://github.com/ralpht42/music-manager/commit/615893b60fdcf2ec42b6a334e3c6f48f8ce9426c))
+
+* build(deps): bump flask from 3.0.2 to 3.0.3
+
+Bumps [flask](https://github.com/pallets/flask) from 3.0.2 to 3.0.3.
+- [Release notes](https://github.com/pallets/flask/releases)
+- [Changelog](https://github.com/pallets/flask/blob/main/CHANGES.rst)
+- [Commits](https://github.com/pallets/flask/compare/3.0.2...3.0.3)
+
+---
+updated-dependencies:
+- dependency-name: flask
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`8a86054`](https://github.com/ralpht42/music-manager/commit/8a860544a41fd7753c70a8fd85172fc754921ef4))
+
+* build(deps): bump python-semantic-release/python-semantic-release
+
+Bumps [python-semantic-release/python-semantic-release](https://github.com/python-semantic-release/python-semantic-release) from 9.4.0 to 9.4.1.
+- [Release notes](https://github.com/python-semantic-release/python-semantic-release/releases)
+- [Changelog](https://github.com/python-semantic-release/python-semantic-release/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/python-semantic-release/python-semantic-release/compare/137240c8cbc9da7a54f04a38d0555c268e48f756...074cff45a89828d547109f8296e8bcbcbe5f427d)
+
+---
+updated-dependencies:
+- dependency-name: python-semantic-release/python-semantic-release
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`dce5e9b`](https://github.com/ralpht42/music-manager/commit/dce5e9b54318ff39759144d76773e28c28b3604b))
+
+* build(deps): bump sass from 1.72.0 to 1.74.1
+
+Bumps [sass](https://github.com/sass/dart-sass) from 1.72.0 to 1.74.1.
+- [Release notes](https://github.com/sass/dart-sass/releases)
+- [Changelog](https://github.com/sass/dart-sass/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/sass/dart-sass/compare/1.72.0...1.74.1)
+
+---
+updated-dependencies:
+- dependency-name: sass
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`72f5d14`](https://github.com/ralpht42/music-manager/commit/72f5d1418980ed0daabcf1cf7a471c653274a918))
+
+* build(deps): bump node from 21.7.1-bookworm-slim to 21.7.2-bookworm-slim
+
+Bumps node from 21.7.1-bookworm-slim to 21.7.2-bookworm-slim.
+
+---
+updated-dependencies:
+- dependency-name: node
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`781c90c`](https://github.com/ralpht42/music-manager/commit/781c90cca49515060beeef187e9de1257ef16452))
+
+* build(deps): bump faker from 24.4.0 to 24.7.1
+
+Bumps [faker](https://github.com/joke2k/faker) from 24.4.0 to 24.7.1.
+- [Release notes](https://github.com/joke2k/faker/releases)
+- [Changelog](https://github.com/joke2k/faker/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/joke2k/faker/compare/v24.4.0...v24.7.1)
+
+---
+updated-dependencies:
+- dependency-name: faker
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`ff9358d`](https://github.com/ralpht42/music-manager/commit/ff9358dd9fe9bc39b1c22d9401bebb58e04a0909))
+
+* build(deps): bump faker from 24.3.0 to 24.4.0
+
+Bumps [faker](https://github.com/joke2k/faker) from 24.3.0 to 24.4.0.
+- [Release notes](https://github.com/joke2k/faker/releases)
+- [Changelog](https://github.com/joke2k/faker/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/joke2k/faker/compare/v24.3.0...v24.4.0)
+
+---
+updated-dependencies:
+- dependency-name: faker
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`44ef7c7`](https://github.com/ralpht42/music-manager/commit/44ef7c77cd906b80d5be1f20b42ac71b37ab101b))
+
+* build(deps): bump python-semantic-release/python-semantic-release
+
+Bumps [python-semantic-release/python-semantic-release](https://github.com/python-semantic-release/python-semantic-release) from 9.3.1 to 9.4.0.
+- [Release notes](https://github.com/python-semantic-release/python-semantic-release/releases)
+- [Changelog](https://github.com/python-semantic-release/python-semantic-release/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/python-semantic-release/python-semantic-release/compare/12517edf299b8f04a1e3f12dda85c383ceb864c0...137240c8cbc9da7a54f04a38d0555c268e48f756)
+
+---
+updated-dependencies:
+- dependency-name: python-semantic-release/python-semantic-release
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`8882e5a`](https://github.com/ralpht42/music-manager/commit/8882e5a21b0bfd21a7443240c0080b63e91550c3))
+
+### Feature
+
+* feat: added burger menu for mobile devices ([`894629d`](https://github.com/ralpht42/music-manager/commit/894629dbdce61fd1e37e72efe59bc30ee6f088ea))
+
+* feat: Shows the Username correctly in jobs and playlists
+feat: reduced timestamp string in jobs and playlists to the date only
+feat: added experimental support for database migrations ([`e474eac`](https://github.com/ralpht42/music-manager/commit/e474eaccbf460acd9e879f149a423854a39d9e3e))
+
+### Fix
+
+* fix: changed workaround for multiple elements in the same row by using the &#34;level&#34; class from bulma ([`9bbdb6f`](https://github.com/ralpht42/music-manager/commit/9bbdb6fca43cb899de01f3fdb8d3a46908e4f6c3))
+
+* fix: first executet &#34;flask db init&#34; as a preparation for future db migrations ([`0dfe4e8`](https://github.com/ralpht42/music-manager/commit/0dfe4e843728f8c55e29c55c745428863230e643))
+
+* fix: removed manage.py, as the feature to controll the migration process in development is not necessary now ([`6dba16a`](https://github.com/ralpht42/music-manager/commit/6dba16adf5b1ab17bc41be67cd997f120f40be91))
+
+* fix: shorten job and playlist name to reduce total characters needed (less line breaks) ([`e457ae4`](https://github.com/ralpht42/music-manager/commit/e457ae42cdbe077a920e083741ee5052c6bbc74c))
+
+* fix: adjusted primary color to match background image ([`5188e65`](https://github.com/ralpht42/music-manager/commit/5188e65c31d6281a6da930a028188f995957d609))
+
+### Style
+
+* style: reformatted .html files ([`338bf6b`](https://github.com/ralpht42/music-manager/commit/338bf6bc2e65f059517401c7aa210590d574d096))
+
+* style: reformatet Job db object ([`31159cd`](https://github.com/ralpht42/music-manager/commit/31159cdaf41bddc67aebdc5884ac58076b78f62c))
+
+### Unknown
+
+* Merge pull request #109 from ralpht42/transparent-ui
+
+Fix primary color and shorten job and playlist names ([`f340d45`](https://github.com/ralpht42/music-manager/commit/f340d4507b3f102d0e333e3a46cfb8c81c13c3a7))
+
+* Merge remote-tracking branch &#39;origin/HEAD&#39; into transparent-ui ([`49b6deb`](https://github.com/ralpht42/music-manager/commit/49b6deb3629dec5a75dacaa483c1492ce24f7e8d))
+
+* Merge pull request #108 from ralpht42/dependabot/pip/pip-b6df1a1e09
+
+build(deps): bump gunicorn from 21.2.0 to 22.0.0 in the pip group ([`16572df`](https://github.com/ralpht42/music-manager/commit/16572df4decb7db0c2df160ee3c98a1d50d7746d))
+
+* Merge pull request #107 from ralpht42/development
+
+bump(deps): update dependencies ([`e38b330`](https://github.com/ralpht42/music-manager/commit/e38b33044e5deec40332679386161bb87b4f63f5))
+
+* Merge pull request #99 from ralpht42/dependabot/npm_and_yarn/sass-1.75.0
+
+build(deps): bump sass from 1.74.1 to 1.75.0 ([`c0af2ab`](https://github.com/ralpht42/music-manager/commit/c0af2ab6733111ddedeb680a155b8fb45d3a7d4d))
+
+* Merge pull request #102 from ralpht42/dependabot/github_actions/docker/setup-buildx-action-3.3.0
+
+build(deps): bump docker/setup-buildx-action from 3.2.0 to 3.3.0 ([`13830d1`](https://github.com/ralpht42/music-manager/commit/13830d18aaccd284a1655c4de1494389ec72410d))
+
+* Merge pull request #100 from ralpht42/dependabot/github_actions/sigstore/cosign-installer-3.5.0
+
+build(deps): bump sigstore/cosign-installer from 3.4.0 to 3.5.0 ([`001882b`](https://github.com/ralpht42/music-manager/commit/001882be89c747bbabccd9b036424c7c476f6ee1))
+
+* Merge pull request #101 from ralpht42/dependabot/github_actions/python-semantic-release/python-semantic-release-9.4.2
+
+build(deps): bump python-semantic-release/python-semantic-release from 9.4.1 to 9.4.2 ([`336137c`](https://github.com/ralpht42/music-manager/commit/336137cd3e32ea2c7f3e971cabae724e715f4a4c))
+
+* Merge pull request #104 from ralpht42/dependabot/docker/node-21.7.3-bookworm-slim
+
+build(deps): bump node from 21.7.2-bookworm-slim to 21.7.3-bookworm-slim ([`381929c`](https://github.com/ralpht42/music-manager/commit/381929c4cb0b1bce53db290ae87f1544736073f8))
+
+* Merge pull request #103 from ralpht42/dependabot/docker/python-3.12.3-slim-bookworm
+
+build(deps): bump python from 3.12.2-slim-bookworm to 3.12.3-slim-bookworm ([`2495c91`](https://github.com/ralpht42/music-manager/commit/2495c9197a3b00070494e80d83995a7b180ee6c8))
+
+* Merge pull request #105 from ralpht42/dependabot/pip/faker-24.9.0
+
+build(deps): bump faker from 24.7.1 to 24.9.0 ([`c325afb`](https://github.com/ralpht42/music-manager/commit/c325afbc78dce1b0957a65fc4ad91b21139b986f))
+
+* Merge pull request #106 from ralpht42/dependabot/pip/pandas-2.2.2
+
+build(deps): bump pandas from 2.2.1 to 2.2.2 ([`a5b0962`](https://github.com/ralpht42/music-manager/commit/a5b0962104d3d340ddce7b536d2bae4007129d62))
+
+* Merge pull request #95 from ralpht42/dependabot/pip/flask-3.0.3
+
+build(deps): bump flask from 3.0.2 to 3.0.3 ([`cb8050b`](https://github.com/ralpht42/music-manager/commit/cb8050be0b8ab0cd693d4b85d3113da6d3c9d1fa))
+
+* Merge pull request #97 from ralpht42/dependabot/npm_and_yarn/sass-1.74.1
+
+build(deps): bump sass from 1.72.0 to 1.74.1 ([`6df9360`](https://github.com/ralpht42/music-manager/commit/6df9360ff3528f0ece9a2faafbebeacc594e754a))
+
+* Merge pull request #94 from ralpht42/dependabot/pip/faker-24.7.1
+
+build(deps): bump faker from 24.4.0 to 24.7.1 ([`ce1339d`](https://github.com/ralpht42/music-manager/commit/ce1339d352149c178195c92556ffc12627fedea9))
+
+* Merge pull request #96 from ralpht42/dependabot/docker/node-21.7.2-bookworm-slim
+
+build(deps): bump node from 21.7.1-bookworm-slim to 21.7.2-bookworm-slim ([`2cba13f`](https://github.com/ralpht42/music-manager/commit/2cba13fe34d7d8e809e54e7f06b4c12d467ae428))
+
+* Merge pull request #98 from ralpht42/dependabot/github_actions/python-semantic-release/python-semantic-release-9.4.1
+
+build(deps): bump python-semantic-release/python-semantic-release from 9.4.0 to 9.4.1 ([`8adc8a0`](https://github.com/ralpht42/music-manager/commit/8adc8a0c2620ad599e66b1e0b968fe3c9fb50add))
+
+* Merge pull request #92 from ralpht42/dependabot/github_actions/python-semantic-release/python-semantic-release-9.4.0
+
+build(deps): bump python-semantic-release/python-semantic-release from 9.3.1 to 9.4.0 ([`02ae287`](https://github.com/ralpht42/music-manager/commit/02ae2872f36410b987b552f8021e873611d7f2d1))
+
+* Merge pull request #93 from ralpht42/dependabot/pip/faker-24.4.0
+
+build(deps): bump faker from 24.3.0 to 24.4.0 ([`e839f80`](https://github.com/ralpht42/music-manager/commit/e839f8000bc9a80f356000e247fcc775f9d4a1fe))
+
+
 ## v0.5.0 (2024-03-31)
+
+### Chore
+
+* chore(release): release 0.5.0 ([`d7d3d44`](https://github.com/ralpht42/music-manager/commit/d7d3d44f462a6d45d79bd53965dfdd190cd925fe))
 
 ### Feature
 

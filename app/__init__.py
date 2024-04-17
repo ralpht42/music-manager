@@ -13,7 +13,7 @@ from app.extensions import db
 from app.models.user import User
 
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 
 
 def create_app(config_class=Config):
