@@ -10,26 +10,31 @@
 	</div>
 	{% endif %} {% endwith %}
 
-	<form action="{{ url_for('jobs.job_upload_file') }}" method="POST" enctype="multipart/form-data"
-		class="is-flex is-justify-content-space-between block">
-		<div id="excel_file_upload" class="file has-name is-primary mb-0">
-			<label class="file-label">
-				<input class="file-input" type="file" name="song_excel_file" />
-				<span class="file-cta">
-					<span class="file-icon">
-						<i class="material-symbols-outlined">attach_file</i>
+	<form action="{{ url_for('jobs.job_upload_file') }}" method="POST" enctype="multipart/form-data" class="level">
+
+		<div class="level-left">
+			<div id="excel_file_upload" class="level-item file has-name is-primary">
+				<label class="file-label">
+					<input class="file-input" type="file" name="song_excel_file" />
+					<span class="file-cta">
+						<span class="file-icon">
+							<i class="material-symbols-outlined">attach_file</i>
+						</span>
+						<span class="file-label">Song Datei auswählen</span>
 					</span>
-					<span class="file-label">Song Datei auswählen</span>
-				</span>
-				<span class="file-name">Keine Datei ausgewählt</span>
-			</label>
+					<span class="file-name">Keine Datei ausgewählt</span>
+				</label>
+			</div>
 		</div>
-		<button class="button is-info load-on-click" type="submit">
-			<span class="icon is-small">
-				<i class="material-symbols-outlined">upload_file</i>
-			</span>
-			<span>Hochladen</span>
-		</button>
+
+		<div class="level-right">
+			<button class="level-item button is-info load-on-click" type="submit">
+				<span class="icon is-small">
+					<i class="material-symbols-outlined">upload_file</i>
+				</span>
+				<span>Hochladen</span>
+			</button>
+		</div>
 	</form>
 	<div class="table-container">
 		<table class="table is-fullwidth is-narrow is-hoverable">
