@@ -2,7 +2,36 @@
 
 
 
+## v0.5.0 (2024-03-31)
+
+### Feature
+
+* feat: automaticaly blur or unblur background image depending on webpage ([`f17ee8d`](https://github.com/ralpht42/music-manager/commit/f17ee8dd403f945cd20266a1a0c25e5ad25b9b51))
+
+* feat: added transparency to the UI elements. ([`552e346`](https://github.com/ralpht42/music-manager/commit/552e346154ca27c81507f148447509ec71401c9a))
+
+### Fix
+
+* fix: using custom checkbox in login page ([`9fd94cd`](https://github.com/ralpht42/music-manager/commit/9fd94cde4ec8144776ff9f6cb198dbf61ebb220c))
+
+* fix: fixed checkbox css code ([`67a565e`](https://github.com/ralpht42/music-manager/commit/67a565ed724ad88b8539e99a9c7c942e0fbf5b9f))
+
+### Refactor
+
+* refactor: aktualisiere die Index-Seite basierend auf dem angemeldeten Benutzerstatus ([`fe8ceca`](https://github.com/ralpht42/music-manager/commit/fe8cecacbbc7202c7a26deed102600b8e02e1a56))
+
+### Unknown
+
+* Merge pull request #91 from ralpht42/transparent-ui
+
+Fix checkbox CSS code and add transparency to UI elements ([`59ef59f`](https://github.com/ralpht42/music-manager/commit/59ef59fabba8eb71dba803331a3f848bbce41d13))
+
+
 ## v0.4.1 (2024-03-31)
+
+### Chore
+
+* chore(release): release 0.4.1 ([`6d1cdee`](https://github.com/ralpht42/music-manager/commit/6d1cdee4d8c520da3ce0f29283cee8190601abd0))
 
 ### Fix
 
