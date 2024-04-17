@@ -1,6 +1,6 @@
 <!-- templates/signup.html -->
 
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% set background_class = 'background-image' %}
 {% block content %}
 <div class="column is-4 is-offset-4">
@@ -30,41 +30,22 @@
 			<div class="field">
 				<label class="label has-text-left" for="username">Benutzername</label>
 				<div class="control">
-					<input
-						class="input"
-						placeholder="Heinrich"
-						autofocus=""
-						type="text"
-						name="username"
-						id="username"
-						autocomplete="username"
-					/>
+					<input class="input" placeholder="Heinrich" autofocus="" type="text" name="username" id="username"
+						autocomplete="username" />
 				</div>
 			</div>
 			<div class="field">
 				<label class="label has-text-left" for="email">E-Mail</label>
 				<div class="control">
-					<input
-						class="input"
-						placeholder="heinrich@gueterstein.de"
-						type="email"
-						name="email"
-						id="email"
-						autocomplete="email"
-					/>
+					<input class="input" placeholder="heinrich@gueterstein.de" type="email" name="email" id="email"
+						autocomplete="email" />
 				</div>
 			</div>
 			<div class="field">
 				<label class="label has-text-left" for="password">Passwort</label>
 				<div class="control">
-					<input
-						class="input"
-						placeholder="********"
-						type="password"
-						name="password"
-						id="password"
-						autocomplete="new-password"
-					/>
+					<input class="input" placeholder="********" type="password" name="password" id="password"
+						autocomplete="new-password" />
 				</div>
 			</div>
 			<button class="button is-info is-fullwidth">Registrieren</button>
@@ -75,7 +56,7 @@
 <!--- Skript um die Fehlermeldung zu schließen --->
 <script>
 	document.addEventListener('DOMContentLoaded', () => {
-		;(document.querySelectorAll('.notification .delete') || []).forEach(
+		; (document.querySelectorAll('.notification .delete') || []).forEach(
 			($delete) => {
 				const $notification = $delete.parentNode
 

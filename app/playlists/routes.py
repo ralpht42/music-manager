@@ -30,9 +30,7 @@ def playlist_create(job_id):
         return redirect(url_for("jobs.jobs"))
 
     playlist = Playlist(
-        name="Playlist für Job {job_name} von {username}.".format(
-            job_name=job.name, username=current_user.username
-        ),
+        name=f"{job.name}",
         created_by=current_user.id,
         manual=True,
     )

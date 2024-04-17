@@ -10,30 +10,31 @@
 	</div>
 	{% endif %} {% endwith %}
 
-	<form
-		action="{{ url_for('jobs.job_upload_file') }}"
-		method="POST"
-		enctype="multipart/form-data"
-		class="is-flex is-justify-content-space-between block"
-	>
-		<div id="excel_file_upload" class="file has-name is-primary mb-0">
-			<label class="file-label">
-				<input class="file-input" type="file" name="song_excel_file" />
-				<span class="file-cta">
-					<span class="file-icon">
-						<i class="material-symbols-outlined">attach_file</i>
+	<form action="{{ url_for('jobs.job_upload_file') }}" method="POST" enctype="multipart/form-data" class="level">
+
+		<div class="level-left">
+			<div id="excel_file_upload" class="level-item file has-name is-primary">
+				<label class="file-label">
+					<input class="file-input" type="file" name="song_excel_file" />
+					<span class="file-cta">
+						<span class="file-icon">
+							<i class="material-symbols-outlined">attach_file</i>
+						</span>
+						<span class="file-label">Song Datei auswählen</span>
 					</span>
-					<span class="file-label">Song Datei auswählen</span>
-				</span>
-				<span class="file-name">Keine Datei ausgewählt</span>
-			</label>
+					<span class="file-name">Keine Datei ausgewählt</span>
+				</label>
+			</div>
 		</div>
-		<button class="button is-info load-on-click" type="submit">
-			<span class="icon is-small">
-				<i class="material-symbols-outlined">upload_file</i>
-			</span>
-			<span>Hochladen</span>
-		</button>
+
+		<div class="level-right">
+			<button class="level-item button is-info load-on-click" type="submit">
+				<span class="icon is-small">
+					<i class="material-symbols-outlined">upload_file</i>
+				</span>
+				<span>Hochladen</span>
+			</button>
+		</div>
 	</form>
 	<div class="table-container">
 		<table class="table is-fullwidth is-narrow is-hoverable">
@@ -54,10 +55,10 @@
 				{% for job in jobs %}
 				<tr>
 					<td>{{ job.name }}</td>
-					<td>{{ job.created_at }}</td>
-					<td>{{ job.created_by }}</td>
-					<td>{{ job.updated_at }}</td>
-					<td>{{ job.updated_by }}</td>
+					<td>{{ job.created_at | date_format }}</td>
+					<td>{{ job.created_by_user.username }}</td>
+					<td>{{ job.updated_at | date_format }}</td>
+					<td>{{ job.updated_by_user.username }}</td>
 
 					<td>
 						{% if job.manual == true %}
@@ -68,11 +69,8 @@
 					</td>
 
 					<td>
-						<a
-							class="button is-small is-info"
-							href="{{ url_for('playlists.playlist_create', job_id=job.id) }}"
-							data-tooltip="Playliste erstellen"
-						>
+						<a class="button is-small is-info" href="{{ url_for('playlists.playlist_create', job_id=job.id) }}"
+							data-tooltip="Playliste erstellen">
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">playlist_add</i>
 							</span>
@@ -80,23 +78,16 @@
 					</td>
 
 					<td>
-						<a
-							class="button is-small is-warning load-on-click"
-							href="{{ url_for('jobs.job_details', job_id=job.id) }}"
-							data-tooltip="Songs anzeigen"
-						>
+						<a class="button is-small is-warning load-on-click" href="{{ url_for('jobs.job_details', job_id=job.id) }}"
+							data-tooltip="Songs anzeigen">
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">edit</i>
 							</span>
 						</a>
 					</td>
 					<td>
-						<button
-							class="button is-small is-danger load-on-click"
-							type="button"
-							onclick="deleteJob('{{ job.id }}')"
-							data-tooltip="Job löschen"
-						>
+						<button class="button is-small is-danger load-on-click" type="button" onclick="deleteJob('{{ job.id }}')"
+							data-tooltip="Job löschen">
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">delete</i>
 							</span>

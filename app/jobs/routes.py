@@ -32,7 +32,7 @@ def job_upload_file():
         # Der Job wird dabei nach der Datei benannt und als manuell markiert
 
         job = Job(
-            name=f"Job {file.filename} von {current_user.username} am {datetime.now().strftime('%d.%m.%Y um %H:%M:%S')}",
+            name=f"{file.filename} von {current_user.username}",
             created_by=current_user.id,
             manual=True,
         )

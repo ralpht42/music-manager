@@ -17,11 +17,7 @@
 		{% if songs.total == 0 %}
 		<p class="has-text-centered is-size-4">Keine Songs vorhanden</p>
 		<div class="level">
-			<img
-				src="https://media.giphy.com/media/jou4Cd2mx1lGU/giphy.gif"
-				alt="Trauriger Mann"
-				class="level-item"
-			/>
+			<img src="https://media.giphy.com/media/jou4Cd2mx1lGU/giphy.gif" alt="Trauriger Mann" class="level-item" />
 		</div>
 
 		{% else %}
@@ -68,12 +64,9 @@
 								{% if song.Album is not none and song.Album.tidal_cover_url is
 								not none %}
 								<figure class="image is-32x32">
-									<img
-										class="is-rounded"
+									<img class="is-rounded"
 										src="https://resources.tidal.com/images/{{ song.Album.tidal_cover_url.replace('-','/') }}/160x160.jpg"
-										alt="Bild von {{ song.title }}"
-										loading="lazy"
-									/>
+										alt="Bild von {{ song.title }}" loading="lazy" />
 								</figure>
 								{% endif %}
 							</div>
@@ -89,12 +82,9 @@
 							<div class="column is-narrow">
 								{% if artist.tidal_cover_url is not none %}
 								<figure class="image is-32x32">
-									<img
-										class="is-rounded"
+									<img class="is-rounded"
 										src="https://resources.tidal.com/images/{{ artist.tidal_cover_url.replace('-','/') }}/160x160.jpg"
-										alt="Bild von {{ artist.name }}"
-										loading="lazy"
-									/>
+										alt="Bild von {{ artist.name }}" loading="lazy" />
 								</figure>
 								{% endif %}
 							</div>
@@ -102,9 +92,7 @@
 								<p>{{ artist.name }}</p>
 							</div>
 							<div class="column">
-								<span class="tag is-info"
-									>{{ artist.get_role_for_song(song).name }}</span
-								>
+								<span class="tag is-info">{{ artist.get_role_for_song(song).name }}</span>
 							</div>
 						</div>
 						{% endfor %}
@@ -122,20 +110,15 @@
 
 					<td>
 						{% if song.duration is none %} - {% else %} {{ song.duration // 60
-						}}:{% if song.duration % 60 < 10 %}0{% endif %}{{ song.duration % 60
-						}} {% endif %}
-					</td>
+						}}:{% if song.duration % 60 < 10 %}0{% endif %}{{ song.duration % 60 }} {% endif %} </td>
 
 					<td>
 						{% for genre in song.genres %}
 						<div class="tags has-addons no-wrap">
 							<span class="tag is-info">{{ genre.name }}</span>
 							<!--- Workaround für das Löschen eines Tags, Buttons werden mit Rand dargestellt --->
-							<span
-								class="tag is-delete"
-								onclick="deleteTag('{{ song.id }}', 'genre', '{{ genre.id }}')"
-								onmouseover="this.style.cursor='pointer'"
-							></span>
+							<span class="tag is-delete" onclick="deleteTag('{{ song.id }}', 'genre', '{{ genre.id }}')"
+								onmouseover="this.style.cursor='pointer'"></span>
 						</div>
 						{% endfor %}
 					</td>
@@ -146,11 +129,8 @@
 						<div class="tags has-addons no-wrap">
 							<span class="tag is-info">{{ feel.name }}</span>
 							<!--- Workaround für das Löschen eines Tags, Buttons werden mit Rand dargestellt --->
-							<span
-								class="tag is-delete"
-								onclick="deleteTag('{{ song.id }}', 'feel', '{{ feel.id }}')"
-								onmouseover="this.style.cursor='pointer'"
-							></span>
+							<span class="tag is-delete" onclick="deleteTag('{{ song.id }}', 'feel', '{{ feel.id }}')"
+								onmouseover="this.style.cursor='pointer'"></span>
 						</div>
 						{% endfor %}
 					</td>
@@ -165,11 +145,8 @@
 						<div class="tags has-addons no-wrap">
 							<span class="tag is-info">{{ speed.name }}</span>
 							<!--- Workaround für das Löschen eines Tags, Buttons werden mit Rand dargestellt --->
-							<span
-								class="tag is-delete"
-								onclick="deleteTag('{{ song.id }}', 'speed', '{{ speed.id }}')"
-								onmouseover="this.style.cursor='pointer'"
-							></span>
+							<span class="tag is-delete" onclick="deleteTag('{{ song.id }}', 'speed', '{{ speed.id }}')"
+								onmouseover="this.style.cursor='pointer'"></span>
 						</div>
 						{% endfor %}
 					</td>
@@ -179,9 +156,7 @@
 						song.voice_percent not in [None, ''] else 0 %}
 						<progress
 							class="progress {% if voice_percent < 35 %}is-danger {% elif voice_percent < 65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ voice_percent }}"
-							max="100"
-						>
+							value="{{ voice_percent }}" max="100">
 							{{ voice_percent * 100 }}%
 						</progress>
 					</td>
@@ -190,9 +165,7 @@
 						in [None, ''] else 0 %}
 						<progress
 							class="progress {% if rap_percent < 35 %}is-danger {% elif rap_percent < 65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ rap_percent }}"
-							max="100"
-						>
+							value="{{ rap_percent }}" max="100">
 							{{ rap_percent }}%
 						</progress>
 					</td>
@@ -201,9 +174,7 @@
 						song.popularity_percent not in [None, ''] else 0 %}
 						<progress
 							class="progress {% if popularity_percent < 35 %}is-danger {% elif popularity_percent < 65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ popularity_percent }}"
-							max="100"
-						>
+							value="{{ popularity_percent }}" max="100">
 							{{ popularity_percent }}%
 						</progress>
 					</td>
@@ -213,9 +184,7 @@
 						song.weird_percent not in [None, ''] else 0 %}
 						<progress
 							class="progress {% if weird_percent < 35 %}is-danger {% elif weird_percent < 65 %}is-warning {% else %}is-success{% endif %}"
-							value="{{ weird_percent }}"
-							max="100"
-						>
+							value="{{ weird_percent }}" max="100">
 							{{ weird_percent }}%
 						</progress>
 					</td>
@@ -224,11 +193,8 @@
 						<div class="tags has-addons no-wrap">
 							<span class="tag is-warning">Legend</span>
 							<!--- Workaround für das Löschen eines Tags, Buttons werden mit Rand dargestellt --->
-							<span
-								class="tag is-delete"
-								onclick="deleteTag('{{ song.id }}', 'tag', '{{ tag.id }}')"
-								onmouseover="this.style.cursor='pointer'"
-							></span>
+							<span class="tag is-delete" onclick="deleteTag('{{ song.id }}', 'tag', '{{ tag.id }}')"
+								onmouseover="this.style.cursor='pointer'"></span>
 						</div>
 						{% endif %} {% endfor %}
 					</td>
@@ -238,11 +204,8 @@
 						<div class="tags has-addons no-wrap">
 							<span class="tag is-info">{{ folder.name }}</span>
 							<!--- Workaround für das Löschen eines Tags, Buttons werden mit Rand dargestellt --->
-							<span
-								class="tag is-delete"
-								onclick="deleteTag('{{ song.id }}', 'folder', '{{ folder.id }}')"
-								onmouseover="this.style.cursor='pointer'"
-							></span>
+							<span class="tag is-delete" onclick="deleteTag('{{ song.id }}', 'folder', '{{ folder.id }}')"
+								onmouseover="this.style.cursor='pointer'"></span>
 						</div>
 						{% endfor %}
 					</td>
@@ -252,33 +215,22 @@
 						<div class="tags has-addons no-wrap">
 							<span class="tag is-info">{{ serie.name }}</span>
 							<!--- Workaround für das Löschen eines Tags, Buttons werden mit Rand dargestellt --->
-							<span
-								class="tag is-delete"
-								onclick="deleteTag('{{ song.id }}', 'serie', '{{ serie.id }}')"
-								onmouseover="this.style.cursor='pointer'"
-							></span>
+							<span class="tag is-delete" onclick="deleteTag('{{ song.id }}', 'serie', '{{ serie.id }}')"
+								onmouseover="this.style.cursor='pointer'"></span>
 						</div>
 						{% endfor %}
 					</td>
 					<td>
-						<button
-							class="button is-small is-info"
-							type="button"
-							onclick="refreshSong('{{ song.id }}')"
-							data-tooltip="Aktualisiere Song über TIDAL"
-						>
+						<button class="button is-small is-info" type="button" onclick="refreshSong('{{ song.id }}')"
+							data-tooltip="Aktualisiere Song über TIDAL">
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">refresh</i>
 							</span>
 						</button>
 					</td>
 					<td>
-						<a
-							class="button is-small is-danger"
-							type="button"
-							onclick="deleteSong('{{ playlist.id }}', '{{ song.id }}')"
-							data-tooltip="Lösche Song aus Playlist"
-						>
+						<a class="button is-small is-danger" type="button"
+							onclick="deleteSong('{{ playlist.id }}', '{{ song.id }}')" data-tooltip="Lösche Song aus Playlist">
 							<span class="icon is-small">
 								<i class="material-symbols-outlined">delete</i>
 							</span>
@@ -294,12 +246,8 @@
 	<nav class="pagination" role="navigation" aria-label="pagination">
 		<ul class="pagination-list">
 			<li>
-				<a
-					class="pagination-link {% if songs.page == 1 %}is-current{% endif %}"
-					aria-label="Goto page 1"
-					href="{{ url_for('playlists.playlist_details', playlist_id=playlist.id, page=1) }}"
-					>1</a
-				>
+				<a class="pagination-link {% if songs.page == 1 %}is-current{% endif %}" aria-label="Goto page 1"
+					href="{{ url_for('playlists.playlist_details', playlist_id=playlist.id, page=1) }}">1</a>
 			</li>
 			{% if songs.page > 2 %}
 			<li>
@@ -307,36 +255,23 @@
 			</li>
 			{% endif %} {% for page_num in songs.iter_pages(left_edge=1,
 			left_current=1, right_current=1, right_edge=1) %} {% if page_num is not
-			none and page_num > 1 and page_num < songs.pages %}
-			<li>
-				<a
-					class="pagination-link {% if page_num == songs.page %}is-current{% endif %}"
-					aria-label="Goto page {{ page_num }}"
-					{%
-					if
-					page_num
-					!="songs.page"
-					%}href="{{ url_for('playlists.playlist_details', playlist_id=playlist.id, page=page_num) }}"
-					{%
-					endif
-					%}
-					>{{ page_num }}</a
-				>
-			</li>
-			{% endif %} {% endfor %} {% if songs.page < songs.pages - 1 %}
-			<li>
-				<span class="pagination-ellipsis">&hellip;</span>
-			</li>
-			{% endif %} {% if songs.pages > 1 %}
-			<li>
-				<a
-					class="pagination-link {% if songs.page == songs.pages %}is-current{% endif %}"
-					aria-label="Goto page {{ songs.pages }}"
-					href="{{ url_for('playlists.playlist_details', playlist_id=playlist.id, page=songs.pages) }}"
-					>{{ songs.pages }}</a
-				>
-			</li>
-			{% endif %}
+			none and page_num > 1 and page_num < songs.pages %} <li>
+				<a class="pagination-link {% if page_num == songs.page %}is-current{% endif %}"
+					aria-label="Goto page {{ page_num }}" {% if page_num !="songs.page"
+					%}href="{{ url_for('playlists.playlist_details', playlist_id=playlist.id, page=page_num) }}" {% endif %}>{{
+					page_num }}</a>
+				</li>
+				{% endif %} {% endfor %} {% if songs.page < songs.pages - 1 %} <li>
+					<span class="pagination-ellipsis">&hellip;</span>
+					</li>
+					{% endif %} {% if songs.pages > 1 %}
+					<li>
+						<a class="pagination-link {% if songs.page == songs.pages %}is-current{% endif %}"
+							aria-label="Goto page {{ songs.pages }}"
+							href="{{ url_for('playlists.playlist_details', playlist_id=playlist.id, page=songs.pages) }}">{{
+							songs.pages }}</a>
+					</li>
+					{% endif %}
 		</ul>
 	</nav>
 </div>
@@ -360,12 +295,12 @@
 	function deleteTag(song_id, tag_type, tag_id) {
 		fetch(
 			'/songs/' +
-				song_id +
-				'/tags' +
-				'?tag_type=' +
-				tag_type +
-				'&tag_id=' +
-				tag_id,
+			song_id +
+			'/tags' +
+			'?tag_type=' +
+			tag_type +
+			'&tag_id=' +
+			tag_id,
 			{
 				method: 'DELETE',
 			},
