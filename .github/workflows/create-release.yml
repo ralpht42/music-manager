@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GH_TOKEN_PAT }}
       - name: Python Semantic Release
-        uses: python-semantic-release/python-semantic-release@31a691e771e103d6b9c70baafc75fb2cc9f48207 # v8.1.2
+        uses: python-semantic-release/python-semantic-release@67971bf454b8ac56345cc51e939a00aa391d9117 # v8.1.2
         with:
           github_token: ${{ secrets.GH_TOKEN_PAT }}
           git_committer_name: "github-actions[bot]"
