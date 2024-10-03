@@ -1,6 +1,6 @@
 [project]
 name = "music-manager"
-version = "0.6.0"
+version = "0.7.0"
 description = "A music manager for your music library"
 
 [tool.semantic_release]
