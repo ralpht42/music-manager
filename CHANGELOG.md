@@ -1,5 +1,93 @@
 # CHANGELOG
 
+## v0.7.1 (2024-10-03)
+
+### Build
+
+* build(deps): bump faker from 28.4.1 to 30.1.0
+
+Bumps [faker](https://github.com/joke2k/faker) from 28.4.1 to 30.1.0.
+- [Release notes](https://github.com/joke2k/faker/releases)
+- [Changelog](https://github.com/joke2k/faker/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/joke2k/faker/compare/v28.4.1...v30.1.0)
+
+---
+updated-dependencies:
+- dependency-name: faker
+  dependency-type: direct:production
+  update-type: version-update:semver-major
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`fc774c5`](https://github.com/ralpht42/music-manager/commit/fc774c5b084711726a708bfd02e3a958f9500b65))
+
+* build(deps): bump python-semantic-release/python-semantic-release
+
+Bumps [python-semantic-release/python-semantic-release](https://github.com/python-semantic-release/python-semantic-release) from 9.8.8 to 9.9.0.
+- [Release notes](https://github.com/python-semantic-release/python-semantic-release/releases)
+- [Changelog](https://github.com/python-semantic-release/python-semantic-release/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/python-semantic-release/python-semantic-release/compare/fe6b271e942115b528c85e42bc19611b01dcea59...fd8c509df1f16daf3f71a9a6fac49247017017b2)
+
+---
+updated-dependencies:
+- dependency-name: python-semantic-release/python-semantic-release
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`2cc3518`](https://github.com/ralpht42/music-manager/commit/2cc35180d95c9d804354cee45d327fc42ce27e44))
+
+* build(deps): bump actions/checkout from 4.1.7 to 4.2.0
+
+Bumps [actions/checkout](https://github.com/actions/checkout) from 4.1.7 to 4.2.0.
+- [Release notes](https://github.com/actions/checkout/releases)
+- [Commits](https://github.com/actions/checkout/compare/v4.1.7...v4.2.0)
+
+---
+updated-dependencies:
+- dependency-name: actions/checkout
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`8e6e03b`](https://github.com/ralpht42/music-manager/commit/8e6e03b857eae09d592e7cae16b7948a7f42ddf7))
+
+* build(deps): bump docker/build-push-action from 6.7.0 to 6.8.0
+
+Bumps [docker/build-push-action](https://github.com/docker/build-push-action) from 6.7.0 to 6.8.0.
+- [Release notes](https://github.com/docker/build-push-action/releases)
+- [Commits](https://github.com/docker/build-push-action/compare/5cd11c3a4ced054e52742c5fd54dca954e0edd85...32945a339266b759abcbdc89316275140b0fc960)
+
+---
+updated-dependencies:
+- dependency-name: docker/build-push-action
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`892419f`](https://github.com/ralpht42/music-manager/commit/892419f72b7eccfbbbf811b1c65193748868de87))
+
+### Fix
+
+* fix: update dependabot.yml ([`043694e`](https://github.com/ralpht42/music-manager/commit/043694e7652d9a9ed0b7d00f3a633b2559cf6d57))
+
+### Unknown
+
+* Merge pull request #198 from ralpht42/dependabot/pip/faker-30.1.0
+
+build(deps): bump faker from 28.4.1 to 30.1.0 ([`01c2c1d`](https://github.com/ralpht42/music-manager/commit/01c2c1df4fd5acf52ee7a3c55b895352db3b9fa5))
+
+* Merge pull request #195 from ralpht42/dependabot/github_actions/python-semantic-release/python-semantic-release-9.9.0
+
+build(deps): bump python-semantic-release/python-semantic-release from 9.8.8 to 9.9.0 ([`5b75a8e`](https://github.com/ralpht42/music-manager/commit/5b75a8e9a6611b537403b66d50ec8c77c2a3c906))
+
+* Merge pull request #194 from ralpht42/dependabot/github_actions/actions/checkout-4.2.0
+
+build(deps): bump actions/checkout from 4.1.7 to 4.2.0 ([`fcf3cf9`](https://github.com/ralpht42/music-manager/commit/fcf3cf95e2ac14fde152abae1f887c8ccb067725))
+
+* Merge pull request #196 from ralpht42/dependabot/github_actions/docker/build-push-action-6.8.0
+
+build(deps): bump docker/build-push-action from 6.7.0 to 6.8.0 ([`553d510`](https://github.com/ralpht42/music-manager/commit/553d510283f4938634af89624cbe03b0a939efa0))
+
 ## v0.7.0 (2024-10-03)
 
 ### Build
@@ -949,6 +1037,10 @@ updated-dependencies:
 ...
 
 Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`1978bb0`](https://github.com/ralpht42/music-manager/commit/1978bb0995447a4caeac39958e2395b5e54617a2))
+
+### Chore
+
+* chore(release): release 0.7.0 ([`6a5ce48`](https://github.com/ralpht42/music-manager/commit/6a5ce489344be48c86ab058c06e2812b6e18188c))
 
 ### Feature
 
