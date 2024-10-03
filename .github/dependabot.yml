@@ -9,15 +9,47 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "build(deps)"
+    open-pull-requests-limit: 1
+    allow:
+      - dependency-type: "all"
+    ignore:
+      - dependency-type: "patch"
+    rebase-strategy: "auto"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "build(deps)"
+    open-pull-requests-limit: 1
+    allow:
+      - dependency-type: "all"
+    ignore:
+      - dependency-type: "patch"
+    rebase-strategy: "auto"
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "build(deps)"
+    open-pull-requests-limit: 1
+    allow:
+      - dependency-type: "all"
+    ignore:
+      - dependency-type: "patch"
+    rebase-strategy: "auto"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "build(deps)"
+    open-pull-requests-limit: 1
+    allow:
+      - dependency-type: "all"
+    ignore:
+      - dependency-type: "patch"
+    rebase-strategy: "auto"
