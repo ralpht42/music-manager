@@ -11,7 +11,7 @@ COPY package-lock.json .
 RUN npm install 
 
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.12.5-slim-bookworm AS base
+FROM python:3.13.0-slim-bookworm AS base
 
 WORKDIR /opt/music-manager
 
