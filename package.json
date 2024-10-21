@@ -2,7 +2,7 @@
   "dependencies": {
     "bulma": "^1.0.1",
     "prettier": "^3.3.3",
-    "sass": "^1.79.3"
+    "sass": "^1.80.3"
   },
   "scripts": {
     "build-bulma": "sass --load-path=node_modules bulma-customisation.scss ./app/static/css/bulma.css",
