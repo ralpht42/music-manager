@@ -2,7 +2,7 @@ flask==3.0.3
 flask_login==0.6.3
 tidalapi==0.7.6
 musicbrainzngs==0.7.1
-faker==30.1.0
+faker==30.8.1
 argon2-cffi==23.1.0
 pandas==2.2.3
 openpyxl==3.1.5
