@@ -1,5 +1,5 @@
 # Verwende das Node-Image für den npm-Befehl
-FROM node:23.7.0-bookworm-slim as npm-container
+FROM node:24.5.0-bookworm-slim as npm-container
 
 # Setze das Arbeitsverzeichnis
 WORKDIR /usr/src/app
